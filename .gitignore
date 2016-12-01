@@ -12,9 +12,9 @@ ftpsite
 test
 karma.conf.js
 js/coords.js
-js/rg2all.js
-js/*.min.js
-lang/xx.js
+#js/rg2all.js
+#js/*.min.js
+#lang/xx.js
 coords.html
 coverage
 cache/*.json
