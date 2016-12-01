@@ -404,6 +404,7 @@ table.coursemenutable th {
    padding-left: 5px;
    padding-right: 5px;
    text-align: center;
+   /* vertical-align: top; */
 }
 
 table.resulttable td:first-child + td,
