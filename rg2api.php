@@ -30,7 +30,7 @@
   }
 
   // version replaced by Gruntfile as part of release
-  define ('RG2VERSION', '1.3.0');
+  define ('RG2VERSION', '1.3.1');
   define ('KARTAT_DIRECTORY', $url);
   define ('LOCK_DIRECTORY', dirname(__FILE__)."/lock/saving/");
   define ('CACHE_DIRECTORY', $url."cache/");
@@ -180,10 +180,10 @@ function handlePostRequest($type, $eventid) {
   $data = json_decode(file_get_contents('php://input'));
   $write = array();
   if (lockDatabase() !== FALSE) {
-    if ($type != 'addroute') {
+    if (($type != 'addroute') && ($type != 'deletemyroute')) {
       $loggedIn = logIn($data);
     } else {
-      // don't need to log in to add a route
+      // don't need to log in to add a route or delete your own
       $loggedIn = TRUE;
     }
     if ($loggedIn === TRUE) {
@@ -222,11 +222,26 @@ function handlePostRequest($type, $eventid) {
        break;
 
       case 'deleteroute':
-        $write = deleteRoute($eventid);
+          // this is the manager delete function
+        $write = deleteMyRoute($eventid, $data);
         @unlink(CACHE_DIRECTORY."results_".$eventid.".json");
         @unlink(CACHE_DIRECTORY."tracks_".$eventid.".json");
         @unlink(CACHE_DIRECTORY."stats.json");
         break;
+
+        case 'deletemyroute':
+        // this is the user delete function
+        if (canDeleteMyRoute($eventid, $data)) {
+          $write = deleteRoute($eventid);
+          @unlink(CACHE_DIRECTORY."results_".$eventid.".json");
+          @unlink(CACHE_DIRECTORY."tracks_".$eventid.".json");
+          @unlink(CACHE_DIRECTORY."stats.json");            
+        } else {
+          $write["status_msg"] = "Delete failed";
+          $write["ok"] = FALSE;            
+        }
+        break;
+
 
       case 'deletecourse':
         $write = deleteCourse($eventid);
@@ -888,6 +903,8 @@ function deleteRoute($eventid) {
 
   if ($write["status_msg"] == "") {
     $write["ok"] = TRUE;
+    $write["eventid"] = $eventid;
+    $write["routeid"] = $routeid;
     $write["status_msg"] = "Route deleted";
     rg2log("Route deleted|".$eventid."|".$routeid);
   } else {
@@ -895,6 +912,26 @@ function deleteRoute($eventid) {
   }
 
   return($write);
+}
+
+function canDeleteMyRoute($eventid, $data) {
+  if (isset($_GET['routeid'])) {
+    $routeid = $_GET['routeid'];
+    $token = $data->token;
+    $filename = KARTAT_DIRECTORY."merkinnat_".$eventid.".txt";
+    $oldfile = file($filename);
+    $validrequest = false;
+    foreach ($oldfile as $row) {
+      $data = explode("|", $row);
+      if ($data[1] == $routeid) {
+        $hash = md5(serialize($row));
+        if ($hash == $token) {
+          $validrequest = true;
+        }
+      }
+    }
+  }
+  return $validrequest;
 }
 
 function addNewRoute($eventid, $data) {
@@ -1045,6 +1082,8 @@ function addNewRoute($eventid, $data) {
   if ($write["status_msg"] == "") {
     $write["ok"] = TRUE;
     $write["status_msg"] = "Record saved";
+    $write["token"] = $token;
+    $write["eventid"] = $eventid;
     //rg2log("Route saved|".$eventid."|".$id);
   } else {
     $write["ok"] = FALSE;
@@ -1300,7 +1339,7 @@ function getSplitsbrowser($eventid) {
 }
 
 function getLanguage($lang) {
-  $langdir = dirname(__FILE__) . '/lang/';
+  $langdir = dirname(__FILE__).'/lang/';
   $dict = array();
   if (file_exists($langdir.$lang.'.txt')) {
     // generate the necessary php array from the txt file

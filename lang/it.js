@@ -1,4 +1,4 @@
-﻿/*global rg2:false */
+/*global rg2:false */
 rg2.setDictionary({
 code: 'it',
 language: 'Italiano',
