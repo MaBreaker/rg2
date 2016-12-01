@@ -475,7 +475,7 @@
       if (res.isScoreEvent) {
         namehtml = "<input class='showscorecourse showscorecourse-" + i + "' id=" + i + " type=checkbox name=scorecourse></input> " + namehtml;
       }
-      return "<div>" + namehtml + "</div>";
+      return "<div class='name-div'>" + namehtml + "</div>";
     },
 
     getCourseHeader : function (result) {

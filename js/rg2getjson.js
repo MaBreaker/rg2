@@ -159,7 +159,8 @@
 
   function getNewLanguage(lang) {
     $.getScript(rg2Config.lang_url + lang + ".js")
-      .done(function (lang) {
+      // .done call returns script content, it does not pass lang variable
+      .done(function () {
         // script sets rg2.dictionary to new language
         rg2.ui.setNewLanguage(lang);
       }).fail(function (jqxhr, settings, exception) {

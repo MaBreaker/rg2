@@ -35,15 +35,17 @@
       if (lang === "en") {
         rg2.setDictionary({code: "en"});
       }
-      this.createEventMenu();
-      eventid = rg2.events.getActiveEventID();
-      if (eventid !== null) {
-        rg2.courses.removeAllFromDisplay();
-        rg2.results.updateTrackDisplay(rg2.config.DISPLAY_ALL_COURSES, false);
-        rg2.animation.resetAnimation();
-        rg2.drawing.initialiseDrawing(rg2.events.hasResults(eventid));
-        this.createCourseMenu();
-        this.createResultMenu();
+      if (rg2.events !== undefined) { // rg2.events does not exist at point where initial language is loaded
+        this.createEventMenu();
+        eventid = rg2.events.getActiveEventID();
+        if (eventid !== null) {
+          rg2.courses.removeAllFromDisplay();
+          rg2.results.updateTrackDisplay(rg2.config.DISPLAY_ALL_COURSES, false);
+          rg2.animation.resetAnimation();
+          rg2.drawing.initialiseDrawing(rg2.events.hasResults(eventid));
+          this.createCourseMenu();
+          this.createResultMenu();
+        }
       }
       $("#rg2-info-panel").tabs("refresh");
       rg2.redraw(false);

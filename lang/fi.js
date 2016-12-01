@@ -104,5 +104,8 @@ translation: 'mki@iki.fi',
 'Autofit': 'Kohdista',
 'Route already drawn': 'Reitti on jo piirretty',
 'If you draw a new route it will overwrite the old route for this runner.': 'Jos piirrät uuden reitin poistetaan kilpailijan vanha reitti.',
-'GPS routes are saved separately and will not be overwritten.': 'GPS reitit tallennetaan erikseen eikä niitä ylikirjoiteta.'
+'GPS routes are saved separately and will not be overwritten.': 'GPS reitit tallennetaan erikseen eikä niitä ylikirjoiteta.',
+'Route deleted': 'Reitti poistettiin',
+'Route has been deleted': 'Reitti on poistettu',
+'Delete failed': 'Poisto epäonnistui'
 });

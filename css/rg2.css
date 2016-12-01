@@ -634,6 +634,16 @@ body {
 #rg2-event-selected {
    width: 95%;
 }
+
+#movie-table .deleteroute {
+   cursor: pointer;
+   margin-left: 2px;
+}
+
+#movie-table .name-div {
+   display: inline;
+}
+
 #rg2-info-panel input[type="checkbox"] {
 	margin: 2px 5px 2px 5px;
 	vertical-align: middle;

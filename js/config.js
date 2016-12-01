@@ -191,11 +191,13 @@
     // use English until we load something else
     dictionary = {};
     dictionary.code = 'en';
-    // set available languages and set start language if requested
-    rg2.createLanguageDropdown(rg2.config.languages);
     if (rg2Config.start_language !== "en") {
       rg2.getNewLanguage(rg2Config.start_language);
+      // set for DropDown menu selection because language js file executed by getNewLanguage has not completed yet and therefore dictionary code is not correct here
+      dictionary.code = rg2Config.start_language;
     }
+    // set available languages and set start language if requested
+    rg2.createLanguageDropdown(rg2.config.languages);
   }
 
   function setConfigOption(option, value) {
@@ -300,5 +302,5 @@
   rg2.setDictionary = setDictionary;
   rg2.getDictionaryCode = getDictionaryCode;
   rg2.setLanguageOptions = setLanguageOptions;
-  rg2.createLanguageDropdown =  createLanguageDropdown;
+  rg2.createLanguageDropdown = createLanguageDropdown;
 }());
