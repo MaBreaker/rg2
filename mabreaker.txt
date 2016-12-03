@@ -13,6 +13,6 @@ Changes comparing to main
 - Fixed animation routes to always have rounded line endings
 - By default set autofit value to 0 instead of -10 when not detected
 - Fill/Crop GPS track by Autofit value (when not zero), to get its time aligned with course results
-
+- HTML entities can be used on translation texts for special characters
 
 Upcoming features:
