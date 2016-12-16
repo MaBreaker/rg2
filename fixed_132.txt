@@ -1,0 +1,9 @@
+Dialog layout was corrupted because of some elemets were removed from later versions of normalize.css
+
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+}
+
+Bolding "comments" row title in about dialog similar way to other row titles.
+<strong>" + rg2.t("Comments") + "</strong>

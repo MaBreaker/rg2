@@ -11,6 +11,12 @@ html, body {
    font: 16px/26px -apple-system,"Roboto","Segoe UI","Helvetica Neue",Arial,sans-serif;
 }
 
+/* this definition was removed from later versions of normalize and therefore it broke RG2 dialog layout */
+table {
+   border-collapse:collapse;
+   border-spacing:0;
+}
+
 #rg2-header-container {
    background: #002bd9;
    color: white;

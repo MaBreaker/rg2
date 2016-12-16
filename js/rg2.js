@@ -55,7 +55,7 @@ var rg2 = (function (window, $) {
     id = rg2.events.getActiveEventID();
     // check there is an event to report on
     if (id === null) {
-      return "";
+      return "<div>" + rg2.t("Select an event") + "</div>";
     }
     id = rg2.events.getKartatEventID();
     eventinfo = rg2.events.getEventInfo(parseInt(id, 10));
@@ -63,7 +63,7 @@ var rg2 = (function (window, $) {
     stats = "<div><table><thead><tr><th colspan='3'><h2>" + rg2.t("Event statistics") + ": " + eventinfo.name + ": " + eventinfo.date + "</h2></th></tr></thead><tbody>";
     stats += getResultsStats(eventinfo.controls);
     if (eventinfo.comment) {
-      stats += "<tr><td>" + rg2.t("Comments") + "</td><td>" + eventinfo.comment + "</td></tr>";
+      stats += "<tr><td><strong>" + rg2.t("Comments") + "</strong></td><td>" + eventinfo.comment + "</td></tr>";
     }
     stats += getMapStats(eventinfo.worldfile.valid);
     stats += "</tbody></table>";
