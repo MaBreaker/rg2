@@ -153,7 +153,7 @@
     if (rg2.input.infoPanelMaximised) {
       showInfoDisplay(false, "Show info panel", "0px");
     } else {
-      showInfoDisplay(true, "Hide info panel", "366px");
+      showInfoDisplay(true, "Hide info panel", "326px");
     }
     // move map around if necesssary
     resetMapState();
@@ -248,6 +248,8 @@
     rg2.input.scaleFactor = rg2.config.DEFAULT_SCALE_FACTOR;
     // allow for header
     $("#rg2-container").css("height", window.innerHeight - 36);
+    $("#rg2-info-panel").css("height", window.innerHeight - 36);
+    $("#rg2-info-panel-tab-body").css("height", window.innerHeight - 36 - 36);
     canvas.width = window.innerWidth;
     // allow for header
     canvas.height = window.innerHeight - 36;

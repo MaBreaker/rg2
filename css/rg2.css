@@ -258,7 +258,7 @@ table {
 
 #rg2-info-panel {
    font-size: 0.75em;
-   width: 360px;
+   width: 320px;
    position: absolute;
    z-index: 100;
    height: 99%;
@@ -315,7 +315,7 @@ table {
 
 #rg2-hide-info-panel-control {
    position:absolute;
-   left: 366px;
+   left: 326px;
    top: 4px;
    z-index: 100;
    color: black;
@@ -742,11 +742,13 @@ input.filter-form-control {
    margin: 2px 0;
    display: inline-block;
 }
+/*
 #rg2-course-select, #rg2-name-select {
    float: right;
    min-width: 160px;
    max-width: 160px;
 }
+*/
 #rg2-enter-name input {
    min-width: 120px;
    max-width: 120px;
