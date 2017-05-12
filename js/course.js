@@ -1,6 +1,6 @@
 /*global rg2:false */
 (function () {
-  function Course(data, isScoreCourse) {
+  function Course(data, isScoreCourse, isLiveCourse) {
     this.name = data.name;
     this.trackcount = 0;
     this.display = false;
@@ -9,6 +9,7 @@
     this.x = data.xpos;
     this.y = data.ypos;
     this.isScoreCourse = isScoreCourse;
+    this.isLiveCourse = isLiveCourse;
     this.resultcount = 0;
     // save angle to next control to simplify later calculations
     this.angle = [];
@@ -56,7 +57,7 @@
         rg2.ctx.globalAlpha = intensity;
         rg2.controls.drawStart(this.x[0], this.y[0], "", this.angle[0], opt);
         // don't join up controls for score events
-        if (!this.isScoreCourse) {
+        if (!this.isScoreCourse && !this.isLiveCourse) {
           this.drawLinesBetweenControls({x: this.x, y: this.y}, this.angle, opt);
         }
         if (this.isScoreCourse) {
@@ -70,7 +71,11 @@
 
         } else {
           for (i = 1; i < (this.x.length - 1); i += 1) {
-            rg2.controls.drawSingleControl(this.x[i], this.y[i], i, this.textAngle[i], opt);
+            if (this.isLiveCourse) {
+              rg2.controls.drawSingleControl(this.x[i], this.y[i], this.codes[i], this.textAngle[i], opt);
+            } else {
+              rg2.controls.drawSingleControl(this.x[i], this.y[i], i, this.textAngle[i], opt);
+            }
           }
           rg2.controls.drawFinish(this.x[this.x.length - 1], this.y[this.y.length - 1], "", opt);
         }

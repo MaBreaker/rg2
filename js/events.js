@@ -88,6 +88,13 @@
       return (this.events[this.activeEventID].format === rg2.config.SCORE_EVENT);
     },
 
+    isLiveEvent : function () {
+      if (this.activeEventID !== null) {
+        return (this.events[this.activeEventID].kartatid === 0);
+      }
+      return false;
+    },
+
     hasResults : function () {
       if (this.activeEventID !== null) {
         return (this.events[this.activeEventID].format !== rg2.config.EVENT_WITHOUT_RESULTS);
@@ -143,13 +150,16 @@
         }
         html += '<li title="' + title + '" id=' + i + "><a href='#" + this.events[i].kartatid + "'>";
         if (this.events[i].comment !== "") {
-          html += "<i class='fa fa-info-circle event-info-icon' id='info-" + i + "'></i>";
+          html += "<i class='fa fa-info-circle event-info-icon' id='info-" + i + "'>&nbsp;</i>";
         }
         if (this.events[i].worldfile.valid) {
-          html += "<i class='fa fa-globe event-info-icon' id='info-" + i + "'>&nbsp</i>";
+          html += "<i class='fa fa-globe event-info-icon' id='info-" + i + "'>&nbsp;</i>";
         }
         if (this.events[i].locked) {
-          html += "<i class='fa fa-lock event-info-icon' id='info-" + i + "'>&nbsp</i>";
+          html += "<i class='fa fa-lock event-info-icon' id='info-" + i + "'>&nbsp;</i>";
+        }
+        if (this.events[i].kartatid === 0) {
+          html += "<i class='fa fa-map-o event-info-icon' id='info-" + i + "'>&nbsp;LIVE&nbsp;</i>";
         }
         html += this.events[i].date + ": " + this.events[i].name + "</a></li>";
       }

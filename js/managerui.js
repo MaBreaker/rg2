@@ -18,6 +18,18 @@
       this.showItems(items, false);
       $("#rg2-manage-login").show();
       $("#rg2-info-panel").tabs("disable", rg2.config.TAB_EVENTS).tabs("option", "active", rg2.config.TAB_LOGIN);
+      $("#rg2-manage-create-body").accordion({
+        collapsible : true,
+        heightStyle : "content"
+      });
+      $("#manage-edit-options").accordion({
+        collapsible : true,
+        heightStyle : "content"
+      });
+      $("#rg2-manage-map-body").accordion({
+        collapsible : true,
+        heightStyle : "content"
+      });
     },
 
     setUIVisibility : function () {

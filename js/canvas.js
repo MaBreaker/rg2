@@ -18,7 +18,8 @@
       ctx.font = '30pt Arial';
       ctx.textAlign = 'center';
       ctx.fillStyle = rg2.config.BLACK;
-      ctx.fillText(rg2.t("Select an event"), rg2.canvas.width / 2, rg2.canvas.height / 2);
+      //ctx.fillText(rg2.t("Select an event"), rg2.canvas.width / 2, rg2.canvas.height / 2);
+      ctx.fillText(rg2.t("Select an event"), 0, 0);
     }
   }
 
@@ -104,8 +105,14 @@
 
   function resetMapState() {
     // place map in centre of canvas and scale it down to fit
-    var mapscale, heightscale;
+    var mapscale, heightscale, widthscale, panelwidth;
     heightscale = canvas.height / map.height;
+    if (rg2.input.infoPanelMaximised && window.innerWidth >= rg2.config.SMALL_SCREEN_BREAK_POINT) {
+      panelwidth = $("#rg2-info-panel").outerWidth();
+    } else {
+      panelwidth = 0;
+    }
+    widthscale = (canvas.width - panelwidth) / map.width;
     rg2.input.lastX = canvas.width / 2;
     rg2.input.lastY = canvas.height / 2;
     rg2.input.zoomSize = 1;
@@ -113,18 +120,21 @@
     // looks odd but this works for initialisation
     rg2.input.dragged = true;
     // don't stretch map: just shrink to fit
-    if (heightscale < 1) {
+    if (heightscale < 1 && heightscale < widthscale) {
       mapscale = heightscale;
+    } else if (widthscale < 1 && widthscale < heightscale) {
+      mapscale = widthscale;
     } else {
       mapscale = 1;
     }
     // move map into view on small screens
     // avoid annoying jumps on larger screens
-    if (rg2.input.infoPanelMaximised || window.innerWidth >= rg2.config.BIG_SCREEN_BREAK_POINT) {
+    /* if (rg2.input.infoPanelMaximised || window.innerWidth >= rg2.config.BIG_SCREEN_BREAK_POINT) {
       ctx.setTransform(mapscale, 0, 0, mapscale, $("#rg2-info-panel").outerWidth(), 0);
     } else {
       ctx.setTransform(mapscale, 0, 0, mapscale, 0, 0);
-    }
+    } */
+    ctx.setTransform(mapscale, 0, 0, mapscale, panelwidth * 0.5 + canvas.width * 0.5 - mapscale * map.width * 0.5, canvas.height * 0.5 - mapscale * map.height * 0.5);
     // don't need to rotate here since the call to setTransform above does that for us
     ctx.displayAngle = 0;
     ctx.save();
@@ -153,10 +163,10 @@
     if (rg2.input.infoPanelMaximised) {
       showInfoDisplay(false, "Show info panel", "0px");
     } else {
-      showInfoDisplay(true, "Hide info panel", "326px");
+      showInfoDisplay(true, "Hide info panel", "360px");
     }
     // move map around if necesssary
-    resetMapState();
+    //resetMapState();
   }
 
   function zoom(zoomDirection) {
@@ -246,13 +256,22 @@
 
   function resizeCanvas() {
     rg2.input.scaleFactor = rg2.config.DEFAULT_SCALE_FACTOR;
+
+    //TODO use flexbox and get a rid of these
+    var y_pos, y_box;
+    y_pos = $("#rg2-header-container").height() + 4;
+    y_box = ($("#rg2-info-panel").css("box-sizing") === "border-box") ? 0 : 8;
     // allow for header
-    $("#rg2-container").css("height", window.innerHeight - 36);
-    $("#rg2-info-panel").css("height", window.innerHeight - 36);
-    $("#rg2-info-panel-tab-body").css("height", window.innerHeight - 36 - 36);
+    $("#rg2-container").css("height", window.innerHeight - y_pos);
+    $("#rg2-info-panel").css("height", window.innerHeight - y_pos - y_box); // content-box -8
+
+    $("#rg2-info-panel-tab-body").css("height", window.innerHeight - y_pos - y_box - 8 - 38);
+
     canvas.width = window.innerWidth;
     // allow for header
-    canvas.height = window.innerHeight - 36;
+    //TODO fix this 5px gap at bottom 
+    canvas.height = window.innerHeight - y_pos;
+
     rg2.ui.setTitleBar();
     resetMapState();
   }

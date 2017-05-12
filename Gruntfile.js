@@ -14,6 +14,7 @@ module.exports = function(grunt) {
 
   var jsMinFile = 'js/rg2-<%= pkg.version %>.min.js';
   var jsManagerMinFile = 'js/rg2manager-<%= pkg.version %>.min.js';
+  var jsCssMinFile = 'css/rg2-<%= pkg.version %>.min.css';
 
   var relDir = 'ftpsite/';
 
@@ -108,7 +109,11 @@ module.exports = function(grunt) {
     sync : {
       rel : {
         files: [{
-          src : ['rg2api.php', 'index.php', 'html/**', 'img/favicon.ico'],
+          src : [ 'rg2api.php', 'index.php', 'html/**', 'img/favicon.ico',
+                  'img/android-*.png', 'img/apple-*.png', 'img/favicon-*.png', 'img/mstile-*.png', 'img/rg2-logo-*.png', 'img/ui-icons-*.png', 'img/mstile-*.png',
+                  'img/manifest.json', 'img/safari-pinned-tab.svg',
+                  jsMinFile, jsManagerMinFile, 'js/lib/proj4js-compressed.js', langFileList, jsCssMinFile,
+                  '404.html', 'robots.txt' ],
           dest : 'rel/'
         }],
         verbose: true, // Default: false 
@@ -186,7 +191,7 @@ module.exports = function(grunt) {
 
   // Load all the grunt tasks
   require('load-grunt-tasks')(grunt);
-
+/*
   for (var i = 0; i < clubs.length; i++) {
     var club = clubs[i];
     grunt.config(['sync', club], {
@@ -218,7 +223,7 @@ module.exports = function(grunt) {
     ignoreInDest: "rg2-config.php",
     updateAndDelete: true
   });
-  
+*/
   grunt.registerTask('default', ['build']);
 
   // increment minor version number: do anything else by editting package.json by hand
@@ -228,6 +233,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build-manager', ['jslint:manager', 'jshint:manager', 'uglify:manager' ]);
 
-  grunt.registerTask('deploy', ['replace:jsversion', 'replace:phpversion', 'build' /*, 'sync:rel'*/]);
+  grunt.registerTask('deploy', ['replace:jsversion', 'replace:phpversion', 'build', 'sync:rel']);
 
 };

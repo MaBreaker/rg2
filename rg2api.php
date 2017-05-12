@@ -37,6 +37,8 @@
   define ('GPS_RESULT_OFFSET', 50000);
   define ('GPS_INTERVAL', 3);
   define ('SCORE_EVENT_FORMAT', 3);
+  // added to end of event comments to show event is read-only
+  define ('EVENT_LOCKED_INDICATOR', '_');
   
   // Version
   if ( isset($_GET['act']) && $_GET['act'] == 'version' )
@@ -64,9 +66,6 @@ function sortJsonEventsByDateDesc($a, $b) {
     }
     exit;
   }
-
-  // added to end of event comments to show event is read-only
-  define ('EVENT_LOCKED_INDICATOR', '_');
 
   if (isset($_GET['type'])) {
     $type = $_GET['type'];
@@ -598,7 +597,7 @@ function editEvent($eventid, $newdata) {
       $data[5] = encode_rg_output($newdata->club);
       $data[6] = $newdata->type;
       $data[7] = tidyNewComments($newdata->comments);
-      if ($newdata->locked) {
+      if ($newdata->locked || $eventid === '0') {
         $data[7] = $data[7].EVENT_LOCKED_INDICATOR;
       }
       $row = "";
@@ -1355,7 +1354,7 @@ function getLanguage($lang) {
       // remove all quotation marks
       $line = str_replace("'", "", $line);
       // split into two bits
-      $temp = explode(":", trim($line));
+      $temp = explode(":", trim($line), 2);
       // remove trailing comma
       if (count($temp) == 2) {
         $temp[1] = rtrim($temp[1], ',');
@@ -1818,6 +1817,9 @@ function getResultsForEvent($eventid) {
           $detail["status"] = $extras[1];
         }
       }
+      if ($data[6] == "") {
+        $data[6] = "1";
+      }
       // score event check should be redundant but see issue #159
       if (($data[6] != "") && isScoreEvent($eventid)) {
         $detail["variant"] = intval($data[6]);
@@ -1905,6 +1907,65 @@ function getCoursesForEvent($eventid) {
     fclose($handle);
   }
 
+  if ($eventid === '0') {
+    // build temp arrays and return ALL controls for all courses LIVE event 0
+    $xcontrols = array();
+    for ($row = 0; $row < count($dummycontrols); $row++) {
+      if (count($xpos) > $row) {
+        // skip first and last of each row
+        for ($j = 1; $j < count($dummycontrols[$row])-1; $j++) {
+          if (($controlsFound) && (count($controls) > $row)) {
+            $xcontrols[$dummycontrols[$row][$j]] = array($controls[$row][$j],$xpos[$row][$j],$ypos[$row][$j]);
+          } else {
+            $xcontrols[$dummycontrols[$row][$j]] = array($dummycontrols[$row][$j],$xpos[$row][$j],$ypos[$row][$j]);
+          }
+        }
+      }
+    }
+    // replace all controls
+    for ($row = 0; $row < count($dummycontrols); $row++) {
+      // fill all controls except first and last to temp arrays
+      $rxpos = array();
+      $rypos = array();
+      $rcontrols = array();
+      $rdummycontrols = array();
+      $rdummycontrols[0] = $dummycontrols[$row][0];
+      if (count($xpos) > $row) {
+        $rxpos[0] = $xpos[$row][0];
+        $rypos[0] = $ypos[$row][0];
+      }
+      if (($controlsFound) && (count($controls) > $row)) {
+        $rcontrols[0] = $controls[$row][0];
+      }
+      $i = 1;
+      foreach ($xcontrols as $key => $value) {
+        $rdummycontrols[$i] = $key;
+        if (count($xpos) > $row) {
+          $rxpos[$i] = $value[1];
+          $rypos[$i] = $value[2];
+        }
+        if (($controlsFound) && (count($controls) > $row)) {
+          $rcontrols[$i] = $value[0];
+        }
+        $i++;
+      }
+      $last_idx = count($dummycontrols[$row]) - 1;
+      $rdummycontrols[$i] = $dummycontrols[$row][$last_idx];
+      $dummycontrols[$row] = $rdummycontrols;
+      if (count($xpos) > $row) {
+        $rxpos[$i] = $xpos[$row][$last_idx];
+        $rypos[$i] = $ypos[$row][$last_idx];
+        $xpos[$row] = $rxpos;
+        $ypos[$row] = $rypos;
+      }
+      if (($controlsFound) && (count($controls) > $row)) {
+        $last_idx = count($controls[$row]) - 1;
+        $rcontrols[$i] = $controls[$row][$last_idx];
+        $controls[$row] = $rcontrols;
+      }
+    }
+  }
+  
   $row = 0;
   // set up details for each course
   if (($handle = @fopen(KARTAT_DIRECTORY."sarjat_".$eventid.".txt", "r")) !== FALSE) {
@@ -1996,6 +2057,7 @@ function getDummyCode($code) {
 
 function getTracksForEvent($eventid) {
   $output = array();
+  if($eventid !== '0') {
   // read drawn tracks from merkinnat file
   if (($handle = @fopen(KARTAT_DIRECTORY."merkinnat_".$eventid.".txt", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 0, "|")) !== FALSE) {
@@ -2033,6 +2095,7 @@ function getTracksForEvent($eventid) {
       }
     }
     fclose($handle);
+  }
   }
   return addVersion('routes', $output);
 }
@@ -2227,7 +2290,7 @@ function generateWorldFile($data) {
     // X = Ax + By + C, Y = Dx + Ey + F
     // C = X - Ax - By, where x and y are 0
     $C = $lon[0];
-    // F = Y - Dx - Ey, where x and y are 0
+  // F = Y - Dx - Ey, where X and Y are 0
     $F = $lat[0];
     // A = (X - By - C) / x where y = 0
     $A = ($lon[2] - $C) / $x[2];

@@ -103,20 +103,22 @@ header('Content-type: text/html; charset=utf-8');
     <meta name="description" content="View and save route choices for orienteering events">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <!-- favicon info -->
+    <link rel="shortcut icon" href="img/favicon.ico"/>
     <link rel="apple-touch-icon" sizes="180x180" href='<?php echo $source_url ."/img/apple-touch-icon.png"; ?>'>
     <link rel="icon" type="image/png" href='<?php echo $source_url ."/img/favicon-32x32.png"; ?>' sizes="32x32">
     <link rel="icon" type="image/png" href='<?php echo $source_url ."/img/favicon-16x16.png"; ?>' sizes="16x16">
     <link rel="manifest" href='<?php echo $source_url ."/img/manifest.json"; ?>'>
     <link rel="mask-icon" href='<?php echo $source_url ."/img/safari-pinned-tab.svg"; ?>' color="#5bbad5">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"; ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <?php if ($debug) { ?>
-    <link rel="stylesheet" href='<?php echo $source_url ."/css/rg2.css'>"; ?>
+    <link rel="stylesheet" href='<?php echo $source_url ."/css/rg2.css"; ?>'>
   <?php } else { ?>
-    <link rel="stylesheet" href='<?php echo $source_url ."/css/rg2-".RG2VERSION.".min.css'>"; ?>
+    <link rel="stylesheet" href='<?php echo $source_url ."/css/rg2-".RG2VERSION.".min.css"; ?>'>
   <?php } ?>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/<?php echo $ui_theme; ?>/jquery-ui.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/<?php echo $ui_theme; ?>/jquery-ui.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   </head>
   <body>
     <!--[if lt IE 7]>
@@ -181,11 +183,11 @@ header('Content-type: text/html; charset=utf-8');
               <label for='rg2-course-select'>Select course: </label>
               <select id="rg2-course-select"></select>
             </div>
-            <div id="rg2-select-name">
+            <div class="singlerow" id="rg2-select-name">
               <label for='rg2-name-select'>Select name: </label>
               <select id="rg2-name-select"></select>
             </div>
-            <div id="rg2-enter-name">
+            <div class="singlerow" id="rg2-enter-name">
               <div>
                 <label for='rg2-name'>Enter name: </label>
                 <span id = "rg2-name"><input id="rg2-name-entry" class="pushright" type="text"></span>
@@ -195,34 +197,32 @@ header('Content-type: text/html; charset=utf-8');
                 <span id = "rg2-time"><input  id="rg2-time-entry" class="pushright" type="text"></span>
               </div>
             </div>
-            <div id="rg2-enter-comment">
+            <div class="singlerow" id="rg2-enter-comment">
               <textarea id="rg2-new-comments"></textarea>
             </div>
-            <div>
+            <div class="singlerow">
               <input type=checkbox id="btn-align-map"><label for="btn-align-map">Align map to next control</label>
             </div>
             <div class="singlerow">
-              <button class="singlerowitem" id="btn-three-seconds">+3 sec</button>
-              <button class="singlerowitem" id="btn-undo">Undo</button>
-              <button class="singlerowitem" id="btn-reset-drawing">Reset</button>
-              <button class="singlerowitem" id="btn-save-route">Save</button>
+              <button id="btn-three-seconds">+3 sec</button>
+              <button id="btn-undo">Undo</button>
+              <button id="btn-reset-drawing">Reset</button>
+              <button id="btn-save-route">Save</button>
             </div>
           </div>
           <!-- <hr class="rg2-hr"> -->
           <h3 id='rg2-load-gps-title'>Load GPS file (GPX or TCX)</h3>
           <div>
             <div id="rg2-select-gps-file">
-              <input type='file' accept='.gpx, .tcx' id='rg2-load-gps-file' class="manage-file-input">
+              <input type='file' accept='.gpx, .tcx' id='rg2-load-gps-file' class="pushright manage-file-input">
             </div>
             <div class="singlerow">
-              <button class="singlerowitem" id="btn-autofit-gps">Autofit</button>
-              <div class="singlerowitem" id="rg2-offset-spinner">
+              <button id="btn-autofit-gps">Autofit</button>
+              <div id="rg2-offset-spinner">
                 <input id="spn-offset" />
               </div>
-              <button  class="singlerowitem" id="btn-undo-gps-adjust">Undo</button>
-            </div>
-            <div class="singlerow">
-              <button id="btn-save-gps-route">Save GPS route</button>
+              <button id="btn-undo-gps-adjust">Undo</button>
+              <button id="btn-save-gps-route">Save GPS</button>
             </div>
           </div>
           <!-- <hr class="rg2-hr"> -->
@@ -240,7 +240,7 @@ header('Content-type: text/html; charset=utf-8');
             <br><span id="draw-text-5">Drag a handle to adjust track around locked point(s).</span>
           </div>
         </div>
-        <?php if ($manager) {include  'html/manager.html'; } ?>     
+        <?php if ($manager) {include  'html/manager.html'; } ?>
       </div>
       </div>
       <?php include 'html/animation.html'; ?>
@@ -249,7 +249,7 @@ header('Content-type: text/html; charset=utf-8');
     </div>
 <?php if ($debug) { ?>
 <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src='<?php echo $source_url . "/js/rg2.js"; ?>'></script>
 <script src='<?php echo $source_url . "/js/rg2ui.js"; ?>'></script>
 <script src='<?php echo $source_url . "/js/rg2input.js"; ?>'></script>
@@ -275,7 +275,7 @@ header('Content-type: text/html; charset=utf-8');
 <script src='<?php echo $source_url . "/js/lib/he.js"; ?>'></script>
 <?php } else { ?>
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script src='<?php echo $source_url . "/js/rg2-".RG2VERSION.".min.js"; ?>'></script>
 <?php } ?>
 <?php if ($manager) { ?>

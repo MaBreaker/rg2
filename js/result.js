@@ -1,10 +1,11 @@
 /*global rg2:false */
 (function () {
-  function Result(data, isScoreEvent, scorecodes, scorex, scorey) {
+  function Result(data, isScoreEvent, isLiveEvent, scorecodes, scorex, scorey) {
     // resultid is the kartat id value
     this.resultid = data.resultid;
     this.rawid = this.resultid % rg2.config.GPS_RESULT_OFFSET;
     this.isScoreEvent = isScoreEvent;
+    this.isLiveEvent = isLiveEvent;
     this.name = rg2.he.decode(data.name);
     this.initials = this.getInitials(this.name);
     this.starttime = data.starttime;

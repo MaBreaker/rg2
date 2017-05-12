@@ -238,7 +238,7 @@
           self.maps.push(new rg2.Map(json.data.maps[i]));
         }
         rg2.managerUI.createMapDropdown(self.maps);
-        $("#btn-toggle-controls").show();
+        $("#btn-toggle-controls").parent().show();
       }).fail(function () {
         rg2.utils.showWarningDialog("Map request failed", "Error getting map list.");
       });

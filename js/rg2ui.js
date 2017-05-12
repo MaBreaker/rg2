@@ -4,8 +4,8 @@
   var ui = {
 
     setTitleBar: function () {
-      var title;
-      if (window.innerWidth >= rg2.config.BIG_SCREEN_BREAK_POINT) {
+      var title, id;
+      /* if (window.innerWidth >= rg2.config.BIG_SCREEN_BREAK_POINT) {
         title = rg2.events.getActiveEventName() + " " + rg2.events.getActiveEventDate();
         $("#rg2-event-title").html(title).show();
       } else if (window.innerWidth > rg2.config.SMALL_SCREEN_BREAK_POINT) {
@@ -13,7 +13,10 @@
         $("#rg2-event-title").html(title).show();
       } else {
         $("#rg2-event-title").hide();
-      }
+      } */
+      // dynamic css + flexbox title
+      title = rg2.events.getActiveEventName() + " " + rg2.events.getActiveEventDate();
+      $("#rg2-event-title").html(title).show();
       if (rg2.events.mapIsGeoreferenced()) {
         $("#rg2-event-title-icon").addClass("fa fa-globe");
       } else {
@@ -23,6 +26,12 @@
         $("#rg2-event-lock-icon").addClass("fa fa-lock");
       } else {
         $("#rg2-event-lock-icon").removeClass("fa fa-lock");
+      }
+      id = rg2.events.getActiveEventID();
+      if (id !== null && rg2.events.getKartatEventID() === 0) {
+        $("#rg2-event-live-icon").addClass("fa fa-map-o").html("&nbsp;LIVE&nbsp;");
+      } else {
+        $("#rg2-event-live-icon").removeClass("fa fa-map-o").html("");
       }
     },
 
@@ -68,7 +77,7 @@
     displayAboutDialog : function () {
       $("#rg2-event-stats").empty().html(rg2.getEventStats());
       $("#rg2-about-dialog").dialog({
-        width : Math.min(1000, (rg2.canvas.width * 0.8)),
+        width : Math.min(1000, (rg2.canvas.width * 0.9)),
         maxHeight : Math.min(1000, (rg2.canvas.height * 0.9)),
         title : "RG2 Version " + rg2.config.RG2VERSION,
         dialogClass : "rg2-about-dialog",
@@ -83,7 +92,8 @@
 
     displayOptionsDialog : function () {
       $("#rg2-option-controls").dialog({
-        minWidth : 400,
+        width : Math.min(400, (rg2.canvas.width * 0.9)),
+        //minWidth : 400,
         title :  rg2.t("Configuration options"),
         dialogClass : "rg2-options-dialog",
         close : function () {
@@ -144,7 +154,8 @@
       });
       $("#btn-show-splits").click(function () {
         $("#rg2-splits-table").empty().append(rg2.animation.getSplitsTable()).dialog({
-          width : 'auto',
+          width : Math.min(1000, (rg2.canvas.width * 0.95)),
+          maxHeight : Math.min(1000, (rg2.canvas.height * 0.9)),
           dialogClass : "rg2-splits-table",
           buttons : {
             Ok : function () {
@@ -165,11 +176,11 @@
       $("#btn-toggle-controls").click(function () {
         rg2.controls.toggleControlDisplay();
         rg2.redraw(false);
-      }).hide();
+      }).parent().hide();
       $("#btn-toggle-names").click(function () {
         rg2.animation.toggleNameDisplay();
         rg2.redraw(false);
-      }).hide();
+      });
       $("#btn-undo").button().button("disable").click(function () {
         rg2.drawing.undoLastPoint();
       });

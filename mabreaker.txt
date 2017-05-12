@@ -14,5 +14,6 @@ Changes comparing to main
 - By default set autofit value to 0 instead of -10 when not detected
 - Fill/Crop GPS track by Autofit value (when not zero), to get its time aligned with course results
 - HTML entities can be used on translation texts for special characters
+- Extend mobile and tablet browser compatibility (screen size adjustments for smaller screens)
 
 Upcoming features:

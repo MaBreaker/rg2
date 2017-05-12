@@ -106,7 +106,7 @@
   }
 
   function getResults() {
-    var isScoreEvent;
+    var isScoreEvent, isLiveEvent;
     $("#rg2-load-progress-label").text(rg2.t("Loading results"));
     $.getJSON(rg2Config.json_url, {
       id : rg2.events.getKartatEventID(),
@@ -116,9 +116,10 @@
       console.log("Results: " + json.data.results.length);
       $("#rg2-load-progress-label").text(rg2.t("Saving results"));
       isScoreEvent = rg2.events.isScoreEvent();
+      isLiveEvent = rg2.events.isLiveEvent();
       // TODO remove temporary (?) fix to get round RG1 events with no courses defined: see #179
       if (rg2.courses.getNumberOfCourses() > 0) {
-        rg2.results.addResults(json.data.results, isScoreEvent);
+        rg2.results.addResults(json.data.results, isScoreEvent, isLiveEvent);
       }
       rg2.courses.setResultsCount();
       if (isScoreEvent) {
@@ -135,6 +136,7 @@
   }
 
   function getCourses() {
+    $("#rg2-load-progress-label").text(rg2.t("Loading courses"));
     // get courses for event
     $.getJSON(rg2Config.json_url, {
       id : rg2.events.getKartatEventID(),
@@ -144,12 +146,12 @@
       $("#rg2-load-progress-label").text(rg2.t("Saving courses"));
       console.log("Courses: " + json.data.courses.length);
       $.each(json.data.courses, function () {
-        rg2.courses.addCourse(new rg2.Course(this, rg2.events.isScoreEvent()));
+        rg2.courses.addCourse(new rg2.Course(this, rg2.events.isScoreEvent(), rg2.events.isLiveEvent()));
       });
       rg2.courses.updateCourseDropdown();
       rg2.courses.generateControlList(rg2.controls);
-      $("#btn-toggle-controls").show();
-      $("#btn-toggle-names").show();
+      $("#btn-toggle-controls").parent().show();
+      //$("#btn-toggle-names").show();
       getResults();
     }).fail(function (jqxhr, textStatus, error) {
       /*jslint unparam:true*/

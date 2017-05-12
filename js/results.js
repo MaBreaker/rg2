@@ -7,7 +7,7 @@
   Results.prototype = {
     Constructor : Results,
 
-    addResults : function (data, isScoreEvent) {
+    addResults : function (data, isScoreEvent, isLiveEvent) {
       var i, l, result, variant, codes, scorex, scorey;
       l = data.length;
       // extract score course details if necessary
@@ -30,9 +30,9 @@
       for (i = 0; i < l; i += 1) {
         if (isScoreEvent) {
           variant = data[i].variant;
-          result = new rg2.Result(data[i], isScoreEvent, codes[variant], scorex[variant], scorey[variant]);
+          result = new rg2.Result(data[i], isScoreEvent, isLiveEvent, codes[variant], scorex[variant], scorey[variant]);
         } else {
-          result = new rg2.Result(data[i], isScoreEvent);
+          result = new rg2.Result(data[i], isScoreEvent, isLiveEvent);
         }
         this.results.push(result);
       }
@@ -433,7 +433,10 @@
           if (firstCourse) {
             firstCourse = false;
           } else {
-            html += this.getBottomRow(tracksForThisCourse, oldCourseID) + "</table></div>";
+            if (!res.isLiveEvent) {
+              html += this.getBottomRow(tracksForThisCourse, oldCourseID);
+            }
+            html += "</table></div>";
           }
           tracksForThisCourse = 0;
           html += this.getCourseHeader(res);
@@ -452,16 +455,23 @@
           html += " <i class='deleteroute fa fa-trash' id=" + i + "></i>";
         }
         html += "</td><td>" + res.time + "</td>";
-        if (res.hasValidTrack) {
+        if (res.hasValidTrack && !res.isLiveEvent) {
           tracksForThisCourse += 1;
           html += "<td><input class='showtrack showtrack-" + oldCourseID + "' id=" + i + " type=checkbox name=result></input></td>";
         } else {
           html += "<td></td>";
         }
-        html += "<td><input class='showreplay showreplay-" + oldCourseID + "' id=" + i + " type=checkbox name=replay></input></td>";
+        if (!res.isLiveEvent) {
+          html += "<td><input class='showreplay showreplay-" + oldCourseID + "' id=" + i + " type=checkbox name=replay></input></td>";
+        } else {
+          html += "<td></td>";
+        }
         html += "</tr>";
       }
-      html += this.getBottomRow(tracksForThisCourse, oldCourseID) + "</table></div></div>";
+      if (!res.isLiveEvent) {
+        html += this.getBottomRow(tracksForThisCourse, oldCourseID);
+      }
+      html += "</table></div></div>";
       return html;
     },
 
@@ -472,7 +482,7 @@
       } else {
         namehtml = "<i>" + res.name + "</i>";
       }
-      if (res.isScoreEvent) {
+      if (res.isScoreEvent && !res.isLiveEvent) {
         namehtml = "<input class='showscorecourse showscorecourse-" + i + "' id=" + i + " type=checkbox name=scorecourse></input> " + namehtml;
       }
       return "<div class='name-div'>" + namehtml + "</div>";

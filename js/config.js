@@ -30,7 +30,7 @@
     VERY_HIGH_TIME_IN_SECS : 99999,
     // screen sizes for different layouts
     BIG_SCREEN_BREAK_POINT : 800,
-    SMALL_SCREEN_BREAK_POINT : 500,
+    SMALL_SCREEN_BREAK_POINT : 640,
     PURPLE : '#b300ff',
     RED : '#ff0000',
     GREEN : '#00ff00',
@@ -111,7 +111,7 @@
   }
   function translateTextFields() {
     var i, selector, text;
-    selector = ["#rg2-events-tab a", "#rg2-courses-tab a", "#rg2-results-tab a", "#rg2-draw-tab a", '#rg2-draw-title', '#draw-text-1', '#draw-text-2', '#draw-text-3',
+    selector = ['#rg2-events-tab a', '#rg2-courses-tab a', '#rg2-results-tab a', '#rg2-draw-tab a', '#rg2-draw-title', '#draw-text-1', '#draw-text-2', '#draw-text-3',
       '#draw-text-4', '#draw-text-5', '#rg2-load-gps-title', '.rg2-options-dialog .ui-dialog-title', '#rg2-draw-help', '#rg2-draw-options'];
     text = ['Events', 'Courses', 'Results', 'Draw', 'Draw route', 'Left click to add/lock/unlock a handle', 'Green - draggable', 'Red - locked', 'Right click to delete a handle',
       'Drag a handle to adjust track around locked point(s)', 'Load GPS file (GPX or TCX)', 'Configuration options', 'Help', 'Options'];
@@ -122,9 +122,9 @@
 
   function translateTitleProperties() {
     var i, selector, text;
-    selector = ["#rg2-hide-info-panel-icon", '#btn-about', '#btn-options', '#btn-zoom-out', '#btn-zoom-in', '#btn-reset', '#btn-show-splits', '#rg2-splits-table', '#btn-slower',
-      '#btn-faster', '#btn-rotate-right', '#btn-rotate-left'];
-    text = ["Hide info panel", 'Help', 'Options', 'Zoom out', 'Zoom in', 'Reset', 'Splits', 'Splits table', 'Slower', 'Faster', 'Rotate right', 'Rotate left'];
+    selector = ['#rg2-hide-info-panel-icon', '#btn-about', '#btn-options', '#btn-zoom-out', '#btn-zoom-in', '#btn-reset', '#btn-show-splits', '#rg2-splits-table', '#btn-slower',
+      '#btn-faster', '#btn-rotate-right', '#btn-rotate-left', '#rg2-resize-info'];
+    text = ['Hide info panel', 'Help', 'Options', 'Zoom out', 'Zoom in', 'Reset', 'Splits', 'Splits table', 'Slower', 'Faster', 'Rotate right', 'Rotate left', 'Hide info panel'];
     for (i = 0; i < selector.length; i += 1) {
       $(selector[i]).prop('title', t(text[i]));
     }

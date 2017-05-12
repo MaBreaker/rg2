@@ -2,30 +2,32 @@
     <div class="rg2-ani-row row-1">
       <div class="rg2-button"><i id="btn-slower" title = "Slower" class="fa fa-minus"></i></div>
       <div class="rg2-button"><i id="btn-faster" title = "Faster" class="fa fa-plus"></i></div>
-      <div class="rg2-button"><i id="btn-real-time" title = "Real time" class="fa fa-users"></i></div>
       <div class="rg2-button"><i id="btn-start-stop" title = "Run" class="fa fa-play"></i></div>
-      <div id="rg2-clock"></div>
+      <div id="rg2-clock-div"><div id="rg2-clock"></div></div>
     </div>
     <div class="rg2-ani-row row-2">
       <div id="rg2-animation-speed" class="rg2-wide-button"></div>
-      <div id="rg2-clock-slider"></div>
+      <div id="rg2-clock-slider-div"><div id="rg2-clock-slider"></div></div>
     </div>
     <div class="rg2-ani-row row-3">
       <div class="rg2-button"><i id="btn-show-splits" title = "Splits" class="fa fa-list-alt"></i></div>
       <div class="rg2-button"><i id="btn-toggle-names" title = "Show initials" class="fa fa-tag"></i></div>
-      <div id="rg2-replay-start-control">
+      <div class="rg2-button"><i id="btn-real-time" title = "Real time" class="fa fa-users"></i></div>
+      <div id="rg2-replay-start-control-div"><div id="rg2-replay-start-control">
         <label for="rg2-control-select">Start at</label>
-        <select  id="rg2-control-select"><option>S</option></select>
-      </div>
+        <select id="rg2-control-select"><option>S</option></select>
+      </div></div>
     </div>
     <div class="rg2-ani-row row-4">
-      <div id="rg2-tails-spinner">
+      <div id="rg2-tails-spinner-div"><div id="rg2-tails-spinner">
         <label for="spn-tail-length">Length</label>
-        <input id="spn-tail-length" name="value" />
-      </div>
-      <div id="rg2-tails-type">
+        <div id="rg2-tails-spinner_div">
+          <input id="spn-tail-length" name="value" />
+        </div>
+      </div></div>
+      <div id="rg2-tails-type-div"><div id="rg2-tails-type">
         <label for="btn-full-tails">Full tails</label>
-        <input type="checkbox" id="btn-full-tails" />
-      </div>
+        <input id="btn-full-tails" type="checkbox" />
+      </div></div>
     </div>
   </div>
