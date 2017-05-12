@@ -843,17 +843,18 @@ body {
    vertical-align: middle;
 }
 /* Search Filter */
-span.filter-input-group-addon:first-child {
+span.input-group-addon:first-child {
    border-right: 0;
    border-bottom-right-radius: 0;
    border-top-right-radius: 0;
 }
-input.filter-form-control:last-child,
-span.filter-input-group-addon:last-child {
+input.rg2-event-search:last-child,
+input.rg2-result-search:last-child,
+span.input-group-addon:last-child {
    border-bottom-left-radius: 0;
    border-top-left-radius: 0;
 }
-span.filter-input-group-addon {
+span.input-group-addon {
    padding: 5px 12px;
    font-size: 14px;
    font-weight: normal;
@@ -871,11 +872,12 @@ span.filter-input-group-addon {
    display: table-cell;
    border-collapse: separate;
 }
-.filter-input-group {
+#rg2-event-search, #rg2-result-search {
    margin: 0 0 5px 0;
    display: table;
 }
-input.filter-form-control {
+input.rg2-event-search,
+input.rg2-result-search {
    z-index: 81;
    float: left;
    width: 100%;

@@ -2073,6 +2073,7 @@ function getTracksForEvent($eventid) {
     }
     fclose($handle);
   }
+  }
   return $output;
 }
 

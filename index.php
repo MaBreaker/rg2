@@ -160,14 +160,15 @@ header('Content-type: text/html; charset=utf-8');
         </div>
         <div id="rg2-info-panel-tab-body">
         <div id="rg2-event-tab-body">
-          <div id="rg2-event-search"></div>
-          <div id="rg2-event-list">
+          <div id="rg2-event-search">
 <!--
             <div class="filter-input-group">
               <span class="filter-input-group-addon"><i class="fa fa-search fa-fw"></i></span>
               <input id="filter-events-input" class="filter-form-control" type="search" placeholder="Filter">
             </div>
 -->
+          </div>
+          <div id="rg2-event-list">
             <ul id="rg2-event-ul" class="ui-corner-all" data-role="listview"></ul>
           </div>
         </div>
@@ -175,9 +176,13 @@ header('Content-type: text/html; charset=utf-8');
           <div id="rg2-course-table" class="ui-corner-all ui-widget ui-widget-content"></div>
         </div>
         <div id="rg2-result-list">
+          <div id="rg2-result-search">
+<!--
           <div class="filter-input-group">
             <span class="filter-input-group-addon"><i class="fa fa-search fa-fw"></i></span>
             <input id="filter-result-input" class="filter-form-control" type="search" placeholder="Filter">
+          </div>
+-->
           </div>
           <div id="rg2-result-table"></div>
         </div>

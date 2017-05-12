@@ -304,13 +304,16 @@
 
     createResultMenu : function () {
       //loads menu from populated result array
-      var html = rg2.results.formatResultListAsAccordion();
+      var $select, html = rg2.results.formatResultListAsAccordion();
       // #177 not pretty but gets round problems of double encoding
       html = html.replace(/&amp;/g, '&');
       $("#rg2-result-table").empty().append(html);
       // force all panels to start closed: don't know why this is needed after a recreate but...
       $("#rg2-result-table").accordion("option", "active", false).accordion("refresh");
       // Add the search feature to the search bar
+      html = "<span class='input-group-addon'><i class='fa fa-search fa-fw'></i></span><input type='search' id='filter-results-input' class='form-control rg2-result-search' placeholder='" + rg2.t("Search") + "'>";
+      $select = $("#rg2-result-search");
+      $select.empty().append(html);
       $(".rg2-result-search").keyup(function (event) {
         //var courseid, filter, tables, table, rows, data, i;
         var filter, rows, data, i;

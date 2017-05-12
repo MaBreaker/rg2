@@ -112,7 +112,6 @@
       rg2.courses.generateControlList(rg2.controls);
     }
     $("#rg2-result-table").accordion("refresh");
-    getGPSTracks();
   }
 
   function getEvent(id) {
