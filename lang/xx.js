@@ -1,5 +1,6 @@
 /*global rg2:false */
 rg2.setDictionary({
+// Dummy file to start from
 code: 'xx',
 language: 'Test language',
 translation: 'name',
@@ -107,5 +108,6 @@ translation: 'name',
 'GPS routes are saved separately and will not be overwritten.': 'GPS routes are saved separately and will not be overwrittn.',
 'Route deleted': 'Route dleted',
 'Route has been deleted': 'Route has been dleted',
-'Delete failed': 'Dlete failed'
+'Delete failed': 'Dlete failed',
+'Search': 'Serch'
 });

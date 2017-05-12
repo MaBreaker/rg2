@@ -43,6 +43,24 @@ table {
    width: 100%;
 }
 
+.rg2-result-search {
+    width: 97%;
+    margin: 3px;
+}
+
+.rg2-event-search {
+    width: 97%;
+    margin: 3px;
+    font-size: 1em;
+}
+
+.input-group {
+  margin-top: 5px;
+}
+
+.form-control {
+  width: 90%;
+}
 #rg2-course-select, #rg2-name-select {
    width: 99%;
 }

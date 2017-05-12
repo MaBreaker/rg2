@@ -1,6 +1,6 @@
 <?php
 // version replaced by Gruntfile as part of release
-define ('RG2VERSION', '1.3.4');
+define ('RG2VERSION', '1.4.0');
 
 if (file_exists( dirname(__FILE__) . '/rg2-config.php')) {
   require_once( dirname(__FILE__) . '/rg2-config.php' );
@@ -131,7 +131,7 @@ header('Content-type: text/html; charset=utf-8');
         <div id="rg2-info-panel-tab-headers">
         <ul>
           <li id="rg2-events-tab">
-            <a href="#rg2-event-list">Events</a>
+            <a href="#rg2-event-tab-body">Events</a>
           </li>
           <li id="rg2-courses-tab">
             <a href="#rg2-course-list">Courses</a>
@@ -159,12 +159,17 @@ header('Content-type: text/html; charset=utf-8');
          </ul>
         </div>
         <div id="rg2-info-panel-tab-body">
-        <div id="rg2-event-list">
-          <div class="filter-input-group">
-            <span class="filter-input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-            <input id="filter-events-input" class="filter-form-control" type="search" placeholder="Filter">
+        <div id="rg2-event-tab-body">
+          <div id="rg2-event-search"></div>
+          <div id="rg2-event-list">
+<!--
+            <div class="filter-input-group">
+              <span class="filter-input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+              <input id="filter-events-input" class="filter-form-control" type="search" placeholder="Filter">
+            </div>
+-->
+            <ul id="rg2-event-ul" class="ui-corner-all" data-role="listview"></ul>
           </div>
-          <ul id="rg2-event-ul" class="ui-corner-all" data-role="listview"></ul>
         </div>
         <div id="rg2-course-list">
           <div id="rg2-course-table" class="ui-corner-all ui-widget ui-widget-content"></div>

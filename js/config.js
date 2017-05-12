@@ -50,7 +50,7 @@
     EVENT_WITHOUT_RESULTS : 2,
     SCORE_EVENT : 3,
     // version gets set automatically by grunt file during build process
-    RG2VERSION: '1.3.4',
+    RG2VERSION: '1.4.0',
     TIME_NOT_FOUND : 9999,
     // values for evt.which
     RIGHT_CLICK : 3,
@@ -71,7 +71,9 @@
       {language: "Norsk", code: "no"},
       {language: "Português - Brasil", code: "pt"},
       {language: "Русский", code: "ru"}
-    ]
+    ],
+    // Size of map upload in MB that triggers the warning dialog
+    FILE_SIZE_WARNING: 2
   };
 
   options = {

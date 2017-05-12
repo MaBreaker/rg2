@@ -491,8 +491,10 @@
     getCourseHeader : function (result) {
       var html;
       html = "<h3>" + result.coursename + "<input class='showcourse' id=" + result.courseid + " type=checkbox name=course title='Show course'></input></h3><div>";
-      html += "<table class='resulttable' data-role='table' id='movie-table'>";
-      html += "<tr><th></th><th>" + rg2.t("Name") + "</th><th>" + rg2.t("Time") + "</th><th><i class='fa fa-pencil'></i></th><th><i class='fa fa-play'></i></th></tr>";
+      // Add the search bar with the id of the course name
+      //html += "<div class='input-group margin-bottom-sm'><span class='input-group-addon'><i class='fa fa-search fa-fw'></i></span><input type='text' class='form-control rg2-result-search' id='search-" + result.courseid + "' placeholder='" + rg2.t("Search") + "'></div>";
+      // Start the table with an id that relates to the course name to help with the filtering function
+      html += "<table class='resulttable' data-role='table' id='table-" + result.courseid + "'><tr><th></th><th>" + rg2.t("Name") + "</th><th>" + rg2.t("Time") + "</th><th><i class='fa fa-pencil'></i></th><th><i class='fa fa-play'></i></th></tr>";
       return html;
     },
 

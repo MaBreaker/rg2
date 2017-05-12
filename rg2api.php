@@ -30,7 +30,7 @@
   }
 
   // version replaced by Gruntfile as part of release
-  define ('RG2VERSION', '1.3.4');
+  define ('RG2VERSION', '1.4.0');
   define ('KARTAT_DIRECTORY', $url);
   define ('LOCK_DIRECTORY', dirname(__FILE__)."/lock/saving/");
   define ('CACHE_DIRECTORY', $url."cache/");
@@ -190,8 +190,7 @@ function handlePostRequest($type, $eventid) {
       switch ($type) {
       case 'addroute':
         $write = addNewRoute($eventid, $data);
-        @unlink(CACHE_DIRECTORY."results_".$eventid.".json");
-        @unlink(CACHE_DIRECTORY."tracks_".$eventid.".json");
+        @unlink(CACHE_DIRECTORY."all_".$eventid.".json");
         @unlink(CACHE_DIRECTORY."stats.json");
         break;
 
@@ -214,17 +213,14 @@ function handlePostRequest($type, $eventid) {
       case 'deleteevent':
         $write = deleteEvent($eventid);
         @unlink(CACHE_DIRECTORY."events.json");
-        @unlink(CACHE_DIRECTORY."results_".$eventid.".json");
-        @unlink(CACHE_DIRECTORY."courses_".$eventid.".json");
-        @unlink(CACHE_DIRECTORY."tracks_".$eventid.".json");
+        @unlink(CACHE_DIRECTORY."all_".$eventid.".json");
         @unlink(CACHE_DIRECTORY."stats.json");
        break;
 
       case 'deleteroute':
           // this is the manager delete function
         $write = deleteRoute($eventid);
-        @unlink(CACHE_DIRECTORY."results_".$eventid.".json");
-        @unlink(CACHE_DIRECTORY."tracks_".$eventid.".json");
+        @unlink(CACHE_DIRECTORY."all_".$eventid.".json");
         @unlink(CACHE_DIRECTORY."stats.json");
         break;
 
@@ -232,8 +228,7 @@ function handlePostRequest($type, $eventid) {
         // this is the user delete function
         if (canDeleteMyRoute($eventid, $data)) {
           $write = deleteRoute($eventid);
-          @unlink(CACHE_DIRECTORY."results_".$eventid.".json");
-          @unlink(CACHE_DIRECTORY."tracks_".$eventid.".json");
+          @unlink(CACHE_DIRECTORY."all_".$eventid.".json");
           @unlink(CACHE_DIRECTORY."stats.json");            
         } else {
           $write["status_msg"] = "Delete failed";
@@ -244,9 +239,7 @@ function handlePostRequest($type, $eventid) {
 
       case 'deletecourse':
         $write = deleteCourse($eventid);
-        @unlink(CACHE_DIRECTORY."results_".$eventid.".json");
-        @unlink(CACHE_DIRECTORY."courses_".$eventid.".json");
-        @unlink(CACHE_DIRECTORY."tracks_".$eventid.".json");
+        @unlink(CACHE_DIRECTORY."all_".$eventid.".json");
         @unlink(CACHE_DIRECTORY."stats.json");
         break;
 
@@ -1229,32 +1222,20 @@ function handleGetRequest($type, $id) {
       @file_put_contents(CACHE_DIRECTORY."stats.json", $output);
     }
     break;
-  case 'courses':
-    if (file_exists(CACHE_DIRECTORY."courses_".$id.".json")) {
-      $output = file_get_contents(CACHE_DIRECTORY."courses_".$id.".json");
+  case 'event':
+    if (file_exists(CACHE_DIRECTORY."all_".$id.".json")) {
+      $output = file_get_contents(CACHE_DIRECTORY."all_".$id.".json");
     } else {
-      $output = getCoursesForEvent($id);
-      @file_put_contents(CACHE_DIRECTORY."courses_".$id.".json", $output);
-    }
-    break;
-  case 'results':
-    if (file_exists(CACHE_DIRECTORY."results_".$id.".json")) {
-      $output = file_get_contents(CACHE_DIRECTORY."results_".$id.".json");
-    } else {
-      $output = getResultsForEvent($id);
-      @file_put_contents(CACHE_DIRECTORY."results_".$id.".json", $output);
+      $all['courses'] = getCoursesForEvent($id);
+      $all['results'] = getResultsForEvent($id);
+      $all['routes'] = getTracksForEvent($id);
+      $all['API version'] = RG2VERSION;
+      $output = json_encode($all);
+      @file_put_contents(CACHE_DIRECTORY."all_".$id.".json", $output);
     }
     break;
   case 'maps':
     $output = getMaps();
-    break;
-  case 'tracks':
-    if (file_exists(CACHE_DIRECTORY."tracks_".$id.".json")) {
-      $output = file_get_contents(CACHE_DIRECTORY."tracks_".$id.".json");
-    } else {
-      $output = getTracksForEvent($id);
-      @file_put_contents(CACHE_DIRECTORY."tracks_".$id.".json", $output);
-    }
     break;
   case 'lang':
     $output = getLanguage($id);
@@ -1309,12 +1290,8 @@ function validateCache($id) {
   // base decision on kilpailijat only which seems reasonable enough
   if ((is_file(CACHE_DIRECTORY.'results_'.$id.'.json')) && is_file(KARTAT_DIRECTORY.'kilpailijat_'.$id.'.txt')) {
     if (filemtime(KARTAT_DIRECTORY.'kilpailijat_'.$id.'.txt') >= filemtime(CACHE_DIRECTORY.'results_'.$id.'.json')) {
-        //rg2log("Flush cache for event id ".$id);
-        @unlink(CACHE_DIRECTORY."results_".$id.".json");
-        @unlink(CACHE_DIRECTORY."courses_".$id.".json");
-        @unlink(CACHE_DIRECTORY."tracks_".$id.".json");
-        @unlink(CACHE_DIRECTORY."events.json");
-        @unlink(CACHE_DIRECTORY."stats.json");
+        //rg2log("Flush cache: RG1 route has been added");
+        @array_map('unlink', glob(CACHE_DIRECTORY."*.json"));
         return;
     }
   }
@@ -1851,7 +1828,7 @@ function getResultsForEvent($eventid) {
     }
     fclose($handle);
   }
-  return addVersion('results', $output);
+  return $output;
 }
 
 function getCoursesForEvent($eventid) {
@@ -1992,7 +1969,7 @@ function getCoursesForEvent($eventid) {
     }
     fclose($handle);
   }
-  return addVersion('courses', $output);
+  return $output;
 }
 
 function get_numeric($val) {
@@ -2096,8 +2073,7 @@ function getTracksForEvent($eventid) {
     }
     fclose($handle);
   }
-  }
-  return addVersion('routes', $output);
+  return $output;
 }
 
 function tidyTime($in) {
