@@ -15,5 +15,7 @@ Changes comparing to main
 - Fill/Crop GPS track by Autofit value (when not zero), to get its time aligned with course results
 - HTML entities can be used on translation texts for special characters
 - Extend mobile and tablet browser compatibility (screen size adjustments for smaller screens)
+- Changed About dialog Manager link to dialog button
+- Fixed animation runner and text size and alignment
 
 Upcoming features:

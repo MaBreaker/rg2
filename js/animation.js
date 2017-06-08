@@ -333,6 +333,7 @@
           rg2.ctx.font = rg2.options.replayFontSize + 'pt Arial';
           rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
           rg2.ctx.textAlign = "left";
+          rg2.ctx.textBaseline = "middle";
           if (this.displayInitials) {
             text = runner.initials;
           } else {
@@ -344,7 +345,7 @@
           // rotate map so that text stays horizontal
           rg2.ctx.rotate(rg2.ctx.displayAngle);
           // no real science: offsets just look OK
-          rg2.ctx.fillText(text, 12, 6);
+          rg2.ctx.fillText(text, Math.round(2 + (rg2.config.RUNNER_DOT_RADIUS * rg2.options.routeWidth / 4) + rg2.options.routeWidth), 1); //rg2.ctx.fillText(text, 12, 6);
           rg2.ctx.restore();
         }
       }
@@ -420,7 +421,7 @@
           t = runner.nextStopTime;
         }
         if (t < runner.x.length) {
-          rg2.ctx.arc(runner.x[t], runner.y[t], rg2.config.RUNNER_DOT_RADIUS,
+          rg2.ctx.arc(runner.x[t], runner.y[t], rg2.config.RUNNER_DOT_RADIUS * rg2.options.routeWidth / 4,
             0, 2 * Math.PI, false);
           rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
           rg2.ctx.strokeStyle = rg2.config.BLACK;

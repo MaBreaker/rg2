@@ -76,7 +76,7 @@ rg2.setDictionary({
   'Browse...': 'Selaa...',
   'Save GPS route': 'Tallenna GPS',
   'Move track and map together (or right click-drag)': 'Siirrä reittiä ja rataa yhdessä (tai raahaa oikealla napilla)',
-  'Map is georeferenced': 'Kartta on paikkatarkka',
+  'Map is georeferenced': 'Kartta on GPS tarkistettu',
   'International event': 'Kansainvälinen kilpailu',
   'National event': 'Kansallinen kilpailu',
   'Regional event': 'Alueellinen kilpailu',

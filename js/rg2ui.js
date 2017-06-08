@@ -61,7 +61,7 @@
       $("#rg2-info-panel").tabs("refresh");
       rg2.redraw(false);
     },
-
+/*
     getManagerLink : function () {
       var link, html;
       // replace the api link with the manage token
@@ -69,7 +69,7 @@
       html = "<a href=" + link + ">Manager Login</a>";
       return html;
     },
-
+*/
     // called whenever the active tab changes to tidy up as necessary
     tabActivated : function () {
       var active = $("#rg2-info-panel").tabs("option", "active");
@@ -86,7 +86,7 @@
 
     displayAboutDialog : function () {
       $("#rg2-event-stats").empty().html(rg2.getEventStats());
-      $("#rg2-manager-link").empty().html(this.getManagerLink());
+      //$("#rg2-manager-link").empty().html(this.getManagerLink());
       $("#rg2-about-dialog").dialog({
         width : Math.min(1000, (rg2.canvas.width * 0.9)),
         maxHeight : Math.min(1000, (rg2.canvas.height * 0.9)),
@@ -94,6 +94,12 @@
         dialogClass : "rg2-about-dialog",
         resizable : false,
         buttons : {
+          Manager : function () {
+            // replace the api link with the manage token
+            var link = rg2Config.json_url.replace("rg2api.php", "?manage");
+            window.open(link, '_blank');
+            return false;
+          },
           Ok : function () {
             $(this).dialog("close");
           }

@@ -1,6 +1,7 @@
 Version 1.40
 -------------------------------------------------------------------------------
 Modified Search boxes
+Fixed Animation runner sprite size and text alignment
 
 
 Version 1.34

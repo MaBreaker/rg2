@@ -13,7 +13,7 @@ html, body {
    box-sizing: border-box;
    overflow: hidden;
 }
-div, div:before, div:after {
+div, div:before, div:after, textarea {
    box-sizing: inherit;
 }
 
@@ -80,7 +80,8 @@ table {
    margin: 4px 0;
    width: 100%;
    height: 50px;
-   max-width: 270px;
+   max-width: 300px;
+   max-width: 100%;
 }
 
 .rg2-ani-row {
@@ -234,6 +235,7 @@ table {
 #rg2-about-dialog {
    font-size: 0.75em;
    display: none;
+   margin-top: .5em;
    z-index: 100;
 }
 
@@ -667,8 +669,10 @@ table.coursemenutable tbody tr:nth-child(odd) {
 #rg2-event-comments, #rg2-edit-event-comments {
    margin-top: 5px;
    margin-bottom: 5px;
-   width: 95%;
+   width: 100%;
    height: 50px;
+   max-width: 300px;
+   max-width: 100%;
 }
 
 #rg2-add-new-event .ui-button {
@@ -728,9 +732,9 @@ body {
 }
 
 .manage-input {
-   margin-top: 3px;
-   margin-right: 3px;
-   width: 200px;
+   /* margin-top: 3px; */
+   /* margin-right: 3px; */
+   width: 180px;
    line-height: 1.25;
 }
 
@@ -773,9 +777,12 @@ body {
 }
 
 .manage-edit-div, .manage-select-div , .manage-checkbox-div {
-   height: 26px;
-   line-height: 26px;
-   margin-left: 3px;
+   /* height: 26px; */
+   /* line-height: 1.25em; */
+   margin: 2px 0;
+   padding: 2px 3px;
+   overflow: hidden;
+   vertical-align: middle;
 }
 
 .manage-edit-div label, .manage-edit-div input,
@@ -816,6 +823,7 @@ body {
 #rg2-manage-edit button.ui-button,
 #rg2-manage-map button.ui-button {
    width: 120px;
+   width: 48%;
 }
 
 /*

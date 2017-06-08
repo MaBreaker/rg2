@@ -162,9 +162,9 @@ header('Content-type: text/html; charset=utf-8');
         <div id="rg2-event-tab-body">
           <div id="rg2-event-search">
 <!--
-            <div class="filter-input-group">
-              <span class="filter-input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-              <input id="filter-events-input" class="filter-form-control" type="search" placeholder="Filter">
+            <div id="rg2-event-search">
+              <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+								<input id="filter-events-input" class="form-control rg2-event-search" placeholder="<?php echo "Search"; ?>" type="search">
             </div>
 -->
           </div>
@@ -178,10 +178,10 @@ header('Content-type: text/html; charset=utf-8');
         <div id="rg2-result-list">
           <div id="rg2-result-search">
 <!--
-          <div class="filter-input-group">
-            <span class="filter-input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-            <input id="filter-result-input" class="filter-form-control" type="search" placeholder="Filter">
-          </div>
+            <div id="rg2-result-search">
+              <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+								<input id="filter-results-input" class="form-control rg2-result-search" placeholder="<?php echo "Search"; ?>" type="search">
+            </div>
 -->
           </div>
           <div id="rg2-result-table"></div>
