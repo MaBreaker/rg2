@@ -1,6 +1,6 @@
 <?php
 // version replaced by Gruntfile as part of release
-define ('RG2VERSION', '1.4.0');
+define ('RG2VERSION', '1.4.2');
 
 if (file_exists( dirname(__FILE__) . '/rg2-config.php')) {
   require_once( dirname(__FILE__) . '/rg2-config.php' );
@@ -91,12 +91,7 @@ if (isset($_GET['lang'])) {
 header('Content-type: text/html; charset=utf-8');
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-  <!--<![endif]-->
+<html>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Routegadget 2</title>
@@ -116,7 +111,7 @@ header('Content-type: text/html; charset=utf-8');
   <?php } else { ?>
     <link rel="stylesheet" href='<?php echo $source_url ."/css/rg2-".RG2VERSION.".min.css"; ?>'>
   <?php } ?>
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/<?php echo $ui_theme; ?>/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/<?php echo $ui_theme; ?>/jquery-ui.min.css">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   </head>
@@ -164,7 +159,7 @@ header('Content-type: text/html; charset=utf-8');
 <!--
             <div id="rg2-event-search">
               <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-								<input id="filter-events-input" class="form-control rg2-event-search" placeholder="<?php echo "Search"; ?>" type="search">
+              <input id="filter-events-input" class="form-control rg2-event-search" placeholder="<?php echo "Search"; ?>" type="search">
             </div>
 -->
           </div>
@@ -180,7 +175,7 @@ header('Content-type: text/html; charset=utf-8');
 <!--
             <div id="rg2-result-search">
               <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-								<input id="filter-results-input" class="form-control rg2-result-search" placeholder="<?php echo "Search"; ?>" type="search">
+              <input id="filter-results-input" class="form-control rg2-result-search" placeholder="<?php echo "Search"; ?>" type="search">
             </div>
 -->
           </div>
@@ -258,8 +253,8 @@ header('Content-type: text/html; charset=utf-8');
       <?php include 'html/misc.html'; ?>
     </div>
 <?php if ($debug) { ?>
-<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src='<?php echo $source_url . "/js/rg2.js"; ?>'></script>
 <script src='<?php echo $source_url . "/js/rg2ui.js"; ?>'></script>
 <script src='<?php echo $source_url . "/js/rg2input.js"; ?>'></script>
@@ -284,8 +279,8 @@ header('Content-type: text/html; charset=utf-8');
 <script src='<?php echo $source_url . "/js/handles.js"; ?>'></script>
 <script src='<?php echo $source_url . "/js/lib/he.js"; ?>'></script>
 <?php } else { ?>
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src='<?php echo $source_url . "/js/rg2-".RG2VERSION.".min.js"; ?>'></script>
 <?php } ?>
 <?php if ($manager) { ?>

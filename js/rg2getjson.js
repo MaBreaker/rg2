@@ -123,7 +123,7 @@
       cache : false
     }).done(function (json) {
       $("#rg2-load-progress-label").text(rg2.t("Loading courses"));
-      console.log("Courses: " + json.data.courses.length);
+      console.log("Event " + id + ": " + json.data.courses.length + " courses, " + json.data.results.length + " results, " + json.data.routes.length + " routes");
       $.each(json.data.courses, function () {
         rg2.courses.addCourse(new rg2.Course(this, rg2.events.isScoreEvent(), rg2.events.isLiveEvent()));
       });
