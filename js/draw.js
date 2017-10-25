@@ -339,6 +339,7 @@
       $("#btn-three-seconds").button('enable');
       // setting value to null allows you to open the same file again if needed
       $("#rg2-load-gps-file").val(null).button('enable');
+      rg2.redraw(false);
     },
 
     alignMapToAngle : function (control) {

@@ -88,6 +88,7 @@ if (isset($_GET['lang'])) {
     $lang = "en";
   }
 }
+
 header('Content-type: text/html; charset=utf-8');
 ?>
 <!DOCTYPE html>
@@ -266,7 +267,6 @@ header('Content-type: text/html; charset=utf-8');
       <?php include 'html/options.html'; ?>
       <?php include 'html/misc.html'; ?>
     </div>
-
 
 <?php if ($debug) { ?>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
