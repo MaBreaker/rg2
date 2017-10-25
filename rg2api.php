@@ -30,7 +30,7 @@
   }
 
   // version replaced by Gruntfile as part of release
-  define ('RG2VERSION', '1.4.2');
+  define ('RG2VERSION', '1.4.6');
   define ('KARTAT_DIRECTORY', $url);
   define ('LOCK_DIRECTORY', dirname(__FILE__)."/lock/saving/");
   define ('CACHE_DIRECTORY', $url."cache/");
@@ -267,6 +267,8 @@ function handlePostRequest($type, $eventid) {
 
   $keksi = generateNewKeksi();
   $write["keksi"] = $keksi;
+
+  $write["POST_size"] = $_SERVER['CONTENT_LENGTH'];
 
   header("Content-type: application/json");
   $write["version"] = RG2VERSION;
@@ -975,10 +977,19 @@ function addNewRoute($eventid, $data) {
   }
   //
   $name = encode_rg_output($name);
-  // tidy up commments
+  // tidy up comments
   $comments = tidyNewComments($data->comments);
   $newcommentdata = $data->courseid."|".$id."|".$name."||".$comments.PHP_EOL;
 
+  // co-ords sent as differences, so recreate absolute values
+  for ($i = 1; $i < count($data->x); $i++) {
+    $data->x[$i] = $data->x[$i - 1] + $data->x[$i];
+    $data->y[$i] = $data->y[$i - 1] + $data->y[$i];
+  }
+  for ($i = 1; $i < count($data->time); $i++) {
+    $data->time[$i] = $data->time[$i - 1] + $data->time[$i];
+  }
+  
   // convert x,y to internal RG format
   $track = "";
   for ($i = 0; $i < count($data->x); $i++) {
@@ -1787,7 +1798,7 @@ function getResultsForEvent($eventid) {
       // look for RG2 extra fields in dbid
       $detail["databaseid"] = encode_rg_input($data[5]);
       $pos = strpos($detail["databaseid"], "_#");
-      if ($pos) {
+      if ($pos !== FALSE) {
         $extras = explode("#", substr($detail["databaseid"], $pos + 2));
         if (count($extras) == 2) {
           $detail["position"] = $extras[0];

@@ -1,6 +1,6 @@
 <?php
 // version replaced by Gruntfile as part of release
-define ('RG2VERSION', '1.4.2');
+define ('RG2VERSION', '1.4.6');
 
 if (file_exists( dirname(__FILE__) . '/rg2-config.php')) {
   require_once( dirname(__FILE__) . '/rg2-config.php' );
@@ -91,12 +91,26 @@ if (isset($_GET['lang'])) {
 header('Content-type: text/html; charset=utf-8');
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Routegadget 2</title>
     <meta name="description" content="View and save route choices for orienteering events">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="canonical" href="<?php echo $source_url . "/"; ?>" />
+    <!-- Twitter meta tags -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@MaprunnerGB" />
+    <meta name="twitter:title" content="Routegadget 2" />
+    <meta name="twitter:description" content="View my route on Routegadget 2" />
+    <meta name="twitter:image" content="<?php echo $source_url . "/img/android-chrome-512x512.png"; ?>" />
+    <!-- Facebook meta tags -->
+    <meta property="og:url" content="<?php echo $source_url . "/"; ?>" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Routegadget 2" />
+    <meta property="og:description" content="View my route on Routegadget 2" />
+    <meta property="og:image" content="<?php echo $source_url . "/img/facebook-412x412.png"; ?>" />
+    <meta property="fb:app_id" content="1743436915667271" />
     <!-- favicon info -->
     <link rel="shortcut icon" href="img/favicon.ico"/>
     <link rel="apple-touch-icon" sizes="180x180" href='<?php echo $source_url ."/img/apple-touch-icon.png"; ?>'>
@@ -238,7 +252,7 @@ header('Content-type: text/html; charset=utf-8');
           <!-- <hr class="rg2-hr"> -->
           <h3 id="rg2-draw-help">Help</h3>
           <div class="rg2-gps-text">
-            <span id="draw-text-1">Left click to add/lock/unlock a handle.></span>
+            <span id="draw-text-1">Left click to add/lock/unlock a handle.</span>
             <ul><li id="draw-text-2">Green: draggable</li>
             <li id="draw-text-3">Red: locked</li></ul>
             <span id="draw-text-4">Right click to delete a handle.</span>
@@ -252,6 +266,8 @@ header('Content-type: text/html; charset=utf-8');
       <?php include 'html/options.html'; ?>
       <?php include 'html/misc.html'; ?>
     </div>
+
+
 <?php if ($debug) { ?>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -280,9 +296,32 @@ header('Content-type: text/html; charset=utf-8');
 <script src='<?php echo $source_url . "/js/lib/he.js"; ?>'></script>
 <?php } else { ?>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script src='<?php echo $source_url . "/js/rg2-".RG2VERSION.".min.js"; ?>'></script>
 <?php } ?>
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <?php if ($manager) { ?>
   <?php if ($debug) { ?>
 <script src='<?php echo $source_url . "/js/resultparser.js"; ?>'></script>
@@ -319,7 +358,7 @@ epsg_params: "<?php echo EPSG_PARAMS; ?>",
 languages: {},
 start_language: "<?php echo $lang; ?>"
 };
-<?php echo "$(document).ready(rg2.init);" ?>
+<?php echo "$(document).ready(rg2.init);"; ?>
 </script>
 </body>
 </html>

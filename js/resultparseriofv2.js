@@ -11,13 +11,16 @@
 
     Constructor : ResultParserIOFV2,
 
-    getDBID : function (element, name) {
+    getDBID : function (element, index) {
+      if (element.length === 0) {
+        return index;
+      }
       // remove new lines from empty <PersonId> tags
-      element = element.replace(/[\n\r]/g, '').trim();
+      element = element[0].textContent.replace(/[\n\r]/g, '').trim();
       if (element) {
         return element;
       }
-      return name;
+      return index;
     },
 
     getName : function (personlist) {
@@ -38,7 +41,7 @@
             result = {};
             result.course = course;
             result.name = this.getName(personlist[j]);
-            result.dbid = this.getDBID(personlist[j].getElementsByTagName('PersonId')[0].textContent, result.name);
+            result.dbid = this.getDBID(personlist[j].getElementsByTagName('PersonId'), j);
             result.club = rg2.utils.extractTextContentZero(personlist[j].getElementsByTagName('ShortName'), '');
             resultlist = personlist[j].getElementsByTagName('Result');
             this.extractIOFV2Results(resultlist, result);
@@ -59,6 +62,11 @@
       var time;
       if (element.length > 0) {
         time = element[0].getElementsByTagName('Clock')[0].textContent;
+        // negative times from EResultLite messed up SplitsBrowser
+        if (time.charAt(0) === '-') {
+          //time = time.slice(1);
+          return 0;
+        }
         return rg2.utils.getSecsFromHHMMSS(time);
       }
       return 0;

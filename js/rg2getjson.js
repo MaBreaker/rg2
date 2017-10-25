@@ -37,6 +37,7 @@
       reportJSONFail("Events request failed: " + error);
     });
   }
+
   function processGPSTracks(json) {
     var active, i, event, routes, crs;
     $("#rg2-load-progress-label").text(rg2.t("Loading GPS routes"));
@@ -67,7 +68,7 @@
         $("#rg2-info-panel").tabs("option", "active", rg2.requestedHash.getTab());
       }
       $("#rg2-info-panel").tabs("refresh");
-      $("#btn-show-splits").show();
+      $("#btn-show-splits").parent().show();
       if ((rg2Config.enable_splitsbrowser) && (rg2.events.hasResults())) {
         $("#rg2-splitsbrowser").off().click(function () {
           window.open(rg2Config.json_url + "?type=splitsbrowser&id=" + rg2.events.getKartatEventID());

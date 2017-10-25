@@ -364,6 +364,10 @@ table {
    display: none;
 }
 
+.ui-spinner-button {
+   width: 1.5em;
+}
+
 #rg2-info-panel {
    font-size: 0.85em;
    width: 100%;
@@ -497,7 +501,7 @@ table {
    padding: 0;
 }
 
-#rg2-track-names {
+.track-names {
    border: 1px solid darkgray;
    background: rgb(204, 204, 204);
    background: rgba(204, 204, 204, 0.75);
@@ -513,8 +517,18 @@ table {
    overflow: auto;
 }
 
-#rg2-track-names p {
-   margin: 0;
+.align-right {
+   text-align: right;
+}
+
+.align-left {
+   text-align: left;
+}
+
+.track-names th {
+  background: rgb(150, 150, 150);
+  background: rgba(150, 150, 150, 0.75);
+  text-align: left;
 }
 
 #rg2-replay-start-control {
@@ -664,6 +678,10 @@ table.coursemenutable tbody tr:nth-child(odd) {
    font-weight: bold;
    /* margin-bottom: 9px; */
    width: 26px;
+   line-height: 22px;
+   margin-top: 0;
+   margin-bottom: 1px;
+   padding: 1px;
 }
 
 #rg2-event-comments, #rg2-edit-event-comments {
@@ -771,6 +789,10 @@ body {
    margin-left: 3px;
 }
 
+.manage-file-input {
+   overflow: hidden;
+}
+
 .manage-file-label {
    margin-top: 9px;
    margin-bottom: 9px;
@@ -835,6 +857,22 @@ body {
 #rg2-event-selected,
 #rg2-route-selected {
    width: 100%;
+}
+
+.social-buttons-div {
+  text-align: center;
+  position: relative;
+  padding: 10px;
+  line-height: 12px;
+}
+
+.fb-share-button {
+  margin-left: 10%;
+}
+
+.twitter-follow-button {
+  margin-bottom: 18px;
+  margin-right: 5%;
 }
 
 #movie-table .deleteroute {

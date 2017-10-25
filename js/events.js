@@ -19,7 +19,7 @@
 
     getEventInfo : function (kartatid) {
       var realid, info;
-      kartatid = kartatid || this.getKartatEventID();
+      if (kartatid === undefined || kartatid === null) { kartatid = this.getKartatEventID(); }
       realid = this.getEventIDForKartatID(kartatid);
       info = this.events[realid];
       info.id = realid;
@@ -116,11 +116,18 @@
       return this.events[this.activeEventID].locked;
     },
 
+    getLengthUnits : function () {
+      if ((this.activeEventID === null) || (!this.mapIsGeoreferenced())) {
+        return "px";
+      }
+      return "m";
+    },
+
     getMetresPerPixel : function () {
       var lat1, lat2, lon1, lon2, size, pixels, w;
       if ((this.activeEventID === null) || (!this.mapIsGeoreferenced())) {
         // 1 is as harmless as anything else in this situation
-        return {metresPerPixel: 1, units: "pixels"};
+        return 1;
       }
       size = rg2.getMapSize();
       pixels = rg2.utils.getDistanceBetweenPoints(0, 0, size.width, size.height);
@@ -129,7 +136,7 @@
       lat1 = w.F;
       lon2 = (w.A * size.width) + (w.B * size.height) + w.C;
       lat2 = (w.D * size.width) + (w.E * size.height) + w.F;
-      return {metresPerPixel: rg2.utils.getLatLonDistance(lat1, lon1, lat2, lon2) / pixels, units: "metres"};
+      return rg2.utils.getLatLonDistance(lat1, lon1, lat2, lon2) / pixels;
     },
 
     getWorldFile : function () {
@@ -148,7 +155,7 @@
         if (this.events[i].comment !== "") {
           title += ": " + this.events[i].comment;
         }
-        html += '<li title="' + title + '" id=' + i + "><a href='#" + this.events[i].kartatid + "'>";
+        html += '<li title="' + title + '" id=event-' + i + "><a href='#" + this.events[i].kartatid + "'>";
         if (this.events[i].comment !== "") {
           html += "<i class='fa fa-info-circle event-info-icon' id='info-" + i + "'>&nbsp;</i>";
         }

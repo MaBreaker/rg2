@@ -108,5 +108,7 @@ rg2.setDictionary({
   'Route deleted': 'Reitti poistettiin',
   'Route has been deleted': 'Reitti on poistettu',
   'Delete failed': 'Poisto epäonnistui',
-  'Search': 'Hae'
+  'Search': 'Hae',
+  'Share route': 'Jaa reittisi',
+  'Copy and paste this link to share your route': 'Kopio linkki ja jaa reittisi'
 });

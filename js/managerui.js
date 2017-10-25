@@ -39,7 +39,9 @@
       items = ["#rg2-manage-create", "#rg2-create-tab", "#rg2-edit-tab", "#rg2-map-tab", "#rg2-hide-info-panel-control"];
       this.showItems(items, true);
       $("#rg2-event-date-edit").datepicker({
-        dateFormat : 'yy-mm-dd'
+        dateFormat : 'yy-mm-dd',
+        showWeek: true,
+        firstDay: 1
       });
       $('#rg2-event-comments').focus(function () {
         // Clear comment box if user focuses on it and it still contains default text
@@ -124,7 +126,7 @@
 
     setEvent : function (kartatid) {
       var event;
-      if (kartatid) {
+      if (kartatid !== undefined && kartatid !== null) {
         // load details for this event
         event = rg2.events.getEventInfo(kartatid);
         rg2.loadEvent(event.id);

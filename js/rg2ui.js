@@ -127,10 +127,10 @@
     initialiseButtons : function () {
       var self;
       self = this;
-      $("#btn-about").click(function () {
+      $("#btn-about").parent().click(function () {
         self.displayAboutDialog();
       });
-      $("#btn-faster").click(function () {
+      $("#btn-faster").parent().click(function () {
         rg2.animation.goFaster();
       });
       $("#btn-full-tails").prop('checked', false).click(function (event) {
@@ -151,13 +151,13 @@
         }
         rg2.saveConfigOptions();
       });
-      $("#btn-options").click(function () {
+      $("#btn-options").parent().click(function () {
         self.displayOptionsDialog();
       });
-      $("#btn-real-time").click(function () {
+      $("#btn-real-time").parent().click(function () {
         rg2.animation.setReplayType();
       });
-      $("#btn-reset").click(function () {
+      $("#btn-reset").parent().click(function () {
         rg2.resetMapState();
       });
       $("#btn-reset-drawing").button().button("disable").click(function () {
@@ -169,11 +169,14 @@
       $("#btn-save-route").button().button("disable").click(function () {
         rg2.drawing.saveRoute();
       });
-      $("#btn-show-splits").click(function () {
+      $("#btn-show-splits").parent().click(function () {
         $("#rg2-splits-table").empty().append(rg2.animation.getSplitsTable()).dialog({
-          width : Math.min(1000, (rg2.canvas.width * 0.95)),
-          maxHeight : Math.min(1000, (rg2.canvas.height * 0.9)),
+          width : 'auto',
+          maxHeight: $("#rg2-map-canvas").height(),
+          height: 'auto',
+          position: {my: "top", at: "top", of: "#rg2-map-canvas"},
           dialogClass : "rg2-splits-table",
+          modal: true,
           buttons : {
             Ok : function () {
               $("#rg2-splits-table").dialog('close');
@@ -181,20 +184,20 @@
           }
         });
       }).hide();
-      $("#btn-slower").click(function () {
+      $("#btn-slower").parent().click(function () {
         rg2.animation.goSlower();
       });
-      $("#btn-start-stop").click(function () {
+      $("#btn-start-stop").parent().click(function () {
         rg2.animation.toggleAnimation();
       });
       $("#btn-three-seconds").button().click(function () {
         rg2.drawing.waitThreeSeconds();
       }).button("disable");
-      $("#btn-toggle-controls").click(function () {
+      $("#btn-toggle-controls").parent().click(function () {
         rg2.controls.toggleControlDisplay();
         rg2.redraw(false);
-      }).parent().hide();
-      $("#btn-toggle-names").click(function () {
+      }).hide();
+      $("#btn-toggle-names").parent().click(function () {
         rg2.animation.toggleNameDisplay();
         rg2.redraw(false);
       });
@@ -207,16 +210,16 @@
       $("#btn-autofit-gps").button().button("disable").click(function () {
         rg2.drawing.autofitGPSTrack();
       });
-      $("#btn-zoom-in").click(function () {
+      $("#btn-zoom-in").parent().click(function () {
         rg2.zoom(1);
       });
-      $("#btn-zoom-out").click(function () {
+      $("#btn-zoom-out").parent().click(function () {
         rg2.zoom(-1);
       });
-      $("#btn-rotate-left").click(function () {
+      $("#btn-rotate-left").parent().click(function () {
         rg2.rotateMap(-1);
       });
-      $("#btn-rotate-right").click(function () {
+      $("#btn-rotate-right").parent().click(function () {
         rg2.rotateMap(1);
       });
       $("#rg2-load-gps-file").val('').button().button("disable");
@@ -257,6 +260,14 @@
         }
         rg2.requestedHash.setRoutes();
         rg2.redraw(false);
+      });
+      // route share link box
+      $(".shareroute").click(function (event) {
+        rg2.utils.showShareDialog(
+          rg2.t("Share route"),
+          parseInt(event.target.id, 10),
+          rg2.t("Copy and paste this link to share your route")
+        );
       });
       // checkbox to delete a route
       $(".deleteroute").click(function (event) {
@@ -580,7 +591,9 @@
       $select.empty().append(html).menu({
         select : function (event, ui) {
           /*jslint unparam:true*/
-          rg2.loadEvent(ui.item[0].id);
+          var id;
+          id = parseInt(ui.item[0].id.replace('event-', ''), 10);
+          rg2.loadEvent(id);
           rg2.requestedHash.setNewEvent(rg2.events.getKartatEventID());
         }
       });
