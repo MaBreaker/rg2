@@ -65,7 +65,7 @@
     getManagerLink : function () {
       var link, html;
       // replace the api link with the manage token
-      link = rg2Config.json_url.replace("rg2api.php", "?manage");
+      link = rg2Config.json_url.replace("rg2api.php", "index.php?manage");
       html = "<a href=" + link + ">Manager Login</a>";
       return html;
     },
@@ -92,11 +92,12 @@
         maxHeight : Math.min(1000, (rg2.canvas.height * 0.9)),
         title : "RG2 Version " + rg2.config.RG2VERSION,
         dialogClass : "rg2-about-dialog",
+        modal: true,
         resizable : false,
         buttons : {
           Manager : function () {
             // replace the api link with the manage token
-            var link = rg2Config.json_url.replace("rg2api.php", "?manage");
+            var link = rg2Config.json_url.replace("rg2api.php", "index.php?manage");
             window.open(link, '_blank');
             return false;
           },
@@ -253,10 +254,23 @@
       });
       // checkbox to show a result
       $(".showtrack").click(function (event) {
+        var id, classes, j;
         if (event.target.checked) {
           rg2.results.putOneTrackOnDisplay(event.target.id);
         } else {
           rg2.results.removeOneTrackFromDisplay(event.target.id);
+          // make sure the all checkboxs are unchecked
+          classes = $(event.target).attr('class').replace(/\s+/g, ' ').split(' ');
+          for (j = 0; j < classes.length; j += 1) {
+            //if (classes[j].lastIndexOf('showtrack-', 0) === 0) {
+            if (classes[j].search('showtrack-') !== -1) {
+              //id = classes[j].substr(10);
+              id = classes[j].replace('showtrack-', '');
+              $(".allcoursetracks").filter("#" + id).prop('checked', false);
+              $(".tracklist").filter("#" + id).prop('checked', false);
+              break;
+            }
+          }
         }
         rg2.requestedHash.setRoutes();
         rg2.redraw(false);
@@ -290,8 +304,12 @@
         if (event.target.checked) {
           // select all the individual checkboxes for the course
           $(selector).prop('checked', true);
+          // select tracks on course tab
+          $(".tracklist").filter("#" + event.target.id).prop('checked', true);
         } else {
           $(selector).prop('checked', false);
+          // uncheck tracks on course tab
+          $(".tracklist").filter("#" + event.target.id).prop('checked', false);
         }
         rg2.requestedHash.setRoutes();
         rg2.redraw(false);
@@ -425,13 +443,20 @@
       });
       // checkbox on course tab to show tracks for one course
       $(".tracklist").click(function (event) {
-        var courseid = event.target.id;
+        var courseid = event.target.id, selector;
+        selector = ".showtrack-" + courseid;
         if (event.target.checked) {
           rg2.results.updateTrackDisplay(parseInt(courseid, 10), true);
+          // select all on results tab
+          $(selector).prop('checked', true);
+          $(".allcoursetracks").filter("#" + courseid).prop('checked', true);
         } else {
           rg2.results.updateTrackDisplay(parseInt(courseid, 10), false);
           // make sure the all checkbox is not checked
           $(".alltracks").prop('checked', false);
+          // uncheck all on results tab
+          $(selector).prop('checked', false);
+          $(".allcoursetracks").filter("#" + courseid).prop('checked', false);
         }
         rg2.requestedHash.setRoutes();
         rg2.redraw(false);
@@ -589,6 +614,7 @@
         $select.menu("destroy");
       }
       $select.empty().append(html).menu({
+        role : null,
         select : function (event, ui) {
           /*jslint unparam:true*/
           var id;

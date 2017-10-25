@@ -467,56 +467,79 @@
     saveGPSRoute : function () {
       // called to save GPS file route
       // tidy up route details
-      var i, l, t, date, offset, text, fitidx, fitoffset;
+      var i, l, t, date, offset, text, autofitOffset, fitOffset, courseData, splitTime, routeLength;
 
       // set start time by auto fit offset
-      fitidx = this.gpstrack.autofitOffset;
-      if (fitidx === undefined || fitidx === null) {
-        fitidx = 0;
+      autofitOffset = this.gpstrack.autofitOffset;
+      if (autofitOffset === undefined || autofitOffset === null) {
+        autofitOffset = 0;
       }
-      if (fitidx < 0) {
+      if (autofitOffset < 0) {
         // calculate time offset from autofit position
-        fitoffset = this.gpstrack.routeData.time[0] + fitidx;
+        fitOffset = this.gpstrack.routeData.time[0] + autofitOffset;
       } else {
-        fitoffset = this.gpstrack.routeData.time[fitidx];
+        fitOffset = this.gpstrack.routeData.time[autofitOffset];
       }
-      t = this.gpstrack.routeData.time[this.gpstrack.routeData.time.length - 1] - fitoffset;
 
-      this.gpstrack.routeData.totaltime = rg2.utils.formatSecsAsMMSS(t);
       // GPS uses UTC: adjust to local time based on local user setting
       // only affects replay in real time
       date = new Date();
       // returns offset in minutes, so convert to seconds
       offset = date.getTimezoneOffset() * 60;
-      this.gpstrack.routeData.startsecs = fitoffset - offset;
+      this.gpstrack.routeData.startsecs = fitOffset - offset;
 
-      l = this.gpstrack.routeData.x.length - fitidx;
+      courseData = rg2.courses.getCourseDetails(this.gpstrack.routeData.courseid);
+      if (autofitOffset > 0) {
+        // delete auto fit amount from the begining of the route data
+        this.gpstrack.routeData.x.splice(0, autofitOffset);
+        this.gpstrack.routeData.y.splice(0, autofitOffset);
+        this.gpstrack.routeData.time.splice(0, autofitOffset);
+      } else if (autofitOffset < 0) {
+        // add start point from course data and calculated start time to route data
+        this.gpstrack.routeData.x.unshift(courseData.x[0]);
+        this.gpstrack.routeData.y.unshift(courseData.y[0]);
+        // convert real time seconds to offset seconds from start time
+        this.gpstrack.routeData.time.unshift(fitOffset); // zero for most of the rases
+      }
+
+      // loop thru routedata and round values + times
       /* Help
       points: 20-30 -> idx +20
       l: = 30 - 20 = 10
       i: 0 -> 10
       routeData: move 20-30 -> 0-10, delete 10-30
       */
-      if (fitidx > 0) {
-        // delete auto fit amount from the begining of the route
-        this.gpstrack.routeData.x.splice(0, fitidx);
-        this.gpstrack.routeData.y.splice(0, fitidx);
-        this.gpstrack.routeData.time.splice(0, fitidx);
-      } else if (fitidx < 0) {
-        // add start point from course data to route and calculated start time
-        //TODO zero point against start control
-        this.gpstrack.routeData.x.unshift(rg2.courses.getCourseDetails(this.gpstrack.routeData.courseid).x[0]);
-        this.gpstrack.routeData.y.unshift(rg2.courses.getCourseDetails(this.gpstrack.routeData.courseid).y[0]);
-        // convert real time seconds to offset seconds from start time
-        this.gpstrack.routeData.time.unshift(fitoffset);
-      }
-      // loop thru routedata and round values + times
-      for (i = 0; i < l; i += 1) {
+      splitTime = this.gpstrack.routeData.splits[this.gpstrack.routeData.splits.length - 1];
+      routeLength = this.gpstrack.routeData.x.length;
+      //l = Math.min(splitTime, routeLength - 1);  // -1 for index to time conversion
+      //for (i = 0; i < routeLength; i += 1) {
+      i = 0;
+      l = 0;
+      while (i < routeLength && l < splitTime) {
         this.gpstrack.routeData.x[i] = Math.round(this.gpstrack.routeData.x[i]);
         this.gpstrack.routeData.y[i] = Math.round(this.gpstrack.routeData.y[i]);
-        // convert real time seconds to offset seconds from start time
-        this.gpstrack.routeData.time[i] = this.gpstrack.routeData.time[i] - fitoffset;
+        // convert real time seconds to offset seconds from start
+        this.gpstrack.routeData.time[i] = this.gpstrack.routeData.time[i] - fitOffset;
+        l = this.gpstrack.routeData.time[i];
+        i = i + 1;
       }
+      if (i < routeLength) {
+        // delete the end of the overlength route
+        this.gpstrack.routeData.x.splice(i);
+        this.gpstrack.routeData.y.splice(i);
+        this.gpstrack.routeData.time.splice(i);
+      } else if (l < splitTime) {
+        i = courseData.x.length - 1;
+        // add missing end part to route data by finnish control point from course data and split time
+        this.gpstrack.routeData.x.push(courseData.x[i]);
+        this.gpstrack.routeData.y.push(courseData.y[i]);
+        this.gpstrack.routeData.time.push(splitTime);
+      }
+
+      // store route time
+      t = this.gpstrack.routeData.time[this.gpstrack.routeData.time.length - 1];
+      this.gpstrack.routeData.totaltime = rg2.utils.formatSecsAsMMSS(t);
+
       // allow for already having a GPS route for this runner
       this.gpstrack.routeData.resultid += rg2.config.GPS_RESULT_OFFSET;
       while (rg2.results.resultIDExists(this.gpstrack.routeData.resultid)) {

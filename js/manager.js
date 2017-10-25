@@ -398,7 +398,7 @@
           if (data.ok) {
             rg2.utils.showWarningDialog("Event created", self.eventName + " has been added with id " + data.newid + ".");
             // open newly created event in a separate window
-            window.open(rg2Config.json_url.replace("rg2api.php", "") + "#" + data.newid);
+            window.open(rg2Config.json_url.replace("rg2api.php", "") + "index.php#" + data.newid);
             rg2.getEvents();
             rg2.managerUI.setEvent();
           } else {
