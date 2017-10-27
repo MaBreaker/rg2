@@ -162,7 +162,7 @@
     generateRouteShareLink : function (routeid) {
       var res, link;
       res = rg2.results.getFullResultForRawID(routeid);
-      link = rg2Config.json_url.replace("rg2api.php", "#" + rg2.events.getKartatEventID());
+      link = rg2Config.json_url.replace("rg2api.php", "index.php") + "#" + rg2.events.getKartatEventID();
       link += "&route=" + routeid;
       // avoid problems when adding routes to events with no initial results
       if (res !== undefined) {
@@ -181,6 +181,11 @@
         width : "auto",
         close : function () {
           $('#rg2-share-dialog').dialog('destroy').remove();
+        },
+        buttons : {
+          Ok : function () {
+            $(this).dialog("close");
+          }
         }
       });
       twttr.widgets.load(document.getElementById("share-buttons-div"));

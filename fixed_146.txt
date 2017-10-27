@@ -1,3 +1,10 @@
+Version 1.46
+-------------------------------------------------------------------------------
+Split dialog aligment and size
+Button click function attached to parent get whole button clickable instead of text characters only
+GPS start time adjustment by a spinner +/- seconds
+
+
 Version 1.40
 -------------------------------------------------------------------------------
 Modified Search boxes

@@ -16,6 +16,7 @@
     this.routeData = new rg2.RouteData();
     this.xml = "";
     this.autofitOffset = null;
+    this.autoFit = false;
   }
 
 
@@ -169,6 +170,8 @@
       if (this.routeData.splits.length > 2) {
         $("#btn-autofit-gps").button("enable");
       }
+      rg2.ui.setAutofitSpinner(0);
+      $("#spn-offset").spinner("enable");
       $("#btn-save-gps-route").button("enable");
       rg2.redraw(false);
     },
@@ -176,7 +179,11 @@
     adjustOffset : function (offset) {
       this.autofitOffset = offset;
       this.processGPSFile();
-      this.autofitTrack();
+      if (this.autoFit === true) {
+        this.autofitTrack();
+      } else {
+        this.timefitTrack();
+      }
     },
 
 
@@ -224,19 +231,21 @@
     autofitTrack : function () {
       // fits a GPS track to the course based on split times at control locations
       var i, split;
-      // unlock map to allow adjustment
-      $('#btn-move-all').prop('checked', false);
-      this.handles.deleteAllHandles();
-      this.addStartAndFinishHandles();
-      //TODO adjust autofit offset by difference between "user time" and "gps route time"
       if (this.autofitOffset === null) {
         this.autofitOffset = this.getOffset();
         rg2.ui.setAutofitSpinner(this.autofitOffset);
       }
+      // unlock map to allow adjustment
+      $('#btn-move-all').prop('checked', false);
+      this.handles.deleteAllHandles();
+      this.addStartAndFinishHandles();
+      // lock start and end handles to avoid route distortion
+      if (this.autofitOffset < 0) { this.handles.lockHandle(0); }
+      if (this.routeData.splits[this.routeData.splits.length - 1] + this.autofitOffset < this.baseX.lengtht) { this.handles.lockHandle(1); }
       // adjust for each control in turn
-      for (i = 1; i < (this.routeData.splits.length - 1); i += 1) {
+      for (i = 0; i < (this.routeData.splits.length - 1); i += 1) {
         // don't try to adjust missing controls
-        if (this.routeData.splits[i] !== this.routeData.splits[i - 1]) {
+        if ((i === 0 && this.autofitOffset !== 0) || this.routeData.splits[i] !== this.routeData.splits[i - 1]) {
           split = this.routeData.splits[i] + this.autofitOffset;
           // move track to control location
           if ((split < this.baseX.length) && (split >= 0)) {
@@ -253,8 +262,52 @@
           }
         }
       }
+      this.autoFit = true;
       $("#btn-autofit-gps").button("disable");
-      $("#btn-undo-gps-adjust").button("enable");
+      //$("#btn-undo-gps-adjust").button("enable");
+      rg2.redraw(false);
+    },
+
+    timefitTrack : function () {
+      // timeshift GPS track by adding visible start and end controls
+      var split;
+      if (this.autofitOffset === null) {
+        //TODO adjust autofit offset by difference between "user time" and "gps route time" when user has started GPS more that +/-10 seconds from start
+        this.autofitOffset = this.getOffset();
+        rg2.ui.setAutofitSpinner(this.autofitOffset);
+      }
+      // unlock map to allow adjustment
+      $('#btn-move-all').prop('checked', false);
+      this.handles.deleteAllHandles();
+      if (this.autofitOffset === 0) {
+        this.addStartAndFinishHandles();
+      } else {
+        // start control
+        split = this.routeData.splits[0] + this.autofitOffset;
+        if (split > 0 && split < this.routeData.x.length) {
+          // add "start control" handle to point on track
+          this.handles.addHandle(this.routeData.x[split], this.routeData.y[split], split);
+        } else if (this.autofitOffset < 0) {
+          // add "start control" handle to course start control
+          this.handles.addHandle(this.routeData.controlx[0], this.routeData.controly[0], split);
+        } else {
+          // add "start control" handle to the begining of the route
+          this.handles.addHandle(this.routeData.x[0], this.routeData.y[0], split);
+        }
+        // end control
+        split = this.routeData.splits[this.routeData.splits.length - 1] + this.autofitOffset;
+        if (split > 0 && split < this.routeData.x.length) {
+          // add "finish control" handle to point on track
+          this.handles.addHandle(this.routeData.x[split], this.routeData.y[split], split);
+        } else if (this.autofitOffset > 0) {
+          // add "end control" handle to course end control
+          this.handles.addHandle(this.routeData.controlx[this.routeData.controlx.length - 1], this.routeData.controly[this.routeData.controlx.length - 1], split);
+        } else {
+          // add "end control" handle to the end of the route
+          this.handles.addHandle(this.routeData.x[this.routeData.x.length - 1], this.routeData.y[this.routeData.x.length - 1], split);
+        }
+      }
+      //$("#btn-undo-gps-adjust").button("enable");
       rg2.redraw(false);
     },
 

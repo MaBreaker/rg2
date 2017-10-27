@@ -112,8 +112,12 @@
       $("#rg2-option-controls").dialog({
         width : Math.min(400, (rg2.canvas.width * 0.9)),
         //minWidth : 400,
-        title :  rg2.t("Configuration options"),
+        maxHeight : Math.min(1000, (rg2.canvas.height * 0.9)),
+        title : rg2.t("Configuration options"),
         dialogClass : "rg2-options-dialog",
+        modal: false,
+        responsive : true,
+        resizable : false,
         close : function () {
           rg2.saveConfigOptions();
         },
@@ -172,10 +176,10 @@
       });
       $("#btn-show-splits").parent().click(function () {
         $("#rg2-splits-table").empty().append(rg2.animation.getSplitsTable()).dialog({
-          width : 'auto',
-          maxHeight: $("#rg2-map-canvas").height(),
-          height: 'auto',
-          position: {my: "top", at: "top", of: "#rg2-map-canvas"},
+          width : Math.min(1600, (rg2.canvas.width * 0.9)),
+          maxHeight : Math.min(1000, (rg2.canvas.height * 0.9)),
+          //height: 'auto',
+          //position: {my: "top", at: "top", of: "#rg2-map-canvas"},
           dialogClass : "rg2-splits-table",
           modal: true,
           buttons : {
@@ -564,7 +568,7 @@
     },
 
     setAutofitSpinner : function (offset) {
-      $("#spn-offset").spinner("value", offset).spinner("enable");
+      $("#spn-offset").spinner("value", offset); //.spinner("enable");
     },
 
     event_list_li : [],

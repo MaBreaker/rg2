@@ -189,25 +189,30 @@ table {
 }
 #rg2-header-buttons div:first-of-type{
    border-right: 4px solid darkgray;
+   border-right: 4px solid rgba(169,169,169,0.5);
 }
 
 .rg2-button {
    background: silver;
+   background: rgba(192,192,192,0.5);
    color: white;
    /* float: right; // flexbox */
    width: 30px;
    text-align: center;
    border-left: 4px solid darkgray;
+   border-left: 4px solid rgba(169,169,169,0.5);
    cursor: pointer;
 }
 
 .rg2-wide-button {
    background: silver;
+   background: rgba(192,192,192,0.5);
    color: white;
    /* float: right; // flexbox */
    width: 64px;
    text-align: center;
    border-left: 4px solid darkgray;
+   border-left: 4px solid rgba(169,169,169,0.5);
    cursor: pointer;
 }
 .rg2-button:hover,
@@ -277,7 +282,14 @@ table {
    font-weight: bold;
    background-color: white;
 }
-
+.splitstable th, .splitstable td {
+   padding: 1px 5px;
+   vertical-align: top;
+   white-space: nowrap;
+}
+.splitstable td:nth-of-type(1n+3) {
+    border-left: 1px solid darkgray;
+}
 .splitsname-row {
    background-color: #C0C0C0;
 }
@@ -516,6 +528,9 @@ table {
    max-height: 500px;
    overflow: auto;
 }
+.track-names td {
+   padding : 0 4px;
+}
 
 .align-right {
    text-align: right;
@@ -529,6 +544,7 @@ table {
   background: rgb(150, 150, 150);
   background: rgba(150, 150, 150, 0.75);
   text-align: left;
+  padding: 0 5px;
 }
 
 #rg2-replay-start-control {

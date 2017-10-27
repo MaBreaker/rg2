@@ -82,7 +82,7 @@
         $("#rg2-track-names").empty().append(html).show();
         $("#rg2-animation-controls").show();
       } else {
-        $("#rg2-track-names").hide();
+        $("#rg2-track-names").empty().hide();
         $("#rg2-animation-controls").hide();
       }
       this.calculateAnimationRange();
@@ -94,7 +94,7 @@
       if (html !== "") {
         $("#rg2-track-names").empty().append(html).show();
       } else {
-        $("#rg2-track-names").hide();
+        $("#rg2-track-names").empty().hide();
       }
     },
 
@@ -109,6 +109,7 @@
       // major refactoring for #400
       // get all tracks displayed so we can add them of they are not animated as well
       tracks = rg2.results.getDisplayedTrackDetails();
+      html = "";
       for (i = 0; i < this.runners.length; i += 1) {
         // people can be in both lists: just accept it since they have two different colours
         info = {};
@@ -122,6 +123,7 @@
         }
         tracks.push(info);
       }
+      if (tracks.length < 1) { return html; }
       tracks.sort(function (a, b) {
         if (a.course !== b.course) {
           if (a.course > b.course) {
