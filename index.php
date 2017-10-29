@@ -239,7 +239,7 @@ header('Content-type: text/html; charset=utf-8');
             <div class="singlerow">
               <button id="btn-autofit-gps">Autofit</button>
               <div id="rg2-offset-spinner">
-                <input id="spn-offset" />
+                <input id="spn-offset" /><label for="spn-offset">+/- s</label>
               </div>
               <button id="btn-undo-gps-adjust">Undo</button>
               <button id="btn-save-gps-route">Save GPS</button>

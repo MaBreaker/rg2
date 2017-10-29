@@ -1,9 +1,13 @@
 Version 1.46
 -------------------------------------------------------------------------------
+Fixed main event list active events and mouse hover function
 Split dialog aligment and size
-Button click function attached to parent get whole button clickable instead of text characters only
+Button click function attached to parent to get whole button clickable instead of text characters only
 GPS start time adjustment by a spinner +/- seconds
-
+Draw all runners above trails
+Run the animation until the end of the runner tail
+Fixed tail start position while using slider manually
+Zoom positioning while mouse and Zoom-button is used
 
 Version 1.40
 -------------------------------------------------------------------------------

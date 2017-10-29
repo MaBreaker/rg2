@@ -56,9 +56,7 @@
           rg2.courses.drawCourses(rg2.config.DIM);
           rg2.results.drawTracks();
           rg2.controls.drawControls(false);
-          if (fromTimer) {
-            rg2.animation.incrementAnimationTime();
-          }
+          rg2.animation.incrementAnimationTime(fromTimer);
           rg2.animation.drawAnimation();
         }
       }

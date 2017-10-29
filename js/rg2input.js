@@ -114,18 +114,19 @@
     input.pinched = false;
   }
 
+  function saveMouseEvent(evt) {
+    input.lastX = evt.offsetX || (evt.layerX - rg2.canvas.offsetLeft);
+    input.lastY = evt.offsetY || (evt.layerY - rg2.canvas.offsetTop);
+  }
+
   function handleScroll(evt) {
     var delta = evt.wheelDelta ? evt.wheelDelta / 40 : evt.detail ? -evt.detail : 0;
     if (delta) {
+      saveMouseEvent(evt);
       rg2.zoom(delta);
     }
     evt.stopPropagation();
     return evt.preventDefault() && false;
-  }
-
-  function saveMouseEvent(evt) {
-    input.lastX = evt.offsetX || (evt.layerX - rg2.canvas.offsetLeft);
-    input.lastY = evt.offsetY || (evt.layerY - rg2.canvas.offsetTop);
   }
 
   function handleMouseDown(evt) {
@@ -136,8 +137,10 @@
   }
 
   function handleMouseMove(evt) {
-    saveMouseEvent(evt);
-    handleInputMove(evt);
+    if (input.dragStart) {
+      saveMouseEvent(evt);
+      handleInputMove(evt);
+    }
     evt.stopPropagation();
     return evt.preventDefault() && false;
   }

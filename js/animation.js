@@ -33,7 +33,7 @@
       this.earliestStartSecs = 0;
       this.latestFinishSecs = 0;
       this.tailLength = 60 * rg2.config.DEFAULT_TAIL_LENGTH;
-      this.tailStartTimeSecs = 0;
+      this.tailStartTimeSecs = 1;
       this.useFullTails = false;
       // control to start from if this option selected
       this.massStartControl = 0;
@@ -85,7 +85,7 @@
         $("#rg2-track-names").empty().hide();
         $("#rg2-animation-controls").hide();
       }
-      this.calculateAnimationRange();
+      this.calculateAnimationRange(true);
       $("#rg2-clock").text(rg2.utils.formatSecsAsHHMMSS(this.animationSecs));
     },
 
@@ -257,25 +257,46 @@
       }
     },
 
-    calculateAnimationRange : function () {
+    calculateAnimationRange : function (reset) {
       // in theory start time will be less than 24:00
       // TODO: races over midnight: a few other things to sort out before we get to that
-      var i;
+      var i, timeOffset, tail;
       this.earliestStartSecs = 86400;
       this.latestFinishSecs = 0;
       this.slowestTimeSecs = 0;
+      if (this.useFullTails) {
+        tail = 0;
+      } else {
+        tail = this.tailLength;
+      }
       for (i = 0; i < this.runners.length; i += 1) {
         if (this.runners[i].starttime < this.earliestStartSecs) {
           this.earliestStartSecs = this.runners[i].starttime;
         }
-        if ((this.runners[i].starttime + this.runners[i].x.length) > this.latestFinishSecs) {
-          this.latestFinishSecs = this.runners[i].starttime + this.runners[i].x.length + this.tailLength;
+
+        if (this.realTime) {
+          timeOffset = this.runners[i].starttime;
+        } else {
+          if ((this.massStartControl === 0) || (this.runners[i].splits.length < this.massStartControl)) {
+            // no offset since we are starting from the start
+            timeOffset = 0;
+          } else {
+            // offset needs to move forward (hence negative) to time at control
+            timeOffset = -1 * this.runners[i].splits[this.massStartControl];
+          }
         }
-        if ((this.runners[i].x.length) > this.slowestTimeSecs) {
-          this.slowestTimeSecs = this.runners[i].x.length + this.tailLength;
+        if ((this.runners[i].starttime + this.runners[i].x.length + tail + timeOffset) > this.latestFinishSecs) {
+          this.latestFinishSecs = this.runners[i].starttime + this.runners[i].x.length + tail + timeOffset;
+        }
+        if ((this.runners[i].x.length + tail + timeOffset) > this.slowestTimeSecs) {
+          this.slowestTimeSecs = this.runners[i].x.length + tail + timeOffset;
         }
       }
-      this.resetAnimationTime(0);
+      if (reset) {
+        this.resetAnimationTime(0);
+      } else {
+        this.updateSlider();
+      }
     },
 
     stopAnimation : function () {
@@ -295,11 +316,13 @@
       } else {
         this.useFullTails = false;
       }
+      this.calculateAnimationRange(false);
       rg2.redraw(false);
     },
 
     setTailLength : function (minutes) {
       this.tailLength = 60 * minutes;
+      this.calculateAnimationRange(false);
       rg2.redraw(false);
     },
 
@@ -319,7 +342,9 @@
           this.runners[i].nextStopTime = rg2.config.VERY_HIGH_TIME_IN_SECS;
         }
       }
-      this.resetAnimationTime(0);
+      //this.resetAnimationTime(0);
+      this.calculateAnimationRange(true);
+      rg2.redraw(false);
     },
 
     setReplayType : function () {
@@ -365,6 +390,15 @@
       this.milliSecs = this.animationSecs * 1000;
       $("#rg2-clock-slider").slider("value", this.animationSecs);
       $("#rg2-clock").text(rg2.utils.formatSecsAsHHMMSS(this.animationSecs));
+    },
+    updateSlider : function () {
+      if (this.realTime) {
+        $("#rg2-clock-slider").slider("option", "max", this.latestFinishSecs);
+        $("#rg2-clock-slider").slider("option", "min", this.earliestStartSecs);
+      } else {
+        $("#rg2-clock-slider").slider("option", "max", this.slowestTimeSecs);
+        $("#rg2-clock-slider").slider("option", "min", 0);
+      }
     },
 
     toggleNameDisplay : function () {
@@ -412,15 +446,17 @@
       }
     },
 
-    incrementAnimationTime : function () {
+    incrementAnimationTime : function (fromTimer) {
       // only increment time if we haven't got to the end already
-      if (this.realTime) {
-        if (this.animationSecs < this.latestFinishSecs) {
-          this.milliSecs += this.deltas[this.deltaIndex];
-        }
-      } else {
-        if (this.animationSecs < this.slowestTimeSecs) {
-          this.milliSecs += this.deltas[this.deltaIndex];
+      if (fromTimer) {
+        if (this.realTime) {
+          if (this.animationSecs < this.latestFinishSecs) {
+            this.milliSecs += this.deltas[this.deltaIndex];
+          }
+        } else {
+          if (this.animationSecs < this.slowestTimeSecs) {
+            this.milliSecs += this.deltas[this.deltaIndex];
+          }
         }
       }
       this.animationSecs = parseInt((this.milliSecs / 1000), 10);
@@ -440,8 +476,43 @@
       rg2.ctx.lineCap = "round";
       rg2.ctx.lineJoin = "round";
       rg2.ctx.lineWidth = rg2.options.routeWidth;
-      rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
+      //rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
       activeRunners = 0;
+      if (this.useFullTails || this.tailLength > 0) {
+        for (i = 0; i < this.runners.length; i += 1) {
+          runner = this.runners[i];
+          if (this.realTime) {
+            timeOffset = runner.starttime;
+          } else {
+            if ((this.massStartControl === 0) || (runner.splits.length < this.massStartControl)) {
+              // no offset since we are starting from the start
+              timeOffset = 0;
+            } else {
+              // offset needs to move forward (hence negative) to time at control
+              timeOffset = -1 * runner.splits[this.massStartControl];
+            }
+          }
+          if (runner.x.length > (this.tailStartTimeSecs - timeOffset) && (this.animationSecs - timeOffset) >= 0 && this.tailStartTimeSecs < this.animationSecs) {
+            rg2.ctx.beginPath();
+            rg2.ctx.strokeStyle = runner.colour;
+            rg2.ctx.globalAlpha = rg2.options.routeIntensity;
+            rg2.ctx.moveTo(runner.x[this.tailStartTimeSecs - timeOffset], runner.y[this.tailStartTimeSecs - timeOffset]);
+            //rg2.ctx.moveTo(runner.x[this.animationSecs - timeOffset], runner.y[this.animationSecs - timeOffset]);
+            // t runs as real time seconds or 0-based seconds depending on this.realTime
+            //runner.x[] is always indexed in 0-based time so needs to be adjusted for starttime offset
+            for (t = this.tailStartTimeSecs; t < this.animationSecs; t += 1) {
+            //for (t = this.animationSecs; t > this.tailStartTimeSecs; t -= 1) {
+              if ((t > timeOffset) && ((t - timeOffset) < runner.nextStopTime)) {
+                if (t - timeOffset < runner.x.length) {
+                  if (!this.useFullTails) { activeRunners = 1; }
+                  rg2.ctx.lineTo(runner.x[t - timeOffset], runner.y[t - timeOffset]);
+                }
+              }
+            }
+            rg2.ctx.stroke();
+          }
+        }
+      }
       for (i = 0; i < this.runners.length; i += 1) {
         runner = this.runners[i];
         if (this.realTime) {
@@ -455,45 +526,30 @@
             timeOffset = -1 * runner.splits[this.massStartControl];
           }
         }
-        rg2.ctx.strokeStyle = runner.colour;
-        rg2.ctx.globalAlpha = rg2.options.routeIntensity;
-        rg2.ctx.beginPath();
-        rg2.ctx.moveTo(runner.x[this.tailStartTimeSecs - timeOffset], runner.y[this.tailStartTimeSecs - timeOffset]);
-
-        // t runs as real time seconds or 0-based seconds depending on this.realTime
-        //runner.x[] is always indexed in 0-based time so needs to be adjusted for starttime offset
-        for (t = this.tailStartTimeSecs; t < this.animationSecs; t += 1) {
-          if ((t > timeOffset) && ((t - timeOffset) < runner.nextStopTime)) {
-            if (t - timeOffset < runner.x.length) {
-              rg2.ctx.lineTo(runner.x[t - timeOffset], runner.y[t - timeOffset]);
-              activeRunners += 1;
-            }
-          }
-        }
-        rg2.ctx.stroke();
-
-        rg2.ctx.beginPath();
+        t = this.animationSecs;
         if ((t - timeOffset) < runner.nextStopTime) {
           t = t - timeOffset;
         } else {
           t = runner.nextStopTime;
         }
         if (t < runner.x.length) {
-          rg2.ctx.arc(runner.x[t], runner.y[t], rg2.config.RUNNER_DOT_RADIUS * rg2.options.routeWidth / 4,
-            0, 2 * Math.PI, false);
+          rg2.ctx.beginPath();
           rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
           rg2.ctx.strokeStyle = rg2.config.BLACK;
+          rg2.ctx.arc(runner.x[t], runner.y[t], rg2.config.RUNNER_DOT_RADIUS * rg2.options.routeWidth / 4,
+            0, 2 * Math.PI, false);
           rg2.ctx.stroke();
           rg2.ctx.fillStyle = runner.colour;
           rg2.ctx.fill();
           this.displayName(runner, t);
-          activeRunners += 1;
+          activeRunners = 1;
         }
       }
       this.updateNameDetails(t);
       if (this.timer !== null && activeRunners === 0) {
         //this.resetAnimation();
-        this.toggleAnimation();
+        //this.toggleAnimation();
+        this.stopAnimation();
         this.resetAnimationTime(0);
         rg2.redraw(false);
       } else if (this.massStartByControl) {

@@ -155,7 +155,7 @@
         if (this.events[i].comment !== "") {
           title += ": " + this.events[i].comment;
         }
-        html += '<li title="' + title + '" id=event-' + i + "><a href='#" + this.events[i].kartatid + "'>";
+        html += '<li title="' + title + '" id=event-' + i + "><div><a href='#" + this.events[i].kartatid + "'>";
         if (this.events[i].comment !== "") {
           html += "<i class='fa fa-info-circle event-info-icon' id='info-" + i + "'>&nbsp;</i>";
         }
@@ -168,7 +168,7 @@
         if (this.events[i].kartatid === 0) {
           html += "<i class='fa fa-map-o event-info-icon' id='info-" + i + "'>&nbsp;LIVE&nbsp;</i>";
         }
-        html += this.events[i].date + ": " + this.events[i].name + "</a></li>";
+        html += this.events[i].date + ": " + this.events[i].name + "</a></div></li>";
       }
       return html;
 
