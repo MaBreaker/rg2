@@ -1,3 +1,7 @@
+Version 1.48
+-------------------------------------------------------------------------------
+Misconfigured about dialog div
+
 Version 1.46
 -------------------------------------------------------------------------------
 Fixed main event list active events and mouse hover function
