@@ -18,6 +18,7 @@
     this.format = rg2.config.FORMAT_NORMAL;
     this.newcontrols = new rg2.Controls();
     this.courses = [];
+    this.mapping = [];
     this.mapLoaded = false;
     this.coursesGeoreferenced = false;
     this.drawingCourses = false;
@@ -39,6 +40,7 @@
     // state flag showing we have found the least worst encoding so use anyway
     this.useThisEncoding = false;
     this.backgroundLocked = false;
+    this.sortResults = false;
     this.handle = {x: null, y: null};
     this.maps = [];
     this.localworldfile = new rg2.Worldfile(0);
@@ -141,6 +143,9 @@
       });
       $("#btn-no-results").click(function (evt) {
         self.toggleResultsRequired(evt.target.checked);
+      });
+      $("#btn-sort-results").click(function (evt) {
+        self.toggleSortResults(evt.target.checked);
       });
       $("#rg2-load-course-file").val("").button().click(function (evt) {
         if (!self.mapLoaded) {
@@ -449,7 +454,11 @@
         data.variants = this.variants.slice(0);
       }
       data.courses = this.courses.slice(0);
-      data.results = this.results.slice(0);
+      if (this.sortResults) {
+        data.results = this.results.slice(0).sort(this.sortResultItems);
+      } else {
+        data.results = this.results.slice(0);
+      }
       // #386 remove unused data: partial solution to problems with POST size
       for (i = 0; i < data.results.length; i += 1) {
         delete data.results[i].codes;
@@ -460,6 +469,36 @@
       data.x = user.x;
       data.y = user.y;
       return JSON.stringify(data);
+    },
+
+    hasZeroTime : function (time) {
+      if (time === 0 || time === '0' || time === '0:00' || time === '00:00') {
+        return true;
+      }
+      return false;
+    },
+
+    sortResultItems : function (a, b) {
+      // called after final courseids allocated so this is safe
+      if (a.courseid !== b.courseid) {
+        return a.courseid - b.courseid;
+      }
+      if (a.position !== '' && b.position !== '') {
+        // sort by position, if available
+        return a.position - b.position;
+      }
+      if (a.position === '' && b.position !== '') {
+        return 1;
+      }
+      if (a.position !== '' && b.position === '') {
+        return -1;
+      }
+      // sort by time, if available
+      if (this.rg2.Manager.prototype.hasZeroTime(a.time) && this.rg2.Manager.prototype.hasZeroTime(b.time)) {
+        // sort by name, when no time
+        return a.name - b.name;
+      }
+      return a.time - b.time;
     },
 
     renumberResults : function () {
@@ -522,14 +561,36 @@
       this.courses = newCourses;
     },
 
+    /**
+    * @param {string} course - Course name from results file.
+    * @param {integer} courseidx - Course name index.
+    */
     createCourseDropdown : function (course, courseidx) {
-      var i, idx, html;
+      var i, j, idx, html;
       idx = -1;
-      // do courses include this course name?
+      // check against list of course names first to default to results by course
+      // do known courses include this course name?
+      // This covers "Brown" results mapping to a "Brown" course
       for (i = 0; i < this.courses.length; i += 1) {
         if (this.courses[i].name === course) {
           idx = i;
           break;
+        }
+      }
+      // If we didn't match a course name then try a class name
+      // This covers M50 results mapping to course 3 as defined in the course XML
+      if ((idx === -1) && (this.mapping.length > 0)) {
+        for (i = 0; i < this.mapping.length; i += 1) {
+          if (this.mapping[i].className === course) {
+            // now have course name so look it up to get index
+            for (j = 0; j < this.courses.length; j += 1) {
+              if (this.courses[j].name === this.mapping[i].course) {
+                idx = j;
+                break;
+              }
+            }
+            break;
+          }
         }
       }
       html = "<select id='rg2-alloc-" + courseidx + "'><option value=" + rg2.config.DO_NOT_SAVE_COURSE;
@@ -877,6 +938,7 @@
       parsedCourses = new rg2.CourseParser(evt, this.worldfile, this.localworldfile);
       this.courses = parsedCourses.courses;
       this.newcontrols = parsedCourses.newcontrols;
+      this.mapping = parsedCourses.mapping;
       this.coursesGeoreferenced = parsedCourses.georeferenced;
       rg2.managerUI.displayCourseInfo(this.getCourseInfoAsHTML());
       this.createResultCourseMapping();
@@ -1195,6 +1257,10 @@
     // locks or unlocks background when adjusting map
     toggleMoveAll : function (checkedState) {
       this.backgroundLocked = checkedState;
+    },
+
+    toggleSortResults : function (checkedState) {
+      this.sortResults = checkedState;
     },
 
     // determines if a results file is needed

@@ -1,7 +1,8 @@
 /*global rg2:false */
 rg2.setDictionary({
-  language: 'Suomi',
+// Suomeksi	
   code: 'fi',
+  language: 'Suomi',
   translation: 'mki@iki.fi',
   'Events': 'Tapahtumat',
   'Course': 'Rata',

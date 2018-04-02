@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     'js/events.js', 'js/gpstrack.js', 'js/handles.js', 'js/map.js', 'js/plugins.js', 'js/result.js', 'js/resultparser.js', 'js/resultparsercsv.js', 'js/resultparseriofv2.js','js/resultparseriofv3.js',
     'js/results.js', 'js/rg2getjson.js', 'js/rg2input.js', 'js/rg2ui.js', 'js/runner.js', 'js/utils.js', 'js/lib/he.js'
     ];
-  
+
   var langFileList = ['lang/de.js', 'lang/fi.js', 'lang/fr.js', 'lang/it.js', 'lang/ja.js', 'lang/no.js', 'lang/pt.js', 'lang/xx.js'];
 
   // don't jsHint he.js, plugins.js
@@ -25,10 +25,10 @@ module.exports = function(grunt) {
   var clubs = ['aire', 'albania', 'ayroc', 'bado', 'baoc', 'basoc', 'bko', 'boc', 'bok', 'bl', 'chig', 'claro', 'clyde', 'coboc', 'cuoc', 'cvfr', 'darkandwhite', 'dee',
    'devonoc', 'ebor', 'ecko', 'elo', 'epoc', 'esoc', 'euoc', 'gmoa', 'gramp', 'go', 'halo', 'happyherts', 'havoc', 'hoc', 'interlopers', 'invoc', 'jk',
    'kerno', 'kfo', 'lamm', 'leioc', 'loc', 'log', 'lok', 'lvo', 'maroc', 'mdoc', 'mid-wales', 'moravian', 'mvoc', 'nato', 'ngoc', 'noroc', 'nwo', 'od', 'omm', 'ouoc',
-   'pfo', 'potoc', 'quantock', 'rafo', 'roxburghreivers', 'sa', 'sarum', 'saxons', 'sboc', 'scottish6days', 'seloc', 'slow', 'smbo', 'smoc', 'sn', 'so', 'soa', 'soc',
+   'pfo', 'potoc', 'quantock', 'rafo', 'roxburghreivers', 'sa', 'sarum', 'saxons', 'sboc', 'scottish6days', 'seloc', 'slow', 'slmm', 'smbo', 'smoc', 'sn', 'so', 'soa', 'soc',
    'solway', 'sportident', 'sroc', 'stag', 'start', 'suffoc', 'swoc', 'syo', 'tay', 'test', 'purple-thistle', 'tinto', 'tvoc', 'walton', 'waoc', 'wcoc', 'wim', 'wmoc',
    'wrekin', 'wsco2008', 'wsx'];
-  
+
   // Project configuration.
   grunt.initConfig({
     pkg : grunt.file.readJSON('package.json'),
@@ -116,9 +116,9 @@ module.exports = function(grunt) {
                   '404.html', 'robots.txt' ],
           dest : 'rel/'
         }],
-        verbose: true, // Default: false 
-        pretend: false, // Don't do any disk operations - just write log. Default: false 
-        failOnError: true, // Fail the task when copying is not possible. Default: false 
+        verbose: true, // Default: false
+        pretend: false, // Don't do any disk operations - just write log. Default: false
+        failOnError: true, // Fail the task when copying is not possible. Default: false
         updateAndDelete: true
       },
      },
@@ -144,45 +144,6 @@ module.exports = function(grunt) {
       }
     },
 
-    jslint: {
-      all: {
-        src: jsHintList,
-        exclude: [],
-        directives: {
-          indent: 2,
-          // allow browser variables (window...)
-          browser: true,
-          // don't require use strict
-          sloppy: true,
-          // allow TODO comments
-          todo: true,
-          // allow console and alert
-          //devel: true,
-          predef: ['$', 'FileReader']
-        },
-        options: {
-          failOnError: false
-        }
-      },
-      manager: {
-        src: jsManagerSrc,
-        exclude: [],
-        directives: {
-          indent: 2,
-          // allow browser variables (window...)
-          browser: true,
-          // don't require use strict
-          sloppy: true,
-          // allow TODO comments
-          todo: true,
-          predef: ['$', 'FileReader']
-        },
-        options: {
-          failOnError: false
-        }
-      }
-    },
-
    clean: {
       minified: ['js/*.min.js', 'js/*.js.map', 'css/*.min.css']
     }
@@ -201,9 +162,9 @@ module.exports = function(grunt) {
         src : '**',
         dest : 'ftpsite/' + club + '/rg2/'
       }],
-      verbose: true, // Default: false 
-      pretend: false, // Don't do any disk operations - just write log. Default: false 
-      failOnError: true, // Fail the task when copying is not possible. Default: false 
+      verbose: true, // Default: false
+      pretend: false, // Don't do any disk operations - just write log. Default: false
+      failOnError: true, // Fail the task when copying is not possible. Default: false
       ignoreInDest: "rg2-config.php",
       updateAndDelete: true
     });
@@ -217,9 +178,9 @@ module.exports = function(grunt) {
       src : '**',
       dest : 'ftpsite/clok/gadget/rg2/'
     }],
-    verbose: true, // Default: false 
-    pretend: false, // Don't do any disk operations - just write log. Default: false 
-    failOnError: true, // Fail the task when copying is not possible. Default: false 
+    verbose: true, // Default: false
+    pretend: false, // Don't do any disk operations - just write log. Default: false
+    failOnError: true, // Fail the task when copying is not possible. Default: false
     ignoreInDest: "rg2-config.php",
     updateAndDelete: true
   });
@@ -229,9 +190,9 @@ module.exports = function(grunt) {
   // increment minor version number: do anything else by editting package.json by hand
   //grunt.registerTask('bump', ['bumpup']);
 
-  grunt.registerTask('build', ['clean:minified', 'csslint', 'cssmin', 'jslint:all', 'jshint:all', 'jshint:lang', 'uglify', 'build-manager' ]);
+  grunt.registerTask('build', ['clean:minified', 'csslint', 'cssmin', 'jshint:all', 'jshint:lang', 'uglify', 'build-manager' ]);
 
-  grunt.registerTask('build-manager', ['jslint:manager', 'jshint:manager', 'uglify:manager' ]);
+  grunt.registerTask('build-manager', ['jshint:manager', 'uglify:manager' ]);
 
   grunt.registerTask('deploy', ['replace:jsversion', 'replace:phpversion', 'build', 'sync:rel']);
 

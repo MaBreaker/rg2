@@ -84,12 +84,15 @@
     },
 
     // lists all runners on a given course
-    getAllRunnersForCourse : function (courseid) {
+    // withTrack = true means only return runners with a valid track
+    getAllRunnersForCourse : function (courseid, withTrack) {
       var i, runners;
       runners = [];
       for (i = 0; i < this.results.length; i += 1) {
         if (this.results[i].courseid === courseid) {
-          runners.push(i);
+          if (!withTrack || this.results[i].hasValidTrack) {
+            runners.push(i);
+          }
         }
       }
       return runners;
@@ -447,10 +450,14 @@
           if (firstCourse) {
             firstCourse = false;
           } else {
+<<<<<<< HEAD
             if (!res.isLiveEvent) {
               html += this.getBottomRow(tracksForThisCourse, oldCourseID);
             }
             html += "</table></div>";
+=======
+            html += this.getBottomRows(tracksForThisCourse, oldCourseID) + "</table></div>";
+>>>>>>> refs/remotes/Maprunner/master
           }
           tracksForThisCourse = 0;
           html += this.getCourseHeader(res);
@@ -478,6 +485,7 @@
         } else {
           html += "<td></td>";
         }
+<<<<<<< HEAD
         if (!res.isLiveEvent) {
           html += "<td><input class='showreplay showreplay-" + oldCourseID + "' id=" + i + " type=checkbox name=replay></input></td>";
         } else {
@@ -489,6 +497,16 @@
         html += this.getBottomRow(tracksForThisCourse, oldCourseID);
       }
       html += "</table></div></div>";
+=======
+        html += "<td><input class='showreplay";
+        if (res.hasValidTrack) {
+          html += " showtrackreplay";
+        }
+        html += " showreplay-" + oldCourseID + "' id=" + i + " type=checkbox name=replay></input></td>";
+        html += "</tr>";
+      }
+      html += this.getBottomRows(tracksForThisCourse, oldCourseID) + "</table></div></div>";
+>>>>>>> refs/remotes/Maprunner/master
       return html;
     },
 
@@ -506,8 +524,14 @@
     },
 
     getCourseHeader : function (result) {
-      var html;
-      html = "<h3>" + result.coursename + "<input class='showcourse' id=" + result.courseid + " type=checkbox name=course title='Show course'></input></h3><div>";
+      var html, info, text;
+      text = result.coursename;
+      info = rg2.courses.getCourseDetails(result.courseid);
+      // need to protect against some old events with dodgy results
+      if (info) {
+        text += info.length === undefined ? '' : ": " + info.length + ' km';
+      }
+      html = "<h3>" + text + "<input class='showcourse' id=" + result.courseid + " type=checkbox name=course title='Show course'></input></h3><div>";
       // Add the search bar with the id of the course name
       //html += "<div class='input-group margin-bottom-sm'><span class='input-group-addon'><i class='fa fa-search fa-fw'></i></span><input type='text' class='form-control rg2-result-search' id='search-" + result.courseid + "' placeholder='" + rg2.t("Search") + "'></div>";
       // Start the table with an id that relates to the course name to help with the filtering function
@@ -515,15 +539,19 @@
       return html;
     },
 
-    getBottomRow : function (tracks, oldCourseID) {
-      // create bottom row for all tracks checkboxes
+    getBottomRows : function (tracks, oldCourseID) {
+      // create bottom rows for all tracks checkboxes
+      // first row is drawn and GPS routes (if they exist)
       var html;
-      html = "<tr class='allitemsrow'><td></td><td>" + rg2.t("All") + "</td><td></td>";
+      html = "<tr class='allitemsrow'><td></td><td>" + rg2.t("Routes") + "</td><td></td>";
       if (tracks > 0) {
         html += "<td><input class='allcoursetracks' id=" + oldCourseID + " type=checkbox name=track></input></td>";
+        html += "<td><input class='allcoursetracksreplay' id=" + oldCourseID + " type=checkbox name=replay></input></td>";
       } else {
-        html += "<td></td>";
+        html += "<td></td><td></td>";
       }
+      // second row allows replay of non-drawn routes
+      html += "</tr><tr class='allitemsrow'><td></td><td>" + rg2.t("All") + "</td><td></td><td></td>";
       html += "<td><input class='allcoursereplay' id=" + oldCourseID + " type=checkbox name=replay></input></td></tr>";
       return html;
     },
