@@ -63,16 +63,16 @@ var rg2 = (function (window, $) {
     id = rg2.events.getKartatEventID();
     eventinfo = rg2.events.getEventInfo(parseInt(id, 10));
     runnercomments = rg2.results.getComments();
-    stats = "<div><table><thead><tr><th colspan='6'><h2>" + rg2.t("Event statistics") + ": " + eventinfo.name;
+    stats = "<div class='about-stats'><table class='coursemenutable'><thead><tr><th colspan='6'><h2>" + rg2.t("Event statistics") + ": " + eventinfo.name;
     stats += ": " + eventinfo.date + "</h2></th></tr></thead><tbody>";
     stats += getResultsStats(eventinfo.controls);
     if (eventinfo.comment) {
       stats += "<tr><td><strong>" + rg2.t("Comments") + "</strong></td><td colspan='5'>" + eventinfo.comment + "</td></tr>";
     }
     stats += getMapStats(eventinfo.worldfile.valid);
-    stats += "</tbody></table>";
+    stats += "</tbody></table></div>";
     if (runnercomments) {
-      stats += "<div><table><thead><tr><th>"  + rg2.t("Name") + "</th><th>" + rg2.t("Course") + "</th><th>" + rg2.t("Comments") + "</th></tr></thead><tbody>";
+      stats += "<hr><div class='about-stats'><table class='coursemenutable'><thead><tr><th>"  + rg2.t("Name") + "</th><th>" + rg2.t("Course") + "</th><th>" + rg2.t("Comments") + "</th></tr></thead><tbody>";
       stats += runnercomments + "</tbody></table></div>";
     }
     // #177 not pretty but gets round problems of double encoding

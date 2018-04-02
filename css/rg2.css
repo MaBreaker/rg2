@@ -256,10 +256,20 @@ table {
    height: 10px;
    border: 0;
    box-shadow: 0 10px 10px -10px #8c8b8b inset;
+   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;
+   border-radius: 4px;
 }
-
+#rg2-about-dialog .about-stats {
+   border: 1px solid #d3d3d3;
+   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;
+   border-radius: 4px;
+}
 #rg2-about-dialog table {
    width: 100%;
+   border-collapse: separate;
+   border-spacing: 2px;
 }
 
 #rg2-about-dialog thead tr {

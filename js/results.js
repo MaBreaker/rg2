@@ -451,7 +451,7 @@
             firstCourse = false;
           } else {
             if (!res.isLiveEvent) {
-              html += this.getBottomRow(tracksForThisCourse, oldCourseID);
+              html += this.getBottomRows(tracksForThisCourse, oldCourseID);
             }
             html += "</table></div>";
           }
@@ -493,7 +493,7 @@
         html += "</tr>";
       }
       if (!res.isLiveEvent) {
-        html += this.getBottomRow(tracksForThisCourse, oldCourseID);
+        html += this.getBottomRows(tracksForThisCourse, oldCourseID);
       }
       html += "</table></div></div>";
       return html;
