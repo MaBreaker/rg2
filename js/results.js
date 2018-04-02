@@ -450,14 +450,10 @@
           if (firstCourse) {
             firstCourse = false;
           } else {
-<<<<<<< HEAD
             if (!res.isLiveEvent) {
               html += this.getBottomRow(tracksForThisCourse, oldCourseID);
             }
             html += "</table></div>";
-=======
-            html += this.getBottomRows(tracksForThisCourse, oldCourseID) + "</table></div>";
->>>>>>> refs/remotes/Maprunner/master
           }
           tracksForThisCourse = 0;
           html += this.getCourseHeader(res);
@@ -485,9 +481,12 @@
         } else {
           html += "<td></td>";
         }
-<<<<<<< HEAD
         if (!res.isLiveEvent) {
-          html += "<td><input class='showreplay showreplay-" + oldCourseID + "' id=" + i + " type=checkbox name=replay></input></td>";
+          html += "<td><input class='showreplay";
+          if (res.hasValidTrack) {
+            html += " showtrackreplay";
+          }
+          html += " showreplay-" + oldCourseID + "' id=" + i + " type=checkbox name=replay></input></td>";
         } else {
           html += "<td></td>";
         }
@@ -497,16 +496,6 @@
         html += this.getBottomRow(tracksForThisCourse, oldCourseID);
       }
       html += "</table></div></div>";
-=======
-        html += "<td><input class='showreplay";
-        if (res.hasValidTrack) {
-          html += " showtrackreplay";
-        }
-        html += " showreplay-" + oldCourseID + "' id=" + i + " type=checkbox name=replay></input></td>";
-        html += "</tr>";
-      }
-      html += this.getBottomRows(tracksForThisCourse, oldCourseID) + "</table></div></div>";
->>>>>>> refs/remotes/Maprunner/master
       return html;
     },
 
