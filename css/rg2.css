@@ -44,22 +44,22 @@ table {
 }
 
 .rg2-result-search {
-    width: 97%;
-    margin: 3px;
+   width: 97%;
+   margin: 3px;
 }
 
 .rg2-event-search {
-    width: 97%;
-    margin: 3px;
-    font-size: 1em;
+   width: 97%;
+   margin: 3px;
+   font-size: 1em;
 }
 
 .input-group {
-  margin-top: 5px;
+   margin-top: 5px;
 }
 
 .form-control {
-  width: 90%;
+   width: 90%;
 }
 #rg2-course-select, #rg2-name-select {
    width: 99%;
@@ -210,7 +210,9 @@ table {
 }
 #rg2-header-buttons .rg2-button,
 #rg2-header-buttons .rg2-wide-button {
+   background: silver;
    background: rgba(192,192,192,0.5);
+   border-left: 4px solid darkgray;
    border-left: 4px solid rgba(169,169,169,0.5);
 }
 #rg2-header-buttons div:first-of-type {
@@ -253,27 +255,27 @@ table {
 }
 
 #rg2-about-dialog table {
-  width: 100%;
+   width: 100%;
 }
 
 #rg2-about-dialog thead tr {
-  background: #bbb;
+   background: #bbb;
 }
 
 #rg2-about-dialog thead th {
-  text-align: left;
+   text-align: left;
 }
 
 #rg2-about-dialog tbody tr:nth-child(odd) {
-  background: #eee;
+   background: #eee;
 }
 
 #rg2-about-dialog tbody td:first-child {
-  width: 15%;
+   width: 15%;
 }
 
 #rg2-about-dialog tbody td {
-  text-align: left;
+   text-align: left;
 }
 
 .splitstable {
@@ -290,7 +292,7 @@ table {
    white-space: nowrap;
 }
 .splitstable td:nth-of-type(1n+3) {
-    border-left: 1px solid darkgray;
+   border-left: 1px solid darkgray;
 }
 .splitsname-row {
    background-color: #C0C0C0;
@@ -419,10 +421,10 @@ table {
    text-decoration: none;
 }
 .ui-menu .ui-menu-item-wrapper {
-	box-sizing: border-box;
-	padding: 1px .4em;
-	overflow: hidden;
-	white-space: nowrap;
+   box-sizing: border-box;
+   padding: 1px .4em;
+   overflow: hidden;
+   white-space: nowrap;
 }
 #rg2-event-list li:nth-child(odd) {
    background: #eee;
@@ -435,10 +437,10 @@ table {
    border-bottom-left-radius: inherit;
    border-bottom-right-radius: inherit;
 }
-
+/*
 #rg2-event-list li.rg2-active-event a {
-	/* color: white; */
-}
+   color: white;
+} */
 #rg2-event-list .rg2-active-event {
    border: 2px solid black;
    margin: 0 -1px;
@@ -549,10 +551,10 @@ table {
 }
 
 .track-names th {
-  background: rgb(150, 150, 150);
-  background: rgba(150, 150, 150, 0.75);
-  text-align: left;
-  padding: 0 5px;
+   background: rgb(150, 150, 150);
+   background: rgba(150, 150, 150, 0.75);
+   text-align: left;
+   padding: 0 5px;
 }
 
 #rg2-replay-start-control {
@@ -757,7 +759,7 @@ table.coursemenutable tbody tr:nth-child(odd) {
  * see http://api.jqueryui.com/dialog
  */
 .no-close .ui-dialog-titlebar-close {
-display: none;
+   display: none;
 }
 
 /*
@@ -884,19 +886,19 @@ body {
 }
 
 .social-buttons-div {
-  text-align: center;
-  position: relative;
-  padding: 10px;
-  line-height: 12px;
+   text-align: center;
+   position: relative;
+   padding: 10px;
+   line-height: 12px;
 }
 
 .fb-share-button {
-  margin-left: 10%;
+   margin-left: 10%;
 }
 
 .twitter-follow-button {
-  margin-bottom: 18px;
-  margin-right: 5%;
+   margin-bottom: 18px;
+   margin-right: 5%;
 }
 
 #movie-table .deleteroute {
@@ -1033,111 +1035,111 @@ input.rg2-result-search {
 /* FlexBox fallback*/
 
 #rg2-header-container {
-  /* display: inline-block; */
-  height: 92px;
+   /* display: inline-block; */
+   height: 92px;
 }
 #rg2-header-title {
-  z-index: 100;
-  /* display: block; */
-  min-width: 150px;
+   z-index: 100;
+   /* display: block; */
+   min-width: 150px;
 }
 #rg2-resize-info {
-  position: absolute;
-  vertical-align: middle;
-  margin-right: 8px;
-  z-index: 100;
+   position: absolute;
+   vertical-align: middle;
+   margin-right: 8px;
+   z-index: 100;
 }
 #rg2-header {
-  position: absolute;
-  display: inline-block;
-  top: 30px;
-  left: 0;
-  z-index: 90;
+   position: absolute;
+   display: inline-block;
+   top: 30px;
+   left: 0;
+   z-index: 90;
 }
 #rg2-header-club {
-  position: absolute;
-  display: inline-block;
-  top: 0;
-  left: 35px;
-  z-index: 50;
+   position: absolute;
+   display: inline-block;
+   top: 0;
+   left: 35px;
+   z-index: 50;
 
 }
 #rg2-header-buttons {
-  min-width: 310px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 60px;
-  z-index: 90;
+   min-width: 310px;
+   position: absolute;
+   left: 0;
+   right: 0;
+   top: 60px;
+   z-index: 90;
 }
 
 #rg2-hide-info-panel-control a {
-  text-decoration: none;
+   text-decoration: none;
 }
 
 .social-buttons-div {
-  text-align: center;
-  position: relative;
-  padding: 10px;
-  line-height: 12px;
+   text-align: center;
+   position: relative;
+   padding: 10px;
+   line-height: 12px;
 }
 
 .fb-share-button {
-  margin-left: 10%;
+   margin-left: 10%;
 }
 
 .twitter-follow-button {
-  margin-bottom: 18px;
-  margin-right: 5%;
+   margin-bottom: 18px;
+   margin-right: 5%;
 }
 
 @media all and (min-width: 360px) {
-  #rg2-header-container {
-    height: 62px;
-  }
-  #rg2-hide-info-panel-control {
-    visibility: visible;
-  }
-  #rg2-header {
-    position: relative;
-    top: 0;
-    left: 35px;
-    width: 60%;
-    width: calc(70% - 38px);
-    margin-top: -4px;
-  }
-  #rg2-header-club {
-    position: relative;
-    top: 0;
-    left: 35px;
-    width: 30%;
-    margin-top: -4px;
-    text-align: right;
-  }
-  #rg2-header-buttons {
-    top: 30px;
-  }
+   #rg2-header-container {
+      height: 62px;
+   }
+   #rg2-hide-info-panel-control {
+      visibility: visible;
+   }
+   #rg2-header {
+      position: relative;
+      top: 0;
+      left: 35px;
+      width: 60%;
+      width: calc(70% - 38px);
+      margin-top: -4px;
+   }
+   #rg2-header-club {
+      position: relative;
+      top: 0;
+      left: 35px;
+      width: 30%;
+      margin-top: -4px;
+      text-align: right;
+   }
+   #rg2-header-buttons {
+      top: 30px;
+   }
 }
 
 @media all and (min-width: 640px) {
-  #rg2-header-container {
-    height: 30px;
-  }
-  #rg2-header-title {
-    width: 54%;
-    width: calc(100% - 340px);
-  }
+   #rg2-header-container {
+      height: 30px;
+   }
+   #rg2-header-title {
+      width: 54%;
+      width: calc(100% - 340px);
+   }
 /*
-  #rg2-header {
-    width: 50%;
-  }
-  #rg2-header-club {
-    width: 10%;
-  }
+   #rg2-header {
+      width: 50%;
+   }
+   #rg2-header-club {
+      width: 10%;
+   }
 */
-  #rg2-header-buttons {
-    border-top: 0;
-    left: auto;
-    top: 0;
-  }
+   #rg2-header-buttons {
+      border-top: 0;
+      left: auto;
+      top: 0;
+   }
 }

@@ -66,16 +66,26 @@
   }
 
   function applyMapRotation(angle, x, y, moveMap) {
-    var pt;
+    var pt, panelwidth, cx, cy;
     // save new absolute angle
     ctx.displayAngle = (ctx.displayAngle - angle) % (Math.PI * 2);
     // rotate around given co-ordinates
     ctx.translate(x, y);
     ctx.rotate(angle);
     if (moveMap) {
+      // touch x, y
+      if (rg2.input.infoPanelMaximised && window.innerWidth >= rg2.config.SMALL_SCREEN_BREAK_POINT) {
+        panelwidth = $("#rg2-info-panel").outerWidth();
+      } else {
+        panelwidth = 0;
+      }
+      cx = panelwidth + (canvas.width - panelwidth) / 2;
+      cy = (canvas.height * 0.9);
       // move map so that given point is centre-bottom of screen
-      pt = ctx.transformedPoint((canvas.width / 2), (canvas.height * 0.9));
+      pt = ctx.transformedPoint(cx, cy);
       ctx.translate(pt.x - x, pt.y - y);
+      rg2.input.lastX = cx;
+      rg2.input.lastY = cy;
     } else {
       // put map back where it started
       ctx.translate(-1 * x, -1 * y);
@@ -87,10 +97,13 @@
   function rotateMap(direction) {
     // rotate a little bit from UI control input
     // direction is -1 for left and 1 for right
-    var angle;
+    var angle, pt;
     angle = direction * (Math.PI / 36);
     // rotate around centre of map
-    applyMapRotation(angle, (map.width / 2), (map.height / 2), false);
+    //applyMapRotation(angle, (map.width / 2), (map.height / 2), false);
+    // rotate around the last x, y
+    pt = ctx.transformedPoint(rg2.input.lastX, rg2.input.lastY);
+    applyMapRotation(angle, pt.x, pt.y, false);
   }
 
   function alignMap(angle, x, y) {
@@ -109,7 +122,7 @@
       panelwidth = 0;
     }
     widthscale = (canvas.width - panelwidth) / map.width;
-    rg2.input.lastX = canvas.width / 2;
+    rg2.input.lastX = panelwidth + (canvas.width - panelwidth) / 2;
     rg2.input.lastY = canvas.height / 2;
     rg2.input.zoomSize = 1;
     rg2.input.dragStart = null;

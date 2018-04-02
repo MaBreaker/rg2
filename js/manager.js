@@ -191,20 +191,22 @@
       rg2.managerUI.createEventEditDropdown();
       $("#rg2-event-level").change(function () {
         self.eventLevel = $("#rg2-event-level").val();
+/*
         if (self.eventLevel !== 'X') {
-          $("#rg2-select-event-level").addClass('valid');
+          $("#rg2-select-event-level").removeClass('required');
         } else {
-          $("#rg2-select-event-level").removeClass('valid');
+          $("#rg2-select-event-level").addClass('required');
         }
+*/
       });
 
       $("#rg2-map-selected").change(function () {
         self.mapIndex = parseInt($("#rg2-map-selected").val(), 10);
         if (self.mapIndex !== rg2.config.INVALID_MAP_ID) {
-          $("#rg2-manager-map-select").addClass('valid');
+          $("#rg2-manager-map-select").removeClass('required');
           rg2.loadNewMap(rg2Config.maps_url + "/" + self.maps[self.mapIndex].mapfilename);
         } else {
-          $("#rg2-manager-map-select").removeClass('valid');
+          $("#rg2-manager-map-select").addClass('required');
           self.mapLoaded = false;
           self.mapWidth = 0;
           self.mapHeight = 0;
@@ -841,9 +843,9 @@
       this.results = parsedResults.results;
       this.resultCourses = parsedResults.resultCourses;
       if (parsedResults.valid) {
-        $("#rg2-select-results-file").addClass('valid');
+        $("#rg2-select-results-file").removeClass('required');
       } else {
-        $("#rg2-select-results-file").removeClass('valid');
+        $("#rg2-select-results-file").addClass('required');
       }
       rg2.managerUI.displayResultInfo(this.getResultInfoAsHTML());
       this.displayCourseAllocations();
@@ -973,7 +975,7 @@
       // called to load a new map locally
       var size;
       rg2.loadNewMap(event.target.result);
-      $("#rg2-select-map-file").addClass('valid');
+      $("#rg2-select-map-file").removeClass('required');
       this.mapLoaded = true;
       size = rg2.getMapSize();
       this.mapWidth = size.width;
@@ -1045,19 +1047,21 @@
 
     setClub : function () {
       this.club = $("#rg2-club-name").val();
+/*
       if (this.club) {
-        $("#rg2-select-club-name").addClass('valid');
+        $("#rg2-select-club-name").removeClass('required');
       } else {
-        $("#rg2-select-club-name").removeClass('valid');
+        $("#rg2-select-club-name").addClass('required');
       }
+*/
     },
 
     setEventName : function () {
       this.eventName = $("#rg2-event-name").val();
       if (this.eventName) {
-        $("#rg2-select-event-name").addClass('valid');
+        $("#rg2-select-event-name").removeClass('required');
       } else {
-        $("#rg2-select-event-name").removeClass('valid');
+        $("#rg2-select-event-name").addClass('required');
       }
     },
 
@@ -1071,9 +1075,9 @@
     setMapName : function () {
       this.newMap.name = $("#rg2-map-name").val();
       if (this.newMap.name) {
-        $("#rg2-select-map-name").addClass('valid');
+        $("#rg2-select-map-name").removeClass('required');
       } else {
-        $("#rg2-select-map-name").removeClass('valid');
+        $("#rg2-select-map-name").addClass('required');
       }
     },
 
@@ -1084,9 +1088,9 @@
     setDate : function (date) {
       this.eventDate = date;
       if (this.eventDate) {
-        $("#rg2-select-event-date").addClass('valid');
+        $("#rg2-select-event-date").removeClass('required');
       } else {
-        $("#rg2-select-event-date").removeClass('valid');
+        $("#rg2-select-event-date").addClass('required');
       }
     },
 
@@ -1179,6 +1183,9 @@
         code = 'X' + (this.newcontrols.controls.length + 1);
       }
       this.newcontrols.addControl(code, x, y);
+      //MaB fix for lost controls while left mouse dragging
+      this.newcontrols.controls[this.newcontrols.controls.length - 1].oldX = x;
+      this.newcontrols.controls[this.newcontrols.controls.length - 1].oldY = y;
       this.newcontrols.displayAllControls();
       this.drawnCourse.codes.push(code);
       this.drawnCourse.x.push(x);

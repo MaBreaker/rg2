@@ -13,7 +13,7 @@
     input.dragged = false;
     // need to cache this here since IE and FF don't set it for mousemove events
     input.whichButton = evt.which;
-    //console.log ("InputDown " + input.lastX + " " + input.lastY + " " + input.dragStart.x + " " + input.dragStart.y);
+    //console.log("InputDown " + input.lastX + " " + input.lastY + " " + input.dragStart.x + " " + input.dragStart.y);
   }
 
   function handleInputMove() {
@@ -22,7 +22,7 @@
       pt = rg2.ctx.transformedPoint(input.lastX, input.lastY);
       Math.round(pt.x);
       Math.round(pt.y);
-      // console.log ("Mousemove after " + pt.x + ": " + pt.y);
+      //console.log("InputMove after " + pt.x + ": " + pt.y);
       // simple debounce so that very small drags are treated as clicks instead
       if ((Math.abs(pt.x - input.dragStart.x) + Math.abs(pt.y - input.dragStart.y)) > 5) {
         if (rg2.drawing.gpsFileLoaded()) {
@@ -41,7 +41,7 @@
   }
 
   function handleInputUp(evt) {
-    // console.log("Input up " + input.dragged);
+    //console.log("Input up " + input.dragged);
     var active = $("#rg2-info-panel").tabs("option", "active");
     if (!input.dragged) {
       if (active === rg2.config.TAB_CREATE) {

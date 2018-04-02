@@ -356,7 +356,9 @@
             angle = this.angles[control];
           }
           // course angles are based on horizontal as 0: need to reset to north
-          rg2.alignMap(angle  + (Math.PI / 2), this.controlx[control], this.controly[control]);
+          rg2.alignMap(angle + (Math.PI / 2), this.controlx[control], this.controly[control]);
+        } else {
+          rg2.resetMapState();
         }
       }
     },
@@ -432,8 +434,8 @@
       trk.routeData.y = trk.savedBaseY.slice(0);
       trk.handles.undo();
       $("#btn-autofit-gps").button("enable");
-      this.gpstrack.autofitOffset = null;
-      $("#spn-offset").spinner("value", 0).spinner("disable");
+      //this.gpstrack.autofitOffset = null;
+      //$("#spn-offset").spinner("value", 0).spinner("disable");
       $("#btn-undo-gps-adjust").button("disable");
       rg2.redraw(false);
     },
