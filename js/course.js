@@ -93,8 +93,8 @@
             if (this.isLiveCourse) {
               rg2.controls.drawSingleControl(this.x[i], this.y[i], this.codes[i], this.textAngle[i], opt);
             } else {
-              rg2.controls.drawSingleControl(this.x[i], this.y[i], i, this.textAngle[i], opt);
-            }
+            rg2.controls.drawSingleControl(this.x[i], this.y[i], i, this.textAngle[i], opt);
+          }
           }
           rg2.controls.drawFinish(this.x[this.x.length - 1], this.y[this.y.length - 1], "", opt);
         }

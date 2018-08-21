@@ -50,7 +50,7 @@
     EVENT_WITHOUT_RESULTS : 2,
     SCORE_EVENT : 3,
     // version gets set automatically by grunt file during build process
-    RG2VERSION: '1.4.8',
+    RG2VERSION: '1.5',
     TIME_NOT_FOUND : 9999,
     // values for evt.which
     RIGHT_CLICK : 3,
@@ -305,5 +305,5 @@
   rg2.setDictionary = setDictionary;
   rg2.getDictionaryCode = getDictionaryCode;
   rg2.setLanguageOptions = setLanguageOptions;
-  rg2.createLanguageDropdown = createLanguageDropdown;
+  rg2.createLanguageDropdown =  createLanguageDropdown;
 }());

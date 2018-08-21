@@ -357,7 +357,7 @@
             angle = this.angles[control];
           }
           // course angles are based on horizontal as 0: need to reset to north
-          rg2.alignMap(angle + (Math.PI / 2), this.controlx[control], this.controly[control]);
+          rg2.alignMap(angle  + (Math.PI / 2), this.controlx[control], this.controly[control]);
         } else {
           //MaB reset map
           rg2.resetMapState();

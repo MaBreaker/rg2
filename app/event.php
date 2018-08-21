@@ -208,31 +208,31 @@ class event
     {
         $format = $data->format;
         $write["status_msg"] = "";
-        if (($handle = @fopen(KARTAT_DIRECTORY."kisat.txt", "r+")) !== FALSE) {
-          // read to end of file to find last entry
-          $oldid = 0;
-          while (($olddata = fgetcsv($handle, 0, "|")) !== FALSE) {
-            $oldid = intval($olddata[0]);
-          }
-          $newid = $oldid + 1;
+        if (($handle = @fopen(KARTAT_DIRECTORY."kisat.txt", "r+")) !== false) {
+            // read to end of file to find last entry
+            $oldid = 0;
+            while (($olddata = fgetcsv($handle, 0, "|")) !== false) {
+                $oldid = intval($olddata[0]);
+            }
+            $newid = $oldid + 1;
         } else {
-          // create new kisat file
-          $newid = 1;
-          $handle = @fopen(KARTAT_DIRECTORY."kisat.txt", "w+");
+            // create new kisat file
+            $newid = 1;
+            $handle = @fopen(KARTAT_DIRECTORY."kisat.txt", "w+");
         }
-        $name = encode_rg_output($data->name);
-        $club = encode_rg_output($data->club);
-        $comments = tidyNewComments($data->comments);
+        $name = utils::encode_rg_output($data->name);
+        $club = utils::encode_rg_output($data->club);
+        $comments = utils::tidyNewComments($data->comments);
         // Add trailing character to show event is locked
         if ($data->locked) {
-          $comments = $comments.EVENT_LOCKED_INDICATOR;
+            $comments = $comments.EVENT_LOCKED_INDICATOR;
         }
         $newevent = $newid."|".$data->mapid."|".$data->format."|".$name."|".$data->eventdate."|".$club."|".$data->level."|".$comments;
         $newevent .= PHP_EOL;
         $write["newid"] = $newid;
         $status =fwrite($handle, $newevent);
         if (!$status) {
-          $write["status_msg"] = "Save error for kisat. ";
+            $write["status_msg"] = "Save error for kisat. ";
         }
         @fflush($handle);
         @fclose($handle);
@@ -240,244 +240,247 @@ class event
         // create new sarjat file: course names
         $courses = "";
         for ($i = 0; $i < count($data->courses); $i++) {
-          $courses .= $data->courses[$i]->courseid."|".encode_rg_output($data->courses[$i]->name).PHP_EOL;
+            $courses .= $data->courses[$i]->courseid."|".utils::encode_rg_output($data->courses[$i]->name).PHP_EOL;
         }
         file_put_contents(KARTAT_DIRECTORY."sarjat_".$newid.".txt", $courses, FILE_APPEND);
 
         // create new sarjojenkoodit file: course control lists
         for ($i = 0; $i < count($data->courses); $i++) {
-          $controls = $data->courses[$i]->courseid;
-          for ($j = 0; $j < count($data->courses[$i]->codes); $j++) {
+            $controls = $data->courses[$i]->courseid;
+            for ($j = 0; $j < count($data->courses[$i]->codes); $j++) {
                 $controls .= "|".$data->courses[$i]->codes[$j];
-          }
-          $controls .= PHP_EOL;
-          file_put_contents(KARTAT_DIRECTORY."sarjojenkoodit_".$newid.".txt", $controls, FILE_APPEND);
+            }
+            $controls .= PHP_EOL;
+            file_put_contents(KARTAT_DIRECTORY."sarjojenkoodit_".$newid.".txt", $controls, FILE_APPEND);
         }
 
         // create new ratapisteet file: control locations
         if (($format == SCORE_EVENT_FORMAT) && (count($data->results) > 0)) {
-          // score event with results so save variants
-          for ($i = 0; $i < count($data->variants); $i++) {
-            $controls = $data->variants[$i]->id."|";
-            for ($j = 0; $j < count($data->variants[$i]->x); $j++) {
-              $controls .= $data->variants[$i]->x[$j].";-".$data->variants[$i]->y[$j]."N";
+            // score event with results so save variants
+            for ($i = 0; $i < count($data->variants); $i++) {
+                $controls = $data->variants[$i]->id."|";
+                for ($j = 0; $j < count($data->variants[$i]->x); $j++) {
+                    $controls .= $data->variants[$i]->x[$j].";-".$data->variants[$i]->y[$j]."N";
+                }
+                $controls .= PHP_EOL;
+                file_put_contents(KARTAT_DIRECTORY."ratapisteet_".$newid.".txt", $controls, FILE_APPEND);
             }
-            $controls .= PHP_EOL;
-            file_put_contents(KARTAT_DIRECTORY."ratapisteet_".$newid.".txt", $controls, FILE_APPEND);
-          }
         } else {
             // normal event or score event without results so save courses
             for ($i = 0; $i < count($data->courses); $i++) {
-            $controls = $data->courses[$i]->courseid."|";
-            for ($j = 0; $j < count($data->courses[$i]->x); $j++) {
-              $controls .= $data->courses[$i]->x[$j].";-".$data->courses[$i]->y[$j]."N";
+                $controls = $data->courses[$i]->courseid."|";
+                for ($j = 0; $j < count($data->courses[$i]->x); $j++) {
+                    $controls .= $data->courses[$i]->x[$j].";-".$data->courses[$i]->y[$j]."N";
+                }
+                $controls .= PHP_EOL;
+                file_put_contents(KARTAT_DIRECTORY."ratapisteet_".$newid.".txt", $controls, FILE_APPEND);
             }
-            $controls .= PHP_EOL;
-            file_put_contents(KARTAT_DIRECTORY."ratapisteet_".$newid.".txt", $controls, FILE_APPEND);
-          }
         }
 
         // create new hajontakanta file: control sequences for course variants
         // originally for score/relay only, but may be usable for butterflies in future
         if (($format == SCORE_EVENT_FORMAT) && (count($data->results > 0))) {
-          // score event so save variants
-          for ($i = 0; $i < count($data->variants); $i++) {
-            $controls = $data->variants[$i]->id."|".$data->variants[$i]->name."|";
-            // data includes start and finish which we don't want
-            for ($j = 1; $j < (count($data->variants[$i]->codes) - 1); $j++) {
-              if ($j > 1) {
-                $controls .= "_";
-              }
-              $controls .= $data->variants[$i]->codes[$j];
+            // score event so save variants
+            for ($i = 0; $i < count($data->variants); $i++) {
+                $controls = $data->variants[$i]->id."|".$data->variants[$i]->name."|";
+                // data includes start and finish which we don't want
+                for ($j = 1; $j < (count($data->variants[$i]->codes) - 1); $j++) {
+                    if ($j > 1) {
+                        $controls .= "_";
+                    }
+                    $controls .= $data->variants[$i]->codes[$j];
+                }
+                $controls .= PHP_EOL;
+                file_put_contents(KARTAT_DIRECTORY."hajontakanta_".$newid.".txt", $controls, FILE_APPEND);
             }
-            $controls .= PHP_EOL;
-            file_put_contents(KARTAT_DIRECTORY."hajontakanta_".$newid.".txt", $controls, FILE_APPEND);
-          }
         } else {
-          // normal event or score event without results so save courses
-          for ($i = 0; $i < count($data->courses); $i++) {
-            $controls = $data->courses[$i]->courseid."|".$data->courses[$i]->name."|";
-            // data includes start and finish which we don't want
-            for ($j = 1; $j < (count($data->courses[$i]->codes) - 1); $j++) {
-              if ($j > 1) {
-                $controls .= "_";
-              }
-              $controls .= $data->courses[$i]->codes[$j];
+            // normal event or score event without results so save courses
+            for ($i = 0; $i < count($data->courses); $i++) {
+                $controls = $data->courses[$i]->courseid."|".$data->courses[$i]->name."|";
+                // data includes start and finish which we don't want
+                for ($j = 1; $j < (count($data->courses[$i]->codes) - 1); $j++) {
+                    if ($j > 1) {
+                        $controls .= "_";
+                    }
+                    $controls .= $data->courses[$i]->codes[$j];
+                }
+                $controls .= PHP_EOL;
+                file_put_contents(KARTAT_DIRECTORY."hajontakanta_".$newid.".txt", $controls, FILE_APPEND);
             }
-            $controls .= PHP_EOL;
-            file_put_contents(KARTAT_DIRECTORY."hajontakanta_".$newid.".txt", $controls, FILE_APPEND);
-          }
         }
 
         // create new radat file: course drawing: RG2 uses this for score event control locations
         $course = "";
         if (($format == SCORE_EVENT_FORMAT) && (count($data->results > 0))) {
-          // score event: one row per variant
-          for ($i = 0; $i < count($data->variants); $i++) {
-            $a = $data->variants[$i];
-            $finish = count($a->x) - 1;
-            $course .= $a->id."|".$a->courseid."|".encode_rg_output($a->name)."|2;";
-            $course .= $a->x[$finish].";-".$a->y[$finish].";0;0N";
-            // loop from first to last control
-            for ($j = 1; $j < $finish; $j++) {
-              // control circle
-              $course .= "1;".$a->x[$j].";-".$a->y[$j].";0;0N";
-              // line between controls
-              list($x1, $y1, $x2, $y2) = getLineEnds($a->x[$j], $a->y[$j], $a->x[$j-1], $a->y[$j-1]);
-              $course .= "4;".$x1.";-".$y1.";".$x2.";-".$y2."N";
-              // text: just use 20 offset for now: RG1 and RGJS seem happy
-              $course .= "3;".($a->x[$j] + 20).";-".($a->y[$j] + 20).";".$j.";0N";
+            // score event: one row per variant
+            for ($i = 0; $i < count($data->variants); $i++) {
+                $a = $data->variants[$i];
+                $finish = count($a->x) - 1;
+                $course .= $a->id."|".$a->courseid."|".utils::encode_rg_output($a->name)."|2;";
+                $course .= $a->x[$finish].";-".$a->y[$finish].";0;0N";
+                // loop from first to last control
+                for ($j = 1; $j < $finish; $j++) {
+                    // control circle
+                    $course .= "1;".$a->x[$j].";-".$a->y[$j].";0;0N";
+                    // line between controls
+                    list($x1, $y1, $x2, $y2) = utils::getLineEnds($a->x[$j], $a->y[$j], $a->x[$j-1], $a->y[$j-1]);
+                    $course .= "4;".$x1.";-".$y1.";".$x2.";-".$y2."N";
+                    // text: just use 20 offset for now: RG1 and RGJS seem happy
+                    $course .= "3;".($a->x[$j] + 20).";-".($a->y[$j] + 20).";".$j.";0N";
+                }
+                // start triangle
+                $side = 20;
+                $angle = utils::getAngle($a->x[0], $a->y[0], $a->x[1], $a->y[1]);
+                $angle = $angle + (M_PI / 2);
+                $x0 = (int) ($a->x[0] + ($side * sin($angle)));
+                $y0 = (int) ($a->y[0] - ($side * cos($angle)));
+                $x1 = (int) ($a->x[0] + ($side * sin($angle + (2 * M_PI / 3))));
+                $y1 = (int) ($a->y[0] - ($side * cos($angle + (2 * M_PI / 3))));
+                $x2 = (int) ($a->x[0] + ($side * sin($angle - (2 * M_PI / 3))));
+                $y2 = (int) ($a->y[0] - ($side * cos($angle - (2 * M_PI / 3))));
+
+                $course .= "4;".$x0.";-".$y0.";".$x1.";-".$y1."N";
+                $course .= "4;".$x1.";-".$y1.";".$x2.";-".$y2."N";
+                $course .= "4;".$x2.";-".$y2.";".$x0.";-".$y0."N";
+
+                $course .= PHP_EOL;
             }
-            // start triangle
-            $side = 20;
-            $angle = getAngle($a->x[0], $a->y[0], $a->x[1], $a->y[1]);
-            $angle = $angle + (M_PI / 2);
-            $x0 = (int) ($a->x[0] + ($side * sin($angle)));
-            $y0 = (int) ($a->y[0] - ($side * cos($angle)));
-            $x1 = (int) ($a->x[0] + ($side * sin($angle + (2 * M_PI / 3))));
-            $y1 = (int) ($a->y[0] - ($side * cos($angle + (2 * M_PI / 3))));
-            $x2 = (int) ($a->x[0] + ($side * sin($angle - (2 * M_PI / 3))));
-            $y2 = (int) ($a->y[0] - ($side * cos($angle - (2 * M_PI / 3))));
-
-            $course .= "4;".$x0.";-".$y0.";".$x1.";-".$y1."N";
-            $course .= "4;".$x1.";-".$y1.";".$x2.";-".$y2."N";
-            $course .= "4;".$x2.";-".$y2.";".$x0.";-".$y0."N";
-
-            $course .= PHP_EOL;
-          }
         } else {
-          // normal event or score event without results so save courses: one row per course
-          for ($i = 0; $i < count($data->courses); $i++) {
-            $a = $data->courses[$i];
-            $finish = count($a->x) - 1;
-            $course .= $a->courseid."|".$a->courseid."|".encode_rg_output($a->name)."|2;";
-            $course .= $a->x[$finish].";-".$a->y[$finish].";0;0N";
-            // loop from first to last control
-            for ($j = 1; $j < $finish; $j++) {
-              // control circle
-              $course .= "1;".$a->x[$j].";-".$a->y[$j].";0;0N";
-              // line between controls
-              list($x1, $y1, $x2, $y2) = getLineEnds($a->x[$j], $a->y[$j], $a->x[$j-1], $a->y[$j-1]);
-              $course .= "4;".$x1.";-".$y1.";".$x2.";-".$y2."N";
-              // text: just use 20 offset for now: RG1 and RGJS seem happy
-              $course .= "3;".($a->x[$j] + 20).";-".($a->y[$j] + 20).";".$j.";0N";
+            // normal event or score event without results so save courses: one row per course
+            for ($i = 0; $i < count($data->courses); $i++) {
+                $a = $data->courses[$i];
+                $finish = count($a->x) - 1;
+                $course .= $a->courseid."|".$a->courseid."|".utils::encode_rg_output($a->name)."|2;";
+                $course .= $a->x[$finish].";-".$a->y[$finish].";0;0N";
+                // loop from first to last control
+                for ($j = 1; $j < $finish; $j++) {
+                    // control circle
+                    $course .= "1;".$a->x[$j].";-".$a->y[$j].";0;0N";
+                    // line between controls
+                    list($x1, $y1, $x2, $y2) = utils::getLineEnds($a->x[$j], $a->y[$j], $a->x[$j-1], $a->y[$j-1]);
+                    $course .= "4;".$x1.";-".$y1.";".$x2.";-".$y2."N";
+                    // text: just use 20 offset for now: RG1 and RGJS seem happy
+                    $course .= "3;".($a->x[$j] + 20).";-".($a->y[$j] + 20).";".$j.";0N";
+                }
+                // start triangle
+                $side = 20;
+                $angle = utils::getAngle($a->x[0], $a->y[0], $a->x[1], $a->y[1]);
+                $angle = $angle + (M_PI / 2);
+                $x0 = (int) ($a->x[0] + ($side * sin($angle)));
+                $y0 = (int) ($a->y[0] - ($side * cos($angle)));
+                $x1 = (int) ($a->x[0] + ($side * sin($angle + (2 * M_PI / 3))));
+                $y1 = (int) ($a->y[0] - ($side * cos($angle + (2 * M_PI / 3))));
+                $x2 = (int) ($a->x[0] + ($side * sin($angle - (2 * M_PI / 3))));
+                $y2 = (int) ($a->y[0] - ($side * cos($angle - (2 * M_PI / 3))));
+
+                $course .= "4;".$x0.";-".$y0.";".$x1.";-".$y1."N";
+                $course .= "4;".$x1.";-".$y1.";".$x2.";-".$y2."N";
+                $course .= "4;".$x2.";-".$y2.";".$x0.";-".$y0."N";
+
+                $course .= PHP_EOL;
             }
-            // start triangle
-            $side = 20;
-            $angle = getAngle($a->x[0], $a->y[0], $a->x[1], $a->y[1]);
-            $angle = $angle + (M_PI / 2);
-            $x0 = (int) ($a->x[0] + ($side * sin($angle)));
-            $y0 = (int) ($a->y[0] - ($side * cos($angle)));
-            $x1 = (int) ($a->x[0] + ($side * sin($angle + (2 * M_PI / 3))));
-            $y1 = (int) ($a->y[0] - ($side * cos($angle + (2 * M_PI / 3))));
-            $x2 = (int) ($a->x[0] + ($side * sin($angle - (2 * M_PI / 3))));
-            $y2 = (int) ($a->y[0] - ($side * cos($angle - (2 * M_PI / 3))));
-
-            $course .= "4;".$x0.";-".$y0.";".$x1.";-".$y1."N";
-            $course .= "4;".$x1.";-".$y1.";".$x2.";-".$y2."N";
-            $course .= "4;".$x2.";-".$y2.";".$x0.";-".$y0."N";
-
-            $course .= PHP_EOL;
-          }
         }
         file_put_contents(KARTAT_DIRECTORY."radat_".$newid.".txt", $course);
 
         // create new kilpailijat file: results
         for ($i = 0; $i < count($data->results); $i++) {
-          $a = $data->results[$i];
-          // save position and status if we got them
-          if (isset($a->position)) {
-            $position = $a->position;
-          } else {
-            $position = '';
-          }
-          if (isset($a->status)) {
-            $status = abbreviateStatus($a->status);
-          } else {
-            $status = '';
-          }
-          $result = ($i + 1)."|".$a->courseid."|".encode_rg_output($a->course)."|".encode_rg_output(trim($a->name))."|".$a->starttime."|";
-          // abusing dbid to save status and position
-          $result .= encode_rg_output($a->dbid)."_#".$position."#".$status;
-          $result .= "|".$a->variantid."|".$a->time."|".$a->splits.PHP_EOL;
-          file_put_contents(KARTAT_DIRECTORY."kilpailijat_".$newid.".txt", $result, FILE_APPEND);
+            $a = $data->results[$i];
+            // save position and status if we got them
+            if (isset($a->position)) {
+                $position = $a->position;
+            } else {
+                $position = '';
+            }
+            if (isset($a->status)) {
+                $status = utils::abbreviateStatus($a->status);
+            } else {
+                $status = '';
+            }
+            $result = ($i + 1)."|".$a->courseid."|".utils::encode_rg_output($a->course);
+            $result .= "|".utils::encode_rg_output(trim($a->name))."|".$a->starttime."|";
+            // abusing dbid to save status and position
+            $result .= utils::encode_rg_output($a->dbid)."_#".$position."#".$status;
+            $result .= "|".$a->variantid."|".$a->time."|".$a->splits.PHP_EOL;
+            file_put_contents(KARTAT_DIRECTORY."kilpailijat_".$newid.".txt", $result, FILE_APPEND);
         }
 
         if ($write["status_msg"] == "") {
-          $write["ok"] = TRUE;
-          $write["status_msg"] = "Event created.";
+            $write["ok"] = true;
+            $write["status_msg"] = "Event created.";
         } else {
-          $write["ok"] = FALSE;
+            $write["ok"] = false;
         }
-        rg2log("Added new event ");
+        utils::rg2log("Added new event ");
         return $write;
-
-      }
-
-    public static function deleteEvent($eventid) {
-  $write["status_msg"] = "";
-  $updatedfile = array();
-  $oldfile = file(KARTAT_DIRECTORY."kisat.txt");
-  foreach ($oldfile as $row) {
-    $data = explode("|", $row);
-    if ($data[0] != $eventid) {
-      $updatedfile[] = $row;
     }
-  }
-  $status = file_put_contents(KARTAT_DIRECTORY."kisat.txt", $updatedfile);
 
-  if (!$status) {
-    $write["status_msg"] .= " Save error for kisat.";
-  }
-
-  // rename all associated files but don't worry about errors
-  // safer than deleting them since you can always add the event again
-  $files = array("kilpailijat_", "kommentit_", "hajontakanta_", "merkinnat_", "radat_", "ratapisteet_", "sarjat_", "sarjojenkoodit_");
-  foreach ($files as $file) {
-    @rename(KARTAT_DIRECTORY.$file.$eventid.".txt", KARTAT_DIRECTORY."deleted_".$file.$eventid.".txt");
-  }
-
-  if ($write["status_msg"] == "") {
-    $write["ok"] = TRUE;
-    $write["status_msg"] = "Event deleted";
-    rg2log("Event deleted|".$eventid);
-  } else {
-    $write["ok"] = FALSE;
-  }
-
-  return($write);
-}
-
-    public static function getEventName($eventid) {
-  $event_name = "Unknown event";
-  $events = file(KARTAT_DIRECTORY."kisat.txt");
-  foreach ($events as $event) {
-    $data = explode("|", $event);
-    if (intval($data[0]) == $eventid) {
-      $event_name = encode_rg_input($data[3])." on ".$data[4];
-    };
-  }
-  return $event_name;
-}
-
-    public static function isScoreEvent($eventid) {
-  if (($handle = @fopen(KARTAT_DIRECTORY."kisat.txt", "r")) !== FALSE) {
-    while (($data = fgetcsv($handle, 0, "|")) !== FALSE) {
-      if ($data[0] == $eventid) {
-        if ($data[2] == 3) {
-          return TRUE;
-        } else {
-          return FALSE;
+    public static function deleteEvent($eventid)
+    {
+        $write["status_msg"] = "";
+        $updatedfile = array();
+        $oldfile = file(KARTAT_DIRECTORY."kisat.txt");
+        foreach ($oldfile as $row) {
+            $data = explode("|", $row);
+            if ($data[0] != $eventid) {
+                $updatedfile[] = $row;
+            }
         }
-      }
+        $status = file_put_contents(KARTAT_DIRECTORY."kisat.txt", $updatedfile);
+
+        if (!$status) {
+            $write["status_msg"] .= " Save error for kisat.";
+        }
+
+        // rename all associated files but don't worry about errors
+        // safer than deleting them since you can always add the event again
+        $files = array("kilpailijat_", "kommentit_", "hajontakanta_", "merkinnat_", "radat_", "ratapisteet_", "sarjat_", "sarjojenkoodit_");
+        foreach ($files as $file) {
+            @rename(KARTAT_DIRECTORY.$file.$eventid.".txt", KARTAT_DIRECTORY."deleted_".$file.$eventid.".txt");
+        }
+
+        if ($write["status_msg"] == "") {
+            $write["ok"] = true;
+            $write["status_msg"] = "Event deleted";
+            utils::rg2log("Event deleted|".$eventid);
+        } else {
+            $write["ok"] = false;
+        }
+
+        return($write);
     }
-  }
-  return FALSE;
-}
 
-    private static function sortEventsByDate($a, $b) {
-  return strcmp($a["date"], $b["date"]);
-}
+    public static function getEventName($eventid)
+    {
+        $event_name = "Unknown event";
+        $events = file(KARTAT_DIRECTORY."kisat.txt");
+        foreach ($events as $event) {
+            $data = explode("|", $event);
+            if (intval($data[0]) == $eventid) {
+                $event_name = utils::encode_rg_input($data[3])." on ".$data[4];
+            };
+        }
+        return $event_name;
+    }
 
+    public static function isScoreEvent($eventid)
+    {
+        if (($handle = @fopen(KARTAT_DIRECTORY."kisat.txt", "r")) !== false) {
+            while (($data = fgetcsv($handle, 0, "|")) !== false) {
+                if ($data[0] == $eventid) {
+                    if ($data[2] == 3) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static function sortEventsByDate($a, $b)
+    {
+        return strcmp($a["date"], $b["date"]);
+    }
 }
 ?>

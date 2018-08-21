@@ -470,15 +470,15 @@
     incrementAnimationTime : function (fromTimer) {
       // only increment time if we haven't got to the end already
       if (fromTimer) {
-        if (this.realTime) {
-          if (this.animationSecs < this.latestFinishSecs) {
-            this.milliSecs += this.deltas[this.deltaIndex];
-          }
-        } else {
-          if (this.animationSecs < this.slowestTimeSecs) {
-            this.milliSecs += this.deltas[this.deltaIndex];
-          }
+      if (this.realTime) {
+        if (this.animationSecs < this.latestFinishSecs) {
+          this.milliSecs += this.deltas[this.deltaIndex];
         }
+      } else {
+        if (this.animationSecs < this.slowestTimeSecs) {
+          this.milliSecs += this.deltas[this.deltaIndex];
+        }
+      }
       }
       this.animationSecs = parseInt((this.milliSecs / 1000), 10);
       // find earliest time we need to worry about when drawing screen
@@ -501,37 +501,37 @@
       //MaB draw runner dots above trails
       activeRunners = 0;
       if (this.useFullTails || this.tailLength > 0) {
-        for (i = 0; i < this.runners.length; i += 1) {
-          runner = this.runners[i];
-          if (this.realTime) {
-            timeOffset = runner.starttime;
+      for (i = 0; i < this.runners.length; i += 1) {
+        runner = this.runners[i];
+        if (this.realTime) {
+          timeOffset = runner.starttime;
+        } else {
+          if ((this.massStartControl === 0) || (runner.splits.length < this.massStartControl)) {
+            // no offset since we are starting from the start
+            timeOffset = 0;
           } else {
-            if ((this.massStartControl === 0) || (runner.splits.length < this.massStartControl)) {
-              // no offset since we are starting from the start
-              timeOffset = 0;
-            } else {
-              // offset needs to move forward (hence negative) to time at control
-              timeOffset = -1 * runner.splits[this.massStartControl];
-            }
+            // offset needs to move forward (hence negative) to time at control
+            timeOffset = -1 * runner.splits[this.massStartControl];
           }
+        }
           if (runner.x.length > (this.tailStartTimeSecs - timeOffset) && (this.animationSecs - timeOffset) >= 0 && this.tailStartTimeSecs < this.animationSecs) {
             rg2.ctx.beginPath();
-            rg2.ctx.strokeStyle = runner.colour;
-            rg2.ctx.globalAlpha = rg2.options.routeIntensity;
-            rg2.ctx.moveTo(runner.x[this.tailStartTimeSecs - timeOffset], runner.y[this.tailStartTimeSecs - timeOffset]);
+        rg2.ctx.strokeStyle = runner.colour;
+        rg2.ctx.globalAlpha = rg2.options.routeIntensity;
+        rg2.ctx.moveTo(runner.x[this.tailStartTimeSecs - timeOffset], runner.y[this.tailStartTimeSecs - timeOffset]);
             //rg2.ctx.moveTo(runner.x[this.animationSecs - timeOffset], runner.y[this.animationSecs - timeOffset]);
-            // t runs as real time seconds or 0-based seconds depending on this.realTime
-            //runner.x[] is always indexed in 0-based time so needs to be adjusted for starttime offset
-            for (t = this.tailStartTimeSecs; t < this.animationSecs; t += 1) {
+        // t runs as real time seconds or 0-based seconds depending on this.realTime
+        //runner.x[] is always indexed in 0-based time so needs to be adjusted for starttime offset
+        for (t = this.tailStartTimeSecs; t < this.animationSecs; t += 1) {
             //for (t = this.animationSecs; t > this.tailStartTimeSecs; t -= 1) {
-              if ((t > timeOffset) && ((t - timeOffset) < runner.nextStopTime)) {
+          if ((t > timeOffset) && ((t - timeOffset) < runner.nextStopTime)) {
                 if (t - timeOffset < runner.x.length) {
                   if (!this.useFullTails) { activeRunners = 1; }
-                  rg2.ctx.lineTo(runner.x[t - timeOffset], runner.y[t - timeOffset]);
-                }
-              }
+            rg2.ctx.lineTo(runner.x[t - timeOffset], runner.y[t - timeOffset]);
+          }
+        }
             }
-            rg2.ctx.stroke();
+        rg2.ctx.stroke();
           }
         }
       }
@@ -556,14 +556,14 @@
         }
         if (t < runner.x.length) {
           rg2.ctx.beginPath();
-          rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
-          rg2.ctx.strokeStyle = rg2.config.BLACK;
+        rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
+        rg2.ctx.strokeStyle = rg2.config.BLACK;
           rg2.ctx.arc(runner.x[t], runner.y[t], rg2.config.RUNNER_DOT_RADIUS * rg2.options.routeWidth / 4,
             0, 2 * Math.PI, false);
-          rg2.ctx.stroke();
-          rg2.ctx.fillStyle = runner.colour;
-          rg2.ctx.fill();
-          this.displayName(runner, t);
+        rg2.ctx.stroke();
+        rg2.ctx.fillStyle = runner.colour;
+        rg2.ctx.fill();
+        this.displayName(runner, t);
           activeRunners = 1;
         }
       }

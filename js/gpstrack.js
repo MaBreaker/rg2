@@ -89,7 +89,7 @@
         for (j = 0; j < trkpts.length; j += 1) {
           lat = trkpts[j].getAttribute('lat');
           lon = trkpts[j].getAttribute('lon');
-          // getAttribute returns strings
+        // getAttribute returns strings
           if ((lat !== "0") && (lon !== "0")) {
             this.lat.push(lat);
             this.lon.push(lon);
@@ -181,7 +181,7 @@
       this.autofitOffset = offset;
       this.processGPSFile();
       if (this.autoFit === true) {
-        this.autofitTrack();
+      this.autofitTrack();
       } else {
         this.timefitTrack();
       }

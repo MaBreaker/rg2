@@ -1,88 +1,93 @@
 <?php
 class map
 {
-    public static function getMaps() {
-  $output = array();
-  $row = 0;
-  if (($handle = @fopen(KARTAT_DIRECTORY."kartat.txt", "r")) !== FALSE) {
-    while (($data = fgetcsv($handle, 0, "|")) !== FALSE) {
-      $detail = array();
-      if (count($data) > 1) {
-        $detail["mapid"] = intval($data[0]);
-        $detail["name"] = encode_rg_input($data[1]);
-        // defaults to jpg so only need to say if we have something else as well
-        if (file_exists(KARTAT_DIRECTORY.$detail['mapid'].'.gif')) {
-          $detail["mapfilename"] = $detail['mapid'].'.gif';
+    public static function getMaps()
+    {
+        $output = array();
+        $row = 0;
+        if (($handle = @fopen(KARTAT_DIRECTORY."kartat.txt", "r")) !== false) {
+            while (($data = fgetcsv($handle, 0, "|")) !== false) {
+                $detail = array();
+                if (count($data) > 1) {
+                    $detail["mapid"] = intval($data[0]);
+                    $detail["name"] = utils::encode_rg_input($data[1]);
+                    // defaults to jpg so only need to say if we have something else as well
+                    if (file_exists(KARTAT_DIRECTORY.$detail['mapid'].'.gif')) {
+                        $detail["mapfilename"] = $detail['mapid'].'.gif';
+                    }
+                    //MaB added if for club
+                    if ((count($data) > 14) || (count($data) == 3)) {
+                        $detail["club"] = utils::encode_rg_input($data[2]);
+                    }
+                    $detail["georeferenced"] = false;
+                    //MaB "==" -> ">="
+                    if (count($data) >= 14) {
+                        list($A, $B, $C, $D, $E, $F) = self::generateWorldFile($data);
+                        $detail["A"] = $A;
+                        $detail["B"] = $B;
+                        $detail["C"] = $C;
+                        $detail["D"] = $D;
+                        $detail["E"] = $E;
+                        $detail["F"] = $F;
+                        list($localA, $localB, $localC, $localD, $localE, $localF) = self::generateLocalWorldFile($data);
+                        $detail["localA"] = $localA;
+                        $detail["localB"] = $localB;
+                        $detail["localC"] = $localC;
+                        $detail["localD"] = $localD;
+                        $detail["localE"] = $localE;
+                        $detail["localF"] = $localF;
+                        // make sure it worked OK
+                        if (($E != 0) && ($F != 0)) {
+                            $detail["georeferenced"] = true;
+                        }
+                    }
+                    $output[$row] = $detail;
+                    $row++;
+                }
+            }
+            fclose($handle);
         }
-        if ((count($data) > 14) || (count($data) == 3)) {
-          $detail["club"] = encode_rg_input($data[2]);
-        }
-        $detail["georeferenced"] = FALSE;
-        if (count($data) >= 14) {
-          list($A, $B, $C, $D, $E, $F) = generateWorldFile($data);
-          $detail["A"] = $A;
-          $detail["B"] = $B;
-          $detail["C"] = $C;
-          $detail["D"] = $D;
-          $detail["E"] = $E;
-          $detail["F"] = $F;
-          list($localA, $localB, $localC, $localD, $localE, $localF) = generateLocalWorldFile($data);
-          $detail["localA"] = $localA;
-          $detail["localB"] = $localB;
-          $detail["localC"] = $localC;
-          $detail["localD"] = $localD;
-          $detail["localE"] = $localE;
-          $detail["localF"] = $localF;
-          // make sure it worked OK
-          if (($E != 0) && ($F != 0)) {
-            $detail["georeferenced"] = TRUE;
-          }
-        }
-      $output[$row] = $detail;
-      $row++;
-      }
+        return utils::addVersion('maps', $output);
     }
-    fclose($handle);
-    }
-  return addVersion('maps', $output);
-}
 
-    public static function uploadMapFile() {
+    public static function uploadMapFile()
+    {
         $write = array();
-        $write["ok"] = FALSE;
+        $write["ok"] = false;
         $write["status_msg"] = "Map upload failed.";
         $data = new stdClass();
         $data->x = $_POST["x"];
         $data->y = $_POST["y"];
-        if (logIn($data) !== TRUE) {
-          $write["status_msg"] = "Login failed.";
+        //MaB safer compare to true
+        if (user::logIn($data) !== true) {
+            $write["status_msg"] = "Login failed.";
         } else {
-          $filename = $_POST["name"];
-          // PHP changes . and space to _ just for fun
-          $filename = str_replace(".", "_", $filename);
-          $filename = str_replace(" ", "_", $filename);
-          if (is_uploaded_file($_FILES[$filename]['tmp_name'])) {
-            $file = $_FILES[$filename];
-            if ($file['type'] == 'image/jpeg') {
-              if (move_uploaded_file($file['tmp_name'], KARTAT_DIRECTORY.'temp.jpg')) {
-                  $write["ok"] = TRUE;
-                  $write["status_msg"] = "Map uploaded.";
-              }
-            }
-            if ($file['type'] == 'image/gif') {
-              if ($image = imagecreatefromgif($file['tmp_name'])) {
-                if (imagejpeg($image, KARTAT_DIRECTORY.'temp.jpg')) {
-                  if (move_uploaded_file($file['tmp_name'], KARTAT_DIRECTORY.'temp.gif')) {
-                    $write['ok'] = TRUE;
-                    $write['status_msg'] = "Map uploaded.";
-                  }
+            $filename = $_POST["name"];
+            // PHP changes . and space to _ just for fun
+            $filename = str_replace(".", "_", $filename);
+            $filename = str_replace(" ", "_", $filename);
+            if (is_uploaded_file($_FILES[$filename]['tmp_name'])) {
+                $file = $_FILES[$filename];
+                if ($file['type'] == 'image/jpeg') {
+                    if (move_uploaded_file($file['tmp_name'], KARTAT_DIRECTORY.'temp.jpg')) {
+                        $write["ok"] = true;
+                        $write["status_msg"] = "Map uploaded.";
+                    }
                 }
-              }
+                if ($file['type'] == 'image/gif') {
+                    if ($image = imagecreatefromgif($file['tmp_name'])) {
+                        if (imagejpeg($image, KARTAT_DIRECTORY.'temp.jpg')) {
+                            if (move_uploaded_file($file['tmp_name'], KARTAT_DIRECTORY.'temp.gif')) {
+                                $write['ok'] = true;
+                                $write['status_msg'] = "Map uploaded.";
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
 
-        $keksi = generateNewKeksi();
+        $keksi = user::generateNewKeksi();
         $write["keksi"] = $keksi;
 
         header("Content-type: application/json");
@@ -91,105 +96,105 @@ class map
 
     public static function addNewMap($data)
     {
-  $write["status_msg"] = "";
-  if (($handle = @fopen(KARTAT_DIRECTORY."kartat.txt", "r+")) !== FALSE) {
-    // read to end of file to find last entry
-    $oldid = 0;
-    while (($olddata = fgetcsv($handle, 0, "|")) !== FALSE) {
-      if (count($olddata) > 0) {
-        $oldid = intval($olddata[0]);
-      }
-    }
-    $newid = $oldid + 1;
-  } else {
-  // create empty kartat file
-  $newid = 1;
-  $handle = @fopen(KARTAT_DIRECTORY."kartat.txt", "w+");
-  }
-  // may not have a GIF
-  if (file_exists(KARTAT_DIRECTORY."temp.gif")) {
-    $renameGIF = rename(KARTAT_DIRECTORY."temp.gif", KARTAT_DIRECTORY.$newid.".gif");
-  } else {
-    $renameGIF = TRUE;
-  }
-  // always need a JPG for original Routegadget to maintain backward compatibility
-  $renameJPG = rename(KARTAT_DIRECTORY."temp.jpg", KARTAT_DIRECTORY.$newid.".jpg");
+        $write["status_msg"] = "";
+        if (($handle = @fopen(KARTAT_DIRECTORY."kartat.txt", "r+")) !== false) {
+            // read to end of file to find last entry
+            $oldid = 0;
+            while (($olddata = fgetcsv($handle, 0, "|")) !== false) {
+                if (count($olddata) > 0) {
+                    $oldid = intval($olddata[0]);
+                }
+            }
+            $newid = $oldid + 1;
+        } else {
+            // create empty kartat file
+            $newid = 1;
+            $handle = @fopen(KARTAT_DIRECTORY."kartat.txt", "w+");
+        }
+        // may not have a GIF
+        if (file_exists(KARTAT_DIRECTORY."temp.gif")) {
+            $renameGIF = rename(KARTAT_DIRECTORY."temp.gif", KARTAT_DIRECTORY.$newid.".gif");
+        } else {
+            $renameGIF = true;
+        }
+        // always need a JPG for original Routegadget to maintain backward compatibility
+        $renameJPG = rename(KARTAT_DIRECTORY."temp.jpg", KARTAT_DIRECTORY.$newid.".jpg");
 
-  if (($renameJPG && $renameGIF)) {
-    $newmap = $newid."|".encode_rg_output($data->name);
-    $newmap .= "|".encode_rg_output($data->copyright);
-    if ($data->worldfile->valid) {
-      $newmap .= "|".$data->xpx[0]."|".$data->lon[0]."|".$data->ypx[0]."|".$data->lat[0];
-      $newmap .= "|".$data->xpx[1]."|".$data->lon[1]."|".$data->ypx[1]."|".$data->lat[1];
-      $newmap .= "|".$data->xpx[2]."|".$data->lon[2]."|".$data->ypx[2]."|".$data->lat[2];
-    }
-    if ($data->localworldfile->valid) {
-      // save local worldfile for use in aligning georeferenced courses
-      $wf =$data->localworldfile->A.",".$data->localworldfile->B.",".$data->localworldfile->C.",".$data->localworldfile->D.",".$data->localworldfile->E.",".$data->localworldfile->F.PHP_EOL;
-      @file_put_contents(KARTAT_DIRECTORY."worldfile_".$newid.".txt", $wf);
-    }
+        if (($renameJPG && $renameGIF)) {
+            $newmap = $newid."|".utils::encode_rg_output($data->name);
+            if ($data->worldfile->valid) {
+                $newmap .= "|".$data->xpx[0]."|".$data->lon[0]."|".$data->ypx[0]."|".$data->lat[0];
+                $newmap .= "|".$data->xpx[1]."|".$data->lon[1]."|".$data->ypx[1]."|".$data->lat[1];
+                $newmap .= "|".$data->xpx[2]."|".$data->lon[2]."|".$data->ypx[2]."|".$data->lat[2];
+            }
+            if ($data->localworldfile->valid) {
+                // save local worldfile for use in aligning georeferenced courses
+                $wf =$data->localworldfile->A.",".$data->localworldfile->B.",".$data->localworldfile->C.",".$data->localworldfile->D.",".$data->localworldfile->E.",".$data->localworldfile->F.PHP_EOL;
+                @file_put_contents(KARTAT_DIRECTORY."worldfile_".$newid.".txt", $wf);
+            }
 
-    $newmap .= PHP_EOL;
-    $write["newid"] = $newid;
-    $status =fwrite($handle, $newmap);
-    if (!$status) {
-      $write["status_msg"] = "Save error for kartat. ";
+            $newmap .= PHP_EOL;
+            $write["newid"] = $newid;
+            $status =fwrite($handle, $newmap);
+            if (!$status) {
+                $write["status_msg"] = "Save error for kartat. ";
+            }
+        } else {
+            $write["status_msg"] = "Error renaming map file. ";
+        }
+        @fflush($handle);
+        @fclose($handle);
+
+        if ($write["status_msg"] == "") {
+            $write["ok"] = true;
+            $write["status_msg"] = "Map added";
+            utils::rg2log("Map added|".$newid);
+        } else {
+            $write["ok"] = false;
+        }
+
+        return $write;
     }
-  } else {
-      $write["status_msg"] = "Error renaming map file. ";
-  }
-  @fflush($handle);
-  @fclose($handle);
-
-  if ($write["status_msg"] == "") {
-    $write["ok"] = TRUE;
-    $write["status_msg"] = "Map added";
-    rg2log("Map added|".$newid);
-  } else {
-    $write["ok"] = FALSE;
-  }
-
-  return $write;
-}
 
     private static function generateLocalWorldFile($data)
     {
-  // looks for local worldfile
-  $file = KARTAT_DIRECTORY."worldfile_".intval($data[0]).".txt";
-  $temp = array();
-  if (file_exists($file)) {
-    $wf = trim(file_get_contents($file));
-    $temp = explode(",", $wf);
-  }
-  if (count($temp) == 6) {
-    return array($temp[0], $temp[1], $temp[2], $temp[3], $temp[4], $temp[5]);
-  } else {
-    return array(0, 0, 0, 0, 0, 0);
-  }
-}
+        // looks for local worldfile
+        $file = KARTAT_DIRECTORY."worldfile_".intval($data[0]).".txt";
+        $temp = array();
+        if (file_exists($file)) {
+            $wf = trim(file_get_contents($file));
+            $temp = explode(",", $wf);
+        }
+        if (count($temp) == 6) {
+            return array($temp[0], $temp[1], $temp[2], $temp[3], $temp[4], $temp[5]);
+        } else {
+            return array(0, 0, 0, 0, 0, 0);
+        }
+    }
 
     public static function generateWorldFile($data)
     {
-  // takes three georeferenced points in a kartat row and converts to World File format
-  $ix = 2;
-  if (count($data) < 14) {
-    return array(0, 0, 0, 0, 0, 0);
-  } elseif (count($data) > 14) {
-    // original Routegadget copyright is 3th field, so georeferencing starts from 4th
-    $ix = 3;
-  }
-  for ($i = 0; $i < 3; $i++) {
-    $x[$i] = intval($data[$ix + ($i * 4)]);
-    $lon[$i] = floatval($data[$ix + 1 + ($i * 4)]);
-    $y[$i] = intval($data[$ix + 2 + ($i * 4)]);
-    $lat[$i] = floatval($data[$ix + 3 + ($i * 4)]);
-    //rg2log($data[0].", ".$lat[$i].", ".$lon[$i].", ".$x[$i].", ".$y[$i]);
-  }
-  
-  // assumes various things about the three points
-  // works for RG2, may not work for the original, but we can live with that
-  // idealy we would have saved the world file rather than three points
-  if (($x[0]!== 0) || ($y[0] !== 0) || ($y[2] !== 0) || ($x[2] === 0)) {
+        // takes three georeferenced points in a kartat row and converts to World File format
+        //MaB rg1 copyright details
+        $ix = 2;
+        if (count($data) < 14) {
+            return array(0, 0, 0, 0, 0, 0);
+        } elseif (count($data) > 14) {
+            // original Routegadget copyright is 3th field, so georeferencing starts from 4th
+            $ix = 3;
+        }
+        for ($i = 0; $i < 3; $i++) {
+            $x[$i] = intval($data[$ix + ($i * 4)]);
+            $lon[$i] = floatval($data[$ix + 1 + ($i * 4)]);
+            $y[$i] = intval($data[$ix + 2 + ($i * 4)]);
+            $lat[$i] = floatval($data[$ix + 3 + ($i * 4)]);
+            //utils::rg2log($data[0].", ".$lat[$i].", ".$lon[$i].", ".$x[$i].", ".$y[$i]);
+        }
+        // assumes various things about the three points
+        // works for RG2, may not work for the original, but we can live with that
+        // idealy we would have saved the world file rather than three points
+        if (($x[0]!== 0) || ($y[0] !== 0) || ($y[2] !== 0) || ($x[2] === 0)) {
+    //MaB calculations for any coordinate points
     // following worldfile calculation method works only with UTM
     // and because RouteGadget is WGS84 based conversions from WGS84 to UTM and vice versa are made
     // TODO: worldfile coordinate equations for WGS84
@@ -242,7 +247,7 @@ class map
     $ratioX=$negX * cos($angle);
     $ratioY=$negY * sin($angle); // digital image has square pixels
     //$ratioY=$negY * sin($angleY);
-    //rg2log("ratio=$ratio, ratioX=$ratioX, ratioY=$ratioY, angle=$angle");
+    //utils::rg2log("ratio=$ratio, ratioX=$ratioX, ratioY=$ratioY, angle=$angle");
 
     $A=$ratio*$ratioX;
     $D=$ratio*$ratioY;
@@ -256,32 +261,31 @@ class map
     */
     //DEBUG: force test following functionality with correct worldfile values
     //$A = 2.002863; $D=-0.382156; $B=-0.382156; $E=-2.002863; $C = 261953.5; $F = 6707650.5;
-    //rg2log("Compare jukola UTM: 2.002863, -0.382156, -0.382156, -2.002863, 261953.5, 6707650.5");
-    rg2log("worldfile: A=".$A.",D=".$D.",B=".$B.",E=".$E.",C=".$C.",F=".$F);
-    //rg2log("Compare Jukola WGS84: A=3.673335956817E-5,D=-2.2520894097928E-6,B=-4.5633315073021E-6,E=-1.8159430321696E-5,C=22.673252188749,F=60.434724902822");
+    //utils::rg2log("Compare jukola UTM: 2.002863, -0.382156, -0.382156, -2.002863, 261953.5, 6707650.5");
+    utils::rg2log("worldfile: A=".$A.",D=".$D.",B=".$B.",E=".$E.",C=".$C.",F=".$F);
+    //utils::rg2log("Compare Jukola WGS84: A=3.673335956817E-5,D=-2.2520894097928E-6,B=-4.5633315073021E-6,E=-1.8159430321696E-5,C=22.673252188749,F=60.434724902822");
 
     // TODO: check if real C,F coordinate is in southern hemisphere on maps near to equator
-    list($A, $B, $C, $D, $E, $F) = convertABCDEF_UTMtoWGS84($A, $B, $C, $D, $E, $F, $zon[0], $sh[0]);
-  }
-  else {
-    // X = Ax + By + C, Y = Dx + Ey + F
-    // C = X - Ax - By, where x and y are 0
-    $C = $lon[0];
-  // F = Y - Dx - Ey, where X and Y are 0
-    $F = $lat[0];
-    // A = (X - By - C) / x where y = 0
-    $A = ($lon[2] - $C) / $x[2];
-    // B = (X - Ax - C) / y
-    $B = ($lon[1] - ($A * $x[1]) - $C) / $y[1];
-    // D = (Y - Ey - F) / x where y = 0
-    $D = ($lat[2] - $F) / $x[2];
-    // E = (Y - Dx - F) / y
-    $E = ($lat[1] - ($D * $x[1]) -  $F) / $y[1];
-  }
-  
-  //rg2log("ADBECF: A=".exp_to_dec($A).",D=".exp_to_dec($D).",B=".exp_to_dec($B).",E=".exp_to_dec($E).",C=".$C.",F=".$F);
-  return array($A, $B, $C, $D, $E, $F);
-}
+    list($A, $B, $C, $D, $E, $F) = self::convertABCDEF_UTMtoWGS84($A, $B, $C, $D, $E, $F, $zon[0], $sh[0]);
+    } else {
+        // X = Ax + By + C, Y = Dx + Ey + F
+        // C = X - Ax - By, where x and y are 0
+        $C = $lon[0];
+        // F = Y - Dx - Ey, where X and Y are 0
+        $F = $lat[0];
+        // A = (X - By - C) / x where y = 0
+        $A = ($lon[2] - $C) / $x[2];
+        // B = (X - Ax - C) / y
+        $B = ($lon[1] - ($A * $x[1]) - $C) / $y[1];
+        // D = (Y - Ey - F) / x where y = 0
+        $D = ($lat[2] - $F) / $x[2];
+        // E = (Y - Dx - F) / y
+        $E = ($lat[1] - ($D * $x[1]) -  $F) / $y[1];
+    }
+
+    //utils::rg2log("ADBECF: A=".exp_to_dec($A).",D=".exp_to_dec($D).",B=".exp_to_dec($B).",E=".exp_to_dec($E).",C=".$C.",F=".$F);
+        return array($A, $B, $C, $D, $E, $F);
+    }
 
 /**
  * @return distance in metres between two points
@@ -321,13 +325,13 @@ private static function convertLLtoUTM($lat, $lon, $proj=null){
   $lngd = floatval($lon);
 
   if(!is_float($latd) || !is_float($lngd)){
-    rg2log("Non-Numeric Input Value");
+    utils::rg2log("Non-Numeric Input Value");
   }
   if($latd <-90 || $latd > 90){
-    rg2log("Latitude must be between -90 and 90");
+    utils::rg2log("Latitude must be between -90 and 90");
   }
   if($lngd <-180 || $lngd > 180){
-    rg2log("Latitude must be between -180 and 180");
+    utils::rg2log("Latitude must be between -180 and 180");
   }
 
   $phi = $latd*$drad;//Convert latitude to radians
@@ -413,10 +417,10 @@ private static function convertUTMtoLL($north, $east, $zone=null, $southern_hemi
   $esq = (1 - ($b/$a)*($b/$a));//e squared for use in expansions
   $e0sq = $e*$e/(1-$e*$e);// e0 squared - always even powers
   $x = floatval($east);
-  if ($x<160000 || $x>840000){rg2log("Outside permissible range of easting values\nResults may be unreliable\nUse with caution");} 
+  if ($x<160000 || $x>840000){utils::rg2log("Outside permissible range of easting values\nResults may be unreliable\nUse with caution");} 
   $y = floatval($north);
-  if ($y<0){rg2log("Negative values not allowed\nResults may be unreliable\nUse with caution");}
-  if ($y>10000000){rg2log("Northing may not exceed 10,000,000\nResults may be unreliable\nUse with caution");}
+  if ($y<0){utils::rg2log("Negative values not allowed\nResults may be unreliable\nUse with caution");}
+  if ($y>10000000){utils::rg2log("Northing may not exceed 10,000,000\nResults may be unreliable\nUse with caution");}
   $e1 = (1 - sqrt(1 - $e*$e))/(1 + sqrt(1 - $e*$e));//Called e1 in USGS PP 1395 also
   $M0 = 0;//In case origin other than zero lat - not needed for standard UTM
   $M = $M0 + $y/$k0;//Arc length along standard meridian. 
@@ -448,7 +452,7 @@ private static function convertUTMtoLL($north, $east, $zone=null, $southern_hemi
   $zcm = 3 + 6*($utmz-1) - 180;//Central meridian of zone
   $lngd = round($zcm+$lngd,6);
 
-  //rg2log("y=$north x=$east -> lat=$latd lon=$lngd");
+  //utils::rg2log("y=$north x=$east -> lat=$latd lon=$lngd");
 
   //Output Latitude / Longitude
   return array($latd, $lngd);
@@ -483,7 +487,7 @@ private static function convertABCDEF_UTMtoWGS84($inA, $inB, $inC, $inD, $inE, $
   for ($i = 0; $i < 4; $i++) {
     $ptx = $xsrc[$i];
     $pty = $ysrc[$i];
-    list($piy[$i], $pix[$i]) = convertUTMtoLL($pty, $ptx, $zone, $southern_hemisphere);
+    list($piy[$i], $pix[$i]) = self::convertUTMtoLL($pty, $ptx, $zone, $southern_hemisphere);
   }
   // now need to create the worldfile for WGS84 to map image
   $wfC = $pix[0];

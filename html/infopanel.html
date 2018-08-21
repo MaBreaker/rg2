@@ -2,7 +2,7 @@
   <div id="rg2-info-panel-tab-headers">
   <ul>
     <li id="rg2-events-tab">
-      <a href="#rg2-event-tab-body">Events</a>
+    <a href="#rg2-event-tab-body">Events</a>
     </li>
     <li id="rg2-courses-tab">
       <a href="#rg2-course-list">Courses</a>
@@ -27,7 +27,7 @@
       <a href="#rg2-manage-map">Add map</a>
     </li>
     <?php } ?>
-   </ul>
+  </ul>
   </div>
   <div id="rg2-info-panel-tab-body">
   <div id="rg2-event-tab-body">
@@ -60,51 +60,51 @@
   <div id="rg2-draw">
     <h3 class="no-top-margin" id='rg2-draw-title'>Draw route</h3>
     <div>
-      <div id="rg2-select-course">
-        <label for='rg2-course-select'>Select course: </label>
+    <div id="rg2-select-course">
+      <label for='rg2-course-select'>Select course: </label>
         <select id="rg2-course-select"></select>
-      </div>
+    </div>
       <div class="singlerow" id="rg2-select-name">
-        <label for='rg2-name-select'>Select name: </label>
+      <label for='rg2-name-select'>Select name: </label>
         <select id="rg2-name-select"></select>
-      </div>
+    </div>
       <div class="singlerow" id="rg2-enter-name">
-        <div>
-          <label for='rg2-name'>Enter name: </label>
-          <span id = "rg2-name"><input id="rg2-name-entry" class="pushright" type="text"></span>
-        </div>
-        <div>
-          <label for='rg2-time'>Enter time (mm:ss): </label>
-          <span id = "rg2-time"><input  id="rg2-time-entry" class="pushright" type="text"></span>
-        </div>
+      <div>
+        <label for='rg2-name'>Enter name: </label>
+        <span id = "rg2-name"><input id="rg2-name-entry" class="pushright" type="text"></span>
       </div>
+      <div>
+        <label for='rg2-time'>Enter time (mm:ss): </label>
+        <span id = "rg2-time"><input  id="rg2-time-entry" class="pushright" type="text"></span>
+      </div>
+    </div>
       <div class="singlerow" id="rg2-enter-comment">
-        <textarea id="rg2-new-comments"></textarea>
-      </div>
+      <textarea id="rg2-new-comments"></textarea>
+    </div>
       <div class="singlerow">
-        <input type=checkbox id="btn-align-map"><label for="btn-align-map">Align map to next control</label>
-      </div>
-      <div class="singlerow">
+      <input type=checkbox id="btn-align-map"><label for="btn-align-map">Align map to next control</label>
+    </div>
+    <div class="singlerow">
         <button id="btn-three-seconds">+3 sec</button>
         <button id="btn-undo">Undo</button>
         <button id="btn-reset-drawing">Reset</button>
         <button id="btn-save-route">Save</button>
-      </div>
+    </div>
     </div>
     <!-- <hr class="rg2-hr"> -->
     <h3 id='rg2-load-gps-title'>Load GPS file (GPX or TCX)</h3>
     <div>
-      <div id="rg2-select-gps-file">
+    <div id="rg2-select-gps-file">
         <input type='file' accept='.gpx, .tcx' id='rg2-load-gps-file' class="pushright manage-file-input">
-      </div>
-      <div class="singlerow">
+    </div>
+    <div class="singlerow">
         <button id="btn-autofit-gps">Autofit</button>
         <div id="rg2-offset-spinner">
           <input id="spn-offset" /><label for="spn-offset">+/- s</label>
-        </div>
+      </div>
         <button id="btn-undo-gps-adjust">Undo</button>
         <button id="btn-save-gps-route">Save GPS</button>
-      </div>
+    </div>
     </div>
     <!-- <hr class="rg2-hr"> -->
     <h3 id="rg2-draw-options">Options</h3>

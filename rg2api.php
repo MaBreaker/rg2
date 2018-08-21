@@ -42,7 +42,7 @@
   define('SCORE_EVENT_FORMAT', 3);
   // added to end of event comments to show event is read-only
   define('EVENT_LOCKED_INDICATOR', '_');
-  
+
   // Version
   if ( isset($_GET['act']) && $_GET['act'] == 'version' )
   {
