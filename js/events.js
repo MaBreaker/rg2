@@ -19,6 +19,7 @@
 
     getEventInfo : function (kartatid) {
       var realid, info;
+      //MaB live event
       if (kartatid === undefined || kartatid === null) { kartatid = this.getKartatEventID(); }
       realid = this.getEventIDForKartatID(kartatid);
       info = this.events[realid];
@@ -88,6 +89,7 @@
       return (this.events[this.activeEventID].format === rg2.config.SCORE_EVENT);
     },
 
+    //MaB live event
     isLiveEvent : function () {
       if (this.activeEventID !== null) {
         return (this.events[this.activeEventID].kartatid === 0);
@@ -154,6 +156,7 @@
         if (this.events[i].comment !== "") {
           title += ": " + this.events[i].comment;
         }
+        //MaB fixed divs and nbsp
         html += '<li title="' + title + '" id=event-' + i + "><div><a href='#" + this.events[i].kartatid + "'>";
         if (this.events[i].comment !== "") {
           html += "<i class='fa fa-info-circle event-info-icon' id='info-" + i + "'>&nbsp;</i>";

@@ -252,10 +252,10 @@
     toggleAnimation : function () {
       if (this.timer === null) {
         this.startAnimation();
-        $("#btn-start-stop").removeClass("fa-play").addClass("fa-pause").prop("title", rg2.t("Pause"));
+        //MaB move toggle $("#btn-start-stop").removeClass("fa-play").addClass("fa-pause").prop("title", rg2.t("Pause"));
       } else {
         this.stopAnimation();
-        $("#btn-start-stop").removeClass("fa-pause").addClass("fa-play").prop("title", rg2.t("Run"));
+        //MaB move toggle $("#btn-start-stop").removeClass("fa-pause").addClass("fa-play").prop("title", rg2.t("Run"));
       }
     },
 
@@ -263,8 +263,11 @@
       if (this.timer === null) {
         this.timer = setInterval(this.timerExpired.bind(this), this.timerInterval);
       }
+      //MaB toggle
+      $("#btn-start-stop").removeClass("fa-play").addClass("fa-pause").prop("title", rg2.t("Pause"));
     },
 
+    //MaB reset
     calculateAnimationRange : function (reset) {
       // in theory start time will be less than 24:00
       // TODO: races over midnight: a few other things to sort out before we get to that
@@ -281,7 +284,7 @@
         if (this.runners[i].starttime < this.earliestStartSecs) {
           this.earliestStartSecs = this.runners[i].starttime;
         }
-
+        //MaB offset calculations
         if (this.realTime) {
           timeOffset = this.runners[i].starttime;
         } else {
@@ -300,6 +303,7 @@
           this.slowestTimeSecs = this.runners[i].x.length + tail + timeOffset;
         }
       }
+      //MaB reset
       if (reset) {
         this.resetAnimationTime(0);
       } else {
@@ -310,6 +314,8 @@
     stopAnimation : function () {
       clearInterval(this.timer);
       this.timer = null;
+      //MaB toggle
+      $("#btn-start-stop").removeClass("fa-pause").addClass("fa-play").prop("title", rg2.t("Run"));
     },
 
     // extra function level in for test purposes
@@ -324,12 +330,14 @@
       } else {
         this.useFullTails = false;
       }
+      //MaB recalculate animation range
       this.calculateAnimationRange(false);
       rg2.redraw(false);
     },
 
     setTailLength : function (minutes) {
       this.tailLength = 60 * minutes;
+      //MaB recalculate animation range
       this.calculateAnimationRange(false);
       rg2.redraw(false);
     },
@@ -350,6 +358,7 @@
           this.runners[i].nextStopTime = rg2.config.VERY_HIGH_TIME_IN_SECS;
         }
       }
+      //MaB recalc animation range
       //this.resetAnimationTime(0);
       this.calculateAnimationRange(true);
       rg2.redraw(false);
@@ -399,6 +408,7 @@
       $("#rg2-clock-slider").slider("value", this.animationSecs);
       $("#rg2-clock").text(rg2.utils.formatSecsAsHHMMSS(this.animationSecs));
     },
+    //MaB slider
     updateSlider : function () {
       if (this.realTime) {
         $("#rg2-clock-slider").slider("option", "max", this.latestFinishSecs);
@@ -436,6 +446,7 @@
           rg2.ctx.font = rg2.options.replayFontSize + 'pt Arial';
           rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
           rg2.ctx.textAlign = "left";
+          //MaB text align
           rg2.ctx.textBaseline = "middle";
           if (this.displayInitials) {
             text = runner.initials;
@@ -448,12 +459,14 @@
           // rotate map so that text stays horizontal
           rg2.ctx.rotate(rg2.ctx.displayAngle);
           // no real science: offsets just look OK
+          //MaB runner dot size
           rg2.ctx.fillText(text, Math.round(2 + (rg2.config.RUNNER_DOT_RADIUS * rg2.options.routeWidth / 4) + rg2.options.routeWidth), 1); //rg2.ctx.fillText(text, 12, 6);
           rg2.ctx.restore();
         }
       }
     },
 
+    //MaB timer
     incrementAnimationTime : function (fromTimer) {
       // only increment time if we haven't got to the end already
       if (fromTimer) {
@@ -485,6 +498,7 @@
       rg2.ctx.lineJoin = "round";
       rg2.ctx.lineWidth = rg2.options.routeWidth;
       //rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
+      //MaB draw runner dots above trails
       activeRunners = 0;
       if (this.useFullTails || this.tailLength > 0) {
         for (i = 0; i < this.runners.length; i += 1) {
@@ -554,6 +568,7 @@
         }
       }
       this.updateNameDetails(t);
+      //MaB animation ended
       if (this.timer !== null && activeRunners === 0) {
         //this.resetAnimation();
         //this.toggleAnimation();

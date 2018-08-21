@@ -9,6 +9,7 @@
     this.x = data.xpos;
     this.y = data.ypos;
     this.isScoreCourse = isScoreCourse;
+    //MaB live course
     this.isLiveCourse = isLiveCourse;
     this.resultcount = 0;
     // save angle to next control to simplify later calculations
@@ -36,7 +37,11 @@
       for (i = 1; i < this.x.length; i += 1) {
         length += rg2.utils.getDistanceBetweenPoints(this.x[i], this.y[i], this.x[i - 1], this.y[i - 1]);
       }
-      return (length * metresPerPixel / 1000).toFixed(1);
+      if (length === 0) {
+        return undefined;
+      } else {
+        return (length * metresPerPixel / 1000).toFixed(1);
+      }
     },
 
     setAngles : function () {

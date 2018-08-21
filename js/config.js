@@ -97,7 +97,7 @@
   // translation function
   function t(str) {
     if (dictionary.hasOwnProperty(str)) {
-      // hack to get decoded html entities
+      //MaB hack to get decoded html entities
       return $('<div/>').html(dictionary[str]).text();
     }
     return $('<div/>').html(str).text();
@@ -196,10 +196,10 @@
     dictionary.code = 'en';
     if (rg2Config.start_language !== "en") {
       rg2.getNewLanguage(rg2Config.start_language);
-      // set for DropDown menu selection because language js file executed by getNewLanguage has not completed yet and therefore dictionary code is not correct here
+      //MaB set for DropDown menu selection because language js file executed by getNewLanguage has not completed yet and therefore dictionary code is not correct here
       dictionary.code = rg2Config.start_language;
     }
-    // set available languages and set start language if requested
+    //MaB set available languages and set start language if requested
     rg2.createLanguageDropdown(rg2.config.languages);
   }
 

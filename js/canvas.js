@@ -18,6 +18,7 @@
       ctx.font = '30pt Arial';
       ctx.textAlign = 'center';
       ctx.fillStyle = rg2.config.BLACK;
+      //MaB text alignment 
       //ctx.fillText(rg2.t("Select an event"), rg2.canvas.width / 2, rg2.canvas.height / 2);
       ctx.fillText(rg2.t("Select an event"), 0, 0);
     }
@@ -56,6 +57,7 @@
           rg2.courses.drawCourses(rg2.config.DIM);
           rg2.results.drawTracks();
           rg2.controls.drawControls(false);
+          //MaB pass timer
           rg2.animation.incrementAnimationTime(fromTimer);
           rg2.animation.drawAnimation();
         }
@@ -73,7 +75,7 @@
     ctx.translate(x, y);
     ctx.rotate(angle);
     if (moveMap) {
-      // touch x, y
+      //MaB mobile screens touch x, y
       if (rg2.input.infoPanelMaximised && window.innerWidth >= rg2.config.SMALL_SCREEN_BREAK_POINT) {
         panelwidth = $("#rg2-info-panel").outerWidth();
       } else {
@@ -100,6 +102,7 @@
     var angle, pt;
     angle = direction * (Math.PI / 36);
     // rotate around centre of map
+    //MaB rotation point
     //applyMapRotation(angle, (map.width / 2), (map.height / 2), false);
     // rotate around the last x, y
     pt = ctx.transformedPoint(rg2.input.lastX, rg2.input.lastY);
@@ -116,6 +119,7 @@
     // place map in centre of canvas and scale it down to fit
     var mapscale, heightscale, widthscale, panelwidth;
     heightscale = canvas.height / map.height;
+    //MaB mobile screens
     if (rg2.input.infoPanelMaximised && window.innerWidth >= rg2.config.SMALL_SCREEN_BREAK_POINT) {
       panelwidth = $("#rg2-info-panel").outerWidth();
     } else {
@@ -266,6 +270,7 @@
   function resizeCanvas() {
     rg2.input.scaleFactor = rg2.config.DEFAULT_SCALE_FACTOR;
 
+    //MaB calculate title bar for mobile screens
     //TODO use flexbox and get a rid of these
     var y_pos, y_box;
     y_pos = $("#rg2-header-container").height() + 4;

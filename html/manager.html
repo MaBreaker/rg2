@@ -2,11 +2,11 @@
   <form id="rg2-manager-login-form">
     <div class="manage-edit-div">
       <label for="rg2-user-name">User name:</label>
-      <input class="pushright manage-input" id="rg2-user-name" type="text" autofocus>
+      <input class="pushright manage-input" autocomplete="name" id="rg2-user-name" type="text" autofocus>
     </div>
     <div class="manage-edit-div">
       <label for="rg2-password">Password:</label>
-      <input class="pushright manage-input" id="rg2-password" type="password">
+      <input class="pushright manage-input" autocomplete="current-password" id="rg2-password" type="password">
     </div>
     <div class="singlerow">
       <button id="btn-login">Log in</button>
@@ -37,6 +37,16 @@
         <span>Read-only (enable drawing via "Edit event" tab) <input type="checkbox" id="chk-read-only" class="manage-checkbox"></span>
       </div>
     </div>
+    <h3 class="no-top-margin">Results</h3>
+    <div>
+      <div id="rg2-select-results-file" class="manage-file-input-div">
+        <span>Results file <input type='file' accept='.csv, .xml' id='rg2-load-results-file' class="pushright manage-file-input" /></span>
+      </div>
+      <div class="manage-checkbox-div singlerow">
+        <span>No results file <input type="checkbox" id="btn-no-results" class="manage-checkbox"></span>
+        <span title="Only select if the results file is not already properly sorted.">Sort results file <input type="checkbox" id="btn-sort-results" class="manage-checkbox"></span>
+      </div>
+    </div>
     <h3 class="no-top-margin">Courses</h3>
     <div>
       <div id="rg2-select-course-file" class="manage-file-input-div">
@@ -48,16 +58,6 @@
       <button type="button" id="btn-draw-courses">Draw course</button>
       <div id="rg2-draw-courses">
         <span>Name:<input class="pushright manage-input" id="rg2-new-course-name" type="text"></span>
-      </div>
-    </div>
-    <h3 class="no-top-margin">Results</h3>
-    <div>
-      <div id="rg2-select-results-file" class="manage-file-input-div">
-        <span>Results file <input type='file' accept='.csv, .xml' id='rg2-load-results-file' class="pushright manage-file-input" /></span>
-      </div>
-      <div class="manage-checkbox-div singlerow">
-        <span>No results file <input type="checkbox" id="btn-no-results" class="manage-checkbox"></span>
-        <span title="Only select if the results file is not already properly sorted.">Sort results file <input type="checkbox" id="btn-sort-results" class="manage-checkbox"></span>
       </div>
     </div>
     <h3 id="rg2-draw-options">Options</h3>

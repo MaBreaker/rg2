@@ -16,6 +16,7 @@
     this.routeData = new rg2.RouteData();
     this.xml = "";
     this.autofitOffset = null;
+    //MaB auto fitting
     this.autoFit = false;
   }
 
@@ -268,6 +269,7 @@
       rg2.redraw(false);
     },
 
+    //MaB fitting GPS route
     timefitTrack : function () {
       // timeshift GPS track by adding visible start and end controls
       var split;

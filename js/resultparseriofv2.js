@@ -87,21 +87,27 @@
     },
 
     extractIOFV2Results : function (resultlist, result) {
-      var i, finishtime, splitlist;
+      var i, starttime, finishtime, splitlist;
       for (i = 0; i < resultlist.length; i += 1) {
         result.status = rg2.utils.extractAttributeZero(resultlist[i].getElementsByTagName('CompetitorStatus'), "value", "");
         result.position = this.getPosition(resultlist[i].getElementsByTagName('ResultPosition'));
         result.chipid = rg2.utils.extractTextContentZero(resultlist[i].getElementsByTagName('CCardId'), 0);
         // assuming first <Time> is the total time...
         result.time = this.getTime(resultlist[i].getElementsByTagName('Time'));
-        result.starttime = this.getStartFinishTimeAsSecs(resultlist[i].getElementsByTagName('StartTime'));
+        // negative times from EResult Lite messed up SplitsBrowser
+        starttime = this.getStartFinishTimeAsSecs(resultlist[i].getElementsByTagName('StartTime'));
+        if (starttime >= 0) {
+          result.starttime = starttime;
+        } else {
+          result.starttime = 0;
+        }
         result.splits = "";
         result.codes = [];
         splitlist = resultlist[i].getElementsByTagName('SplitTime');
         result.controls = splitlist.length;
         this.extractIOFV2Splits(splitlist, result);
         finishtime = this.getStartFinishTimeAsSecs(resultlist[i].getElementsByTagName('FinishTime'));
-        result.splits += Math.max(finishtime - result.starttime, 0);
+        result.splits += Math.max(finishtime - starttime, 0);
       }
     },
 

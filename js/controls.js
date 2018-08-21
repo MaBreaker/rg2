@@ -57,6 +57,7 @@
       var scale, metrics, xoffset, yoffset;
       //Draw the white halo around the controls
       rg2.ctx.beginPath();
+      //MaB round brush
       rg2.ctx.lineCap = "round";
       rg2.ctx.lineJoin = "miter";
       rg2.ctx.strokeStyle = "white";
@@ -101,6 +102,7 @@
 
     drawFinish : function (x, y, code, opt) {
       //Draw the white halo around the finish control
+      //MaB round brush
       rg2.ctx.lineCap = "round";
       rg2.ctx.lineJoin = "miter";
       rg2.ctx.strokeStyle = "white";
@@ -139,7 +141,8 @@
       y = [];
       DEGREES_120 = (2 * Math.PI / 3);
       angle = angle + (Math.PI / 2);
-      rg2.ctx.lineCap = "round";
+      rg2.ctx.lineCap = 'round';
+      //MaB round brush
       rg2.ctx.lineJoin = "round"; //miter
       rg2.ctx.strokeStyle = "white";
       rg2.ctx.lineWidth = opt.overprintWidth + 2;
