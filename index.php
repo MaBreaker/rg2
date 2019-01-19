@@ -62,6 +62,13 @@ if (isset($_GET['manage'])) {
     $manager=  false;
 }
 
+// include debug function as parameter for now until we decide the best way forward
+if (isset($_GET['debug']) || $override) {
+  $debug = TRUE;
+} else {
+  $debug = FALSE;
+}
+
 // include language file if requested
 if (isset($_GET['lang'])) {
     $lang = $_GET['lang'];

@@ -50,7 +50,7 @@ class event
         $maps = array();
         if (($handle = @fopen(KARTAT_DIRECTORY."kartat.txt", "r")) !== false) {
             while (($data = fgetcsv($handle, 0, "|")) !== false) {
-                if (count($data) == 14) {
+                if (count($data) >= 14) {
                     list($A, $B, $C, $D, $E, $F) = map::generateWorldFile($data);
                     // make sure it worked OK
                     if (($E != 0) && ($F != 0)) {

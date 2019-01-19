@@ -122,6 +122,8 @@ class map
 
         if (($renameJPG && $renameGIF)) {
             $newmap = $newid."|".utils::encode_rg_output($data->name);
+            //MaB copyright
+            $newmap .= "|".utils::encode_rg_output($data->copyright);
             if ($data->worldfile->valid) {
                 $newmap .= "|".$data->xpx[0]."|".$data->lon[0]."|".$data->ypx[0]."|".$data->lat[0];
                 $newmap .= "|".$data->xpx[1]."|".$data->lon[1]."|".$data->ypx[1]."|".$data->lat[1];
@@ -203,9 +205,9 @@ class map
     for ($i = 0; $i < 3; $i++) {
       //rg2log("LL".$i." : ".$lat[$i].", ".$lon[$i].", ".$x[$i].", ".$y[$i]);
       if (defined('EPSG_DEFAULT')) {
-        list($n[$i],$e[$i],$zon[$i],$sh[$i]) = convertLLtoUTM($lat[$i], $lon[$i], EPSG_DEFAULT);
+        list($n[$i],$e[$i],$zon[$i],$sh[$i]) = self::convertLLtoUTM($lat[$i], $lon[$i], EPSG_DEFAULT);
       } else {
-        list($n[$i],$e[$i],$zon[$i],$sh[$i]) = convertLLtoUTM($lat[$i], $lon[$i]);
+        list($n[$i],$e[$i],$zon[$i],$sh[$i]) = self::convertLLtoUTM($lat[$i], $lon[$i]);
       }
       //rg2log("UTM".$i.": ".$n[$i].", ".$e[$i].", ".$zon[$i].", ".($bool_val ? 'true' : 'false'));
     }

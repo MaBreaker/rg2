@@ -369,7 +369,7 @@ class route
         foreach ($xy as $point) {
             //MaB replace commas
             $tstr = str_replace(',', ';', $point);
-            $temp = explode(";", $point);
+            $temp = explode(";", $tstr, 3);
             //MaB "==" -> ">="
             if (count($temp) >= 2) {
                 // strip off trailing ,0 if it exists

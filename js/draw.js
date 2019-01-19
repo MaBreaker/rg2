@@ -186,7 +186,7 @@
       }
       rg2.results.createNameDropdown(courseid);
       $("#rg2-name-select").prop('disabled', false);
-      //MaB reste controls
+      //MaB reset controls
       //TODO clear GPS selections
       $("#rg2-load-gps-file").val('').button("disable");
       $("#btn-autofit-gps").button("disable");
@@ -517,6 +517,10 @@
       */
       splitTime = this.gpstrack.routeData.splits[this.gpstrack.routeData.splits.length - 1];
       routeLength = this.gpstrack.routeData.x.length;
+      if (splitTime == 0) {
+        //MaB show full GPS route for disqualified and non competing results
+        splitTime = Math.min(routeLength, rg2.config.TIME_NOT_FOUND);
+      }
       //l = Math.min(splitTime, routeLength - 1);  // -1 for index to time conversion
       //for (i = 0; i < routeLength; i += 1) {
       i = 0;
@@ -768,7 +772,7 @@
       // scale and rotate track around single locked point
       scale = rg2.utils.getDistanceBetweenPoints(p2.x, p2.y, p3.x, p3.y) / rg2.utils.getDistanceBetweenPoints(p1.x, p1.y, p3.x, p3.y);
       angle = rg2.utils.getAngle(p2.x, p2.y, p3.x, p3.y) - rg2.utils.getAngle(p1.x, p1.y, p3.x, p3.y);
-      console.log (p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, scale, angle, fromTime, toTime);
+      //console.log (p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, scale, angle, fromTime, toTime);
       for (i = fromTime; i <= toTime; i += 1) {
         pt = rg2.utils.rotatePoint(this.gpstrack.baseX[i] - p3.x, this.gpstrack.baseY[i] - p3.y, angle);
         this.gpstrack.routeData.x[i] = (pt.x * scale) + p3.x;

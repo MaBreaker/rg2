@@ -101,7 +101,7 @@ class splitsbrowser
                 }
                 $courseindex = -1;
                 for ($i = 0; $i < $coursecount; $i++) {
-                    if ($courses[$i] == $variant) {
+                    if (isset($courses[$i]) && $courses[$i] == $variant) {
                         $courseindex = $i;
                         break;
                     }

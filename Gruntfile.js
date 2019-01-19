@@ -112,7 +112,7 @@ module.exports = function(grunt) {
           src : [ 'rg2api.php', 'index.php', 'app/**', 'html/**', 'img/favicon.ico',
                   'img/android-*.png', 'img/apple-*.png', 'img/favicon-*.png', 'img/mstile-*.png', 'img/rg2-logo-*.png', 'img/ui-icons-*.png', 'img/mstile-*.png',
                   'img/manifest.json', 'img/safari-pinned-tab.svg',
-                  jsMinFile, jsManagerMinFile, 'js/lib/proj4js-compressed.js', langFileList, jsCssMinFile,
+                  jsMinFile, jsMinFile+'.map', jsManagerMinFile, jsManagerMinFile+'.map', 'js/lib/proj4js-compressed.js', langFileList, jsCssMinFile,
                   '404.html', 'robots.txt' ],
           dest : 'rel/'
         }],
