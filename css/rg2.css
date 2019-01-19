@@ -24,7 +24,7 @@ table {
 }
 
 .ui-widget {
-  font: -apple-system,"Roboto","Segoe UI","Helvetica Neue",Arial,sans-serif;
+  font: 16px/26px -apple-system,"Roboto","Segoe UI","Helvetica Neue",Arial,sans-serif;
 }
 
 #rg2-header-container {
@@ -569,6 +569,10 @@ table {
 
 .align-left {
    text-align: left;
+}
+
+.align-center {
+  text-align: center;
 }
 
 .track-names th {
@@ -1120,6 +1124,20 @@ input.rg2-result-search {
   margin-right: 5%;
 }
 
+#rg2-world-file-map {
+  height: 180px;
+}
+
+.rg2-first {
+  color: darkblue;
+  font-weight: bold;
+}
+
+.rg2-second {
+  color: red;
+  font-weight: bold;
+}
+
 @media all and (min-width: 360px) {
    #rg2-header-container {
       height: 62px;
@@ -1169,4 +1187,9 @@ input.rg2-result-search {
       left: auto;
       top: 0;
    }
+}
+
+.rg2-third {
+  color: green;
+  font-weight: bold;
 }

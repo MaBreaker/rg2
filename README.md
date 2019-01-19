@@ -1,13 +1,11 @@
 # Routegadget 2
 
 ## Latest news
-Version 1.5 was released on 28th July 2018 and is installed on all routegadget.co.uk sites.
+Version 1.5.4 was released on 22nd November 2018 and is installed on all routegadget.co.uk sites.
 
-This includes a refactored back end which should be totally transparent to users, but means we can start thinking seriously about a new and improved front end. There are two changes that might be useful:
+The main change is the inclusion of a new statistics page. Double click on any runner name on the result tab to see details.
 
-* GPS adjustment has been significantly improved, so it is now possible to make sensible adjustments between two locked points.
-
-* Manager dialogs should now be aligned correctly if you are running Firefox on LINUX.
+This is still work in progress, but is good enough for people to provide feedback about what to add next.
 
 ## User Guide and Introductory Videos
 

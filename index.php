@@ -9,7 +9,7 @@ require(dirname(__FILE__) . '/app/user.php');
 require(dirname(__FILE__) . '/app/utils.php');
 
 // version replaced by Gruntfile as part of release
-define('RG2VERSION', '1.5');
+define('RG2VERSION', '1.5.4');
 define("RG_LOG_FILE", dirname(__FILE__)."/log/rg2log.txt");
 
 if (file_exists(dirname(__FILE__) . '/rg2-config.php')) {
@@ -24,6 +24,12 @@ if (defined('UI_THEME')) {
 } else {
     $ui_theme = 'base';
 }
+
+if (isset($_GET['debug'])) {
+    $debug = TRUE;
+  } else {
+    $debug = FALSE;
+  }
 
 if (defined('HEADER_COLOUR')) {
     $header_colour = HEADER_COLOUR;
@@ -46,6 +52,7 @@ if (defined('OVERRIDE_SOURCE_DIRECTORY')) {
 // messy but works OK for now
 // Overrides work OK on a local server which is what they are intended for
 if (defined('OVERRIDE_KARTAT_DIRECTORY')) {
+    $debug = true;
     $maps_dir = OVERRIDE_KARTAT_DIRECTORY;
     $maps_url = OVERRIDE_KARTAT_DIRECTORY;
 } else {

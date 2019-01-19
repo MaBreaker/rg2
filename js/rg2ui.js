@@ -20,9 +20,9 @@
       title = rg2.events.getActiveEventName() + " " + rg2.events.getActiveEventDate();
       $("#rg2-event-title").html(title).show();
       if (rg2.events.mapIsGeoreferenced()) {
-        $("#rg2-event-title-icon").addClass("fa fa-globe");
+        $("#rg2-event-title-icon").addClass("fa fa-globe-americas");
       } else {
-        $("#rg2-event-title-icon").removeClass("fa fa-globe");
+        $("#rg2-event-title-icon").removeClass("fa fa-globe-americas");
       }
       if (rg2.events.eventIsLocked()) {
         $("#rg2-event-lock-icon").addClass("fa fa-lock");
@@ -423,6 +423,17 @@
       } else {
         $("#rg2-control-select").prop('disabled', false);
       }
+      $('.resulttable tr').dblclick(function() {
+        var id;
+        // only deal with "normal events"
+        if (rg2.events.hasResults() && !rg2.events.isScoreEvent()) {
+          // only handle clicks on valid results rows
+          id = $(this).find("td").attr("id");
+          if (id) {
+            rg2.stats.showStats(parseInt(id, 10));
+          }
+        }
+      });
     },
 
     createCourseMenu : function () {

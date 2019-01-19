@@ -4,6 +4,7 @@
 /*global Proj4js:false */
 /*global console:false */
 /*global Image:false */
+/*global L:false */
 (function () {
   function Manager(keksi) {
     this.user = new rg2.User(keksi);
@@ -21,6 +22,7 @@
     this.mapping = [];
     this.mapLoaded = false;
     this.coursesGeoreferenced = false;
+    this.controlsAdjusted = false;
     this.drawingCourses = false;
     this.drawnCourse = {};
     this.results = [];
@@ -45,6 +47,8 @@
     this.maps = [];
     this.localworldfile = new rg2.Worldfile(0);
     this.worldfile = new rg2.Worldfile(0);
+    this.georefmap = L.map('rg2-world-file-map');
+    this.initialiseMap();
     this.initialiseUI();
   }
 
@@ -71,6 +75,13 @@
         // prevent form submission
         return false;
       });
+    },
+
+    initialiseMap : function () {
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	      maxZoom: 19,
+	      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(this.georefmap);
     },
 
     logIn : function () {
@@ -348,7 +359,7 @@
         return 'Club name is not valid.';
       }
       if (!this.eventDate) {
-        return 'Event date is not valid.';
+        return 'Date is not valid.';
       }
       if (!this.eventLevel) {
         return 'Event level is not valid.';
@@ -366,6 +377,9 @@
           return 'No results information. Check your results file.';
         }
       }
+      if (!this.controlsAdjusted) {
+        return 'Controls have not been adjusted on the map.';
+      }
       return 'OK';
 
     },
@@ -374,7 +388,7 @@
       var valid, dlg;
       valid = this.validateData();
       if (valid !== 'OK') {
-        rg2.utils.showWarningDialog("Data missing", valid + " Please enter all necessary information before creating the event.");
+        rg2.utils.showWarningDialog("Event set-up incomplete", valid + " Please enter all necessary information and make sure controls are aligned before creating the event.");
         return;
       }
       dlg = {};
@@ -1065,6 +1079,7 @@
           // lock background to prevent accidentally moving the aligned controls
           // user can always unlock and adjust
           this.backgroundLocked = true;
+          this.controlsAdjusted = true;
           $('#btn-move-map-and-controls').prop('checked', true);
         } else {
           // fit within the map since this is probably needed anyway
@@ -1185,6 +1200,7 @@
         // drag track and background
         rg2.ctx.translate(p2.x - p1.x, p2.y - p1.y);
       } else {
+        this.controlsAdjusted = true;
         if (this.handle.x !== null) {
           // scale controls
           scaleX = (p2.x - this.handle.x) / (p1.x - this.handle.x);
@@ -1224,6 +1240,7 @@
       // console.log("Mouse up ",x, y);
       if (this.drawingCourses) {
         this.addNewControl(x, y);
+        this.controlsAdjusted = true;
         return;
       }
       if ((this.mapLoaded) && (this.newcontrols.controls.length > 0)) {
@@ -1460,10 +1477,12 @@
         delete this.newMap.worldfile;
         this.newMap.worldfile = new rg2.Worldfile(wf);
         this.updateGeorefDisplay();
+        this.updateGeorefMap();
       } catch (err) {
         delete this.newMap.worldfile;
         this.newMap.worldfile = new rg2.Worldfile(0);
         this.updateGeorefDisplay();
+        this.updateGeorefMap();
         return;
       }
     },
@@ -1474,6 +1493,23 @@
       for (i = 0; i < letters.length; i += 1) {
         $("#georef-" + letters[i]).empty().text(letters[i] + ": " + this.newMap.worldfile[letters[i]]);
       }
+    },
+    updateGeorefMap : function () {
+      var lon, lat, poly, poly_coords, indices;
+      // Plot a polygon and recentre the map on the polygon
+      lon = this.newMap.lon;
+      lat = this.newMap.lat;
+      poly_coords = [];
+      // For some reason this is the order the coordinates are stored in.
+      indices = [3, 1, 2, 0];
+      indices.forEach( function(i) {
+        poly_coords.push([lat[i], lon[i]]);
+      });
+      poly = L.polygon(poly_coords, { color: 'red'});
+      poly.addTo(this.georefmap);
+      $("#rg2-world-file-map").show();
+      this.georefmap.invalidateSize();
+      this.georefmap.fitBounds(poly.getBounds());
     }
   };
   rg2.Manager = Manager;
