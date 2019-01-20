@@ -517,7 +517,7 @@
       */
       splitTime = this.gpstrack.routeData.splits[this.gpstrack.routeData.splits.length - 1];
       routeLength = this.gpstrack.routeData.x.length;
-      if (splitTime == 0) {
+      if (splitTime === 0) {
         //MaB show full GPS route for disqualified and non competing results
         splitTime = Math.min(routeLength, rg2.config.TIME_NOT_FOUND);
       }

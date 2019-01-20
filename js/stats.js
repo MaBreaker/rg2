@@ -221,7 +221,7 @@
       loss = 0;
       for (i = 0; i < this.results[this.resultIndex].splits.length; i += 1) {
         row = {};
-        if (i == 0) {
+        if (i === 0) {
           row.control = 'S';
         } else {
           if (i == (this.results[this.resultIndex].splits.length - 1)) {
@@ -230,7 +230,7 @@
             row.control = i + ' (' + this.course.codes[i] + ')';
           }
         }
-        if (i == 0) {
+        if (i === 0) {
           row.time = '0.00';
         } else {
           if (this.results[this.resultIndex].splits[i] === this.results[this.resultIndex].splits[i - 1]) {
@@ -325,7 +325,7 @@
       for (i = 0; i < this.results.length; i += 1) {
         row = {};
         r = this.results[i];
-        if (r.racepos[this.controls - 1] == 0) {
+        if (r.racepos[this.controls - 1] === 0) {
           row.position = "";
         } else {
           row.position = r.racepos[this.controls - 1];

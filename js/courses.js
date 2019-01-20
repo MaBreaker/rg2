@@ -214,6 +214,8 @@
           if (this.courses[i].trackcount > 0) {
             details.html += "<input id=" + i + " class='tracklist' type=checkbox name=track></input></td>";
             details.html += "<td><input id=" + i + " class='allcoursetracksreplay' type=checkbox name=replay></input>";
+          } else {
+            details.html += "</td><td>";
           }
           details.html += "</td></tr>";
         }
