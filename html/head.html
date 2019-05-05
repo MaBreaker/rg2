@@ -16,11 +16,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
   <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-blue.css">
-  <?php if ($debug) { ?>
-    <link rel="stylesheet" href='<?php echo $source_url ."/css/rg2.css'>"; ?>
-  <?php } else { ?>
-    <link rel="stylesheet" href='<?php echo $source_url ."/css/rg2-".RG2VERSION.".min.css'>"; ?>
-  <?php } ?>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/<?php echo $ui_theme; ?>/jquery-ui.min.css">
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.5.0/css/font-awesome.min.css"> -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
@@ -29,4 +24,10 @@
    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
    crossorigin=""/>
    <?php } ?>
+<!-- MaB rg2 css at the end (override others) -->
+  <?php if ($debug) { ?>
+  <link rel="stylesheet" href='<?php echo $source_url ."/css/rg2.css"; ?>'>
+  <?php } else { ?>
+  <link rel="stylesheet" href='<?php echo $source_url ."/css/rg2-".RG2VERSION.".min.css"; ?>'>
+  <?php } ?>
 </head>

@@ -13,7 +13,7 @@ class route
                 $resultid = intval($data[1]);
                 // protect against corrupt/invalid files
                 // GPS routes are taken from another file so don't add them here
-                //MaB NOTICE ! Original RG builds an array of x,y coordinates and puts countrol points in it also for splits routers between control points.
+                //MaB NOTICE ! Original RG builds an array of split times (n1;n2;..nnS) and then coordinates (x;yN) and also puts countrol points (x;yC) into it at some cases
                 if (($resultid > 0) && ($resultid < GPS_RESULT_OFFSET) && ($courseid > 0)) {
                     $detail = array();
                     $detail["id"] = $resultid;
@@ -374,14 +374,15 @@ class route
             if (count($temp) >= 2) {
                 // strip off trailing ,0 if it exists
                 //Mab added rounding as GPS route view was corrupted because of decimal points on coordinate values and in PHP float 0 == 0.00000000000001
-                $x[] = round(self::get_numeric($temp[0]));
-                $y[] = round(abs(self::get_numeric($temp[1])));
+                $x[] = round(self::get_numeric($temp[0]), 1);
+                $y[] = round(abs(self::get_numeric($temp[1])), 1);
             }
         }
         // send as differences rather than absolute values: provides almost 50% reduction in size of json file
         for ($i = (count($x) - 1); $i > 0; $i--) {
-            $x[$i] = $x[$i] - $x[$i - 1];
-            $y[$i] = $y[$i] - $y[$i - 1];
+            //Mab added rounding as GPS route view was corrupted because of decimal points on coordinate values and in PHP float 0 == 0.00000000000001
+            $x[$i] = round($x[$i] - $x[$i - 1], 1);
+            $y[$i] = round($y[$i] - $y[$i - 1], 1);
         }
 
         // return the two arrays as comma-separated strings

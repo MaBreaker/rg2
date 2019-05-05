@@ -84,7 +84,7 @@ class splitsbrowser
                 // 9: start time
                 $result_data .= self::convertSecondsToHHMMSS(intval($data[4])).";;";
                 // 11: time
-                if ($t == "0:00:00") {
+                if ($t === "00:00:00" or $t === "0:00:00" or $t === "0" or $t === "") {
                     $result_data .= "---;;;;;;;";
                 } else {
                     $result_data .= $t.";;;;;;;";
@@ -92,6 +92,9 @@ class splitsbrowser
                 // 18: course name
                 // escape apostrophe in course name
                 $name = str_replace("'", "\'", $data[2]);
+                if(ctype_digit(strval($data[6]))) {
+                    $name .= $data[6];
+                }
                 $result_data .= $name.";;;;;;;;;;;;;;;;;;;;";
                 // find codes for this course
                 if ($data[6] !== '') {

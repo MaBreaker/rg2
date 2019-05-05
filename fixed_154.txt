@@ -1,6 +1,8 @@
 Version 1.54
 -------------------------------------------------------------------------------
 Missing TD tag from coursemenutable (courses.js)
+Moved rg2.css to the end of head.html
+
 
 Version 1.50
 -------------------------------------------------------------------------------

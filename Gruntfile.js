@@ -111,7 +111,7 @@ module.exports = function(grunt) {
     sync : {
       rel : {
         files: [{
-          src : [ 'rg2api.php', 'index.php', 'app/**', 'html/**', 'img/favicon.ico',
+          src : [ 'rg2api.php', 'index.php', 'app/*.php', 'html/*.html', 'img/favicon.ico',
                   'img/android-*.png', 'img/apple-*.png', 'img/favicon-*.png', 'img/mstile-*.png', 'img/rg2-logo-*.png', 'img/ui-icons-*.png', 'img/mstile-*.png',
                   'img/manifest.json', 'img/safari-pinned-tab.svg',
                   jsMinFile, jsMinFile+'.map', jsManagerMinFile, jsManagerMinFile+'.map', 'js/lib/proj4js-compressed.js', langFileList, jsCssMinFile,

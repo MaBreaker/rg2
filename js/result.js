@@ -105,10 +105,10 @@
     addTrack : function (data, format) {
       var i, trackOK;
       this.trackx = data.x.split(",").map(function (n) {
-        return parseInt(n, 10);
+        return parseFloat(n);
       });
       this.tracky = data.y.split(",").map(function (n) {
-        return parseInt(n, 10);
+        return parseFloat(n);
       });
       // co-ords sent as differences, so recreate absolute values
       for (i = 1; i < this.trackx.length; i += 1) {

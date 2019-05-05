@@ -8,19 +8,19 @@ html, body {
   margin: 0;
   border: 0;
   display: block;
-   font: 16px/26px Helvetica,Arial,sans-serif;
-   font: 16px/26px -apple-system,"Roboto","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
-   box-sizing: border-box;
-   overflow: hidden;
+  font: 16px/26px Helvetica,Arial,sans-serif;
+  font: 16px/26px -apple-system,"Roboto","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 div, div:before, div:after, textarea {
-   box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 /* this definition was removed from later versions of normalize and therefore it broke RG2 dialog layout */
 table {
-   border-collapse: collapse;
-   border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 .ui-widget {
@@ -31,13 +31,13 @@ table {
     background: #002bd9;
     color: white;
     position: relative;
-   /* height: 30px; */
-   min-width: 320px;
-   /* border-bottom: 4px solid black; */
+    /* height: 30px; */
+    min-width: 320px;
+    /* border-bottom: 4px solid black; */
     font-size: 20px;
     line-height: 30px;
-   width: 100%;
-   /* box-sizing: content-box; */
+    width: 100%;
+    /* box-sizing: content-box; */
 }
 
 #rg2-header-container-border {
@@ -66,11 +66,11 @@ table {
   width: 90%;
 }
 #rg2-course-select, #rg2-name-select {
-   width: 99%;
+  width: 99%;
 }
 #rg2-name-entry, #rg2-time-entry {
-   float: right;
-   width: 200px;
+  float: right;
+  width: 200px;
   min-width: 200px;
   max-width: 200px;
 }
@@ -81,11 +81,11 @@ table {
 }
 
 #rg2-new-comments {
-   margin: 4px 0;
+	margin: 4px 0;
 	width: 100%;
 	height: 50px;
-   max-width: 300px;
-   max-width: 100%;
+  max-width: 300px;
+  max-width: 100%;
 }
 
 .rg2-ani-row {
@@ -94,13 +94,13 @@ table {
     position: absolute;
     vertical-align: middle;
     height: 36px;
-   width: 100%;
-   max-width: 348px; /* content-box sizing -> max-width - border size */
+	  width: 100%;
+    max-width: 348px; /* content-box sizing -> max-width - border size */
     right: 0;
 	  border: 4px solid darkgray;
-   z-index: 70;
+  	z-index: 70;
     line-height: 36px;
-   box-sizing: content-box;
+    box-sizing: content-box;
 }
 
 .row-1 {
@@ -130,22 +130,21 @@ table {
 }
 
 #rg2-resize-info {
-   /* position: absolute; */
+	/* position: absolute; */
   vertical-align: middle;
-   /* padding-right: 10px; */
-   line-height: 0;
-
+  /* padding-right: 10px; */
+	line-height: 0;
 }
 
 #rg2-header {
-   /* position: absolute; */
-   vertical-align: middle;
-   /* left: 35px; */
-   padding: 0 8px;
-   /* display: inline-block; */
-   white-space: nowrap;
-   overflow: hidden !important;
-   text-overflow: ellipsis;
+	/* position: absolute; */
+  vertical-align: middle;
+  /* left: 35px; */
+  padding: 0 8px;
+  /* display: inline-block; */
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
 }
 /*
 #rg2-header span {
@@ -193,35 +192,35 @@ table {
 
 .rg2-button {
   background: silver;
-   background-clip: padding-box;
+  background-clip: padding-box;
   color: white;
 	float: right;
 	width: 30px;
 	text-align: center;
 	border-left: 4px solid darkgray;
-   cursor: pointer;
+  cursor: pointer;
 }
 
 .rg2-wide-button {
   background: silver;
-   background-clip: padding-box;
+  background-clip: padding-box;
   color: white;
 	float: right;
 	width: 64px;
 	text-align: center;
 	border-left: 4px solid darkgray;
-   cursor: pointer;
+  cursor: pointer;
 }
 #rg2-header-buttons .rg2-button,
 #rg2-header-buttons .rg2-wide-button {
-   background: silver;
-   background: rgba(192,192,192,0.5);
-   border-left: 4px solid darkgray;
-   border-left: 4px solid rgba(169,169,169,0.5);
+  background: silver;
+  background: rgba(192,192,192,0.5);
+  border-left: 4px solid darkgray;
+  border-left: 4px solid rgba(169,169,169,0.5);
 }
 #rg2-header-buttons div:first-of-type {
-   border-right: 4px solid darkgray;
-   border-right: 4px solid rgba(169,169,169,0.5);
+  border-right: 4px solid darkgray;
+  border-right: 4px solid rgba(169,169,169,0.5);
 }
 .rg2-button:hover,
 .rg2-wide-button:hover {
@@ -234,9 +233,9 @@ table {
 }
 
 #btn-edit-delete-event, #btn-add-event {
-   margin: 0 auto;
-   display: block;
-   background: silver;
+    margin:0 auto;
+    display:block;
+    background: silver;
 }
 
 #rg2-about {
@@ -256,20 +255,20 @@ table {
 	height: 10px;
 	border: 0;
 	box-shadow: 0 10px 10px -10px #8c8b8b inset;
-   -webkit-border-radius: 4px;
-   -moz-border-radius: 4px;
-   border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
 #rg2-about-dialog .about-stats {
-   border: 1px solid #d3d3d3;
-   -webkit-border-radius: 4px;
-   -moz-border-radius: 4px;
-   border-radius: 4px;
+	border: 1px solid #d3d3d3;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
 #rg2-about-dialog table {
   width: 100%;
-   border-collapse: separate;
-   border-spacing: 2px;
+  border-collapse: separate;
+  border-spacing: 2px;
 }
 
 #rg2-about-dialog thead tr {
@@ -352,7 +351,8 @@ table {
 
 #rg2-tails-type {
 	padding-left: 5px;
-   /* width: 100px; */
+	/* border-right: 4px solid darkgray; */
+	/* width: 100px; */
 }
 /*
 #spn-tail-length {
@@ -360,20 +360,20 @@ table {
 }
 */
 #rg2-tails-spinner {
-   float: right; /* flexbox */
+  float: right; /* flexbox */
   padding-right: 5px;
-   padding-left: 5px;
-   border-left: 4px solid darkgray;
-   overflow: hidden;
-   white-space: nowrap;
+  padding-left: 5px;
+  border-left: 4px solid darkgray;
+  overflow: hidden;
+  white-space: nowrap;
 }
 #rg2-tails-spinner_div {
-   height: 22px;
-   line-height: 22px;
-   margin-top: 2px;
-   display: inline-block;
-   clear: both;
-   font-size: 1em;
+  height: 22px;
+  line-height: 22px;
+  margin-top: 2px;
+  display: inline-block;
+  clear: both;
+  font-size: 1em;
 }
 
 #spn-map-intensity, #spn-course-width, #spn-route-width, #spn-name-font-size, #spn-route-intensity, #spn-control-circle, #spn-offset {
@@ -405,11 +405,11 @@ table {
 
 #rg2-info-panel {
    font-size: 0.85em;
-   width: 100%;
+	 width: 100%;
    max-width: 360px; /* border-box */
    position: absolute;
-   z-index: 80;
-   height: 100%;
+	 z-index: 80;
+	 height: 100%;
    padding: 3px; /* for js height calculation */
 }
 
@@ -430,10 +430,10 @@ table {
 
 #rg2-event-list .ui-menu-item {
   list-style-image: none;
-   /* padding-right: 0.4em; */
-   white-space: nowrap;
-   overflow: hidden !important;
-   text-overflow: ellipsis;
+  /* padding-right: 0.4em; */
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
 }
 
 #rg2-event-list .ui-menu-item a {
@@ -472,7 +472,7 @@ table {
 #rg2-event-list li > .ui-state-active {
    border:1px solid #444444;
    /* background:#dadada url("http://code.jquery.com/ui/1.11.3/themes/smoothness/images/ui-bg_glass_75_dadada_1x400.png") 50% 50% repeat-x; */
-   background:#cccccc url("http://code.jquery.com/ui/1.11.3/themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
+   background:#cccccc url("//code.jquery.com/ui/1.12.1/themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
    -webkit-border-radius: inherit;
    -moz-border-radius: inherit;
    border-radius: inherit;
@@ -483,16 +483,15 @@ table {
 }
 
 #rg2-hide-info-panel-control {
-   position: absolute;
-   visibility: hidden;
-   left: 360px;
-   /* float: left; */
-   /* top: 4px; */
-   z-index: 90;
+  position:absolute;
+  visibility: hidden;
+  left: 360px;
+  /* top: 4px; */
+  z-index: 90;
   color: black;
   width: 20px;
-   margin: 10px 0;
-   padding: 3px 0 2px 0;
+  margin: 10px 0;
+  padding: 3px 0 2px 0;
   text-align: center;
   border: 1px solid #AAAAAA;
   background: #E0E0E0;
@@ -579,15 +578,15 @@ table {
   background: rgb(150, 150, 150);
   background: rgba(150, 150, 150, 0.75);
   text-align: left;
-   padding: 0 5px;
+  padding: 0 5px;
 }
 
 #rg2-replay-start-control {
-   /* float: left; // flexbox */
+  /* float: left; // flexbox */
   padding-left: 5px;
-   padding-right: 5px;
-   overflow: hidden;
-   white-space: nowrap;
+  padding-right: 5px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .pushright {
@@ -598,8 +597,8 @@ table {
   display: table;
   margin: auto;
   width: 99%;
-   padding: 0.5em 0;
-   text-align: left;
+  padding: 0.5em 0;
+  text-align: left;
 }
 
 .singlerowitem {
@@ -642,7 +641,7 @@ table.coursemenutable th {
 	padding-left: 5px;
 	padding-right: 5px;
 	text-align: center;
-   /* vertical-align: top; */
+	/* vertical-align: top; */
 }
 
 table.resulttable td:first-child + td,
@@ -655,19 +654,19 @@ table.coursemenutable th:first-child {
 
 table.resulttable tbody tr:nth-child(odd),
 table.coursemenutable tbody tr:nth-child(odd) {
-   /* background: #eee; */
-   background: #808080; /* Fallback */
-   background: rgba(128, 128, 128, 0.1);
+  /* background: #eee; */
+  background: #808080; /* Fallback */
+  background: rgba(128, 128, 128, 0.1);
 }
 
 #rg2-result-list .ui-accordion,
 #rg2-result-list .ui-accordion-content {
-   padding: 0;
+padding: 0;
 }
 
 
 #rg2-select-gps-file .ui-button {
-   width: 100%;
+	width: 100%;
 	margin-bottom: 10px;
 }
 
@@ -686,12 +685,12 @@ table.coursemenutable tbody tr:nth-child(odd) {
 
 #rg2-clock-slider {
   margin: 10px 15px;
-   width: 250px;
+  width: 250px;
 }
 
 #rg2-clock-slider .ui-state-default {
 	background: silver;
-   border: 2px solid darkgray;
+	border: 2px solid darkgray;
 }
 
 #rg2-clock-slider .ui-state-focus {
@@ -703,8 +702,8 @@ table.coursemenutable tbody tr:nth-child(odd) {
 }
 
 #rg2-clock-slider .ui-slider-handle {
-   width: 12px;
-   height: 20px;
+width: 12px;
+height: 20px;
 }
 /*
 #rg2-tails-spinner .ui-widget-content {
@@ -725,23 +724,23 @@ table.coursemenutable tbody tr:nth-child(odd) {
 }
 */
 #rg2-tails-spinner .ui-spinner input {
-   /* font: 16px Helvetica, Helvetica Neue, Arial; */
-   font-weight: bold;
-   /* margin-bottom: 9px; */
-   width: 26px;
-   line-height: 22px;
-   margin-top: 0;
-   margin-bottom: 1px;
-   padding: 1px;
+  /* font: 16px Helvetica, Helvetica Neue, Arial; */
+  font-weight: bold;
+  /* margin-bottom: 9px; */
+  width: 26px;
+  line-height: 22px;
+  margin-top: 0;
+  margin-bottom: 1px;
+  padding: 1px;
 }
 
 #rg2-event-comments, #rg2-edit-event-comments {
-   margin-top: 5px;
-   margin-bottom: 5px;
-   width: 100%;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	width: 100%;
 	height: 50px;
-   max-width: 300px;
-   max-width: 100%;
+	max-width: 300px;
+	max-width: 100%;
 }
 
 #rg2-add-new-event .ui-button {
@@ -784,7 +783,7 @@ table.coursemenutable tbody tr:nth-child(odd) {
  * see http://api.jqueryui.com/dialog
  */
 .no-close .ui-dialog-titlebar-close {
-   display: none;
+display: none;
 }
 
 /*
@@ -801,10 +800,10 @@ body {
 }
 
 .manage-input {
-   /* margin-top: 3px; */
-   /* margin-right: 3px; */
-   width: 180px;
-   line-height: 1.25;
+  /* margin-top: 3px; */
+  /* margin-right: 3px; */
+  width: 180px;
+  line-height: 1.25;
 }
 
 .manage-label {
@@ -837,17 +836,17 @@ body {
 #rg2-info-panel-tab-body .manage-file-input {
   margin-top: 4px;
   margin-bottom: 4px;
-   width: 100%;
-   box-sizing: border-box;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .manage-file-input-div {
-   /* height: 41px; */
-   margin-left: 3px;
+  /* height: 41px; */
+  margin-left: 3px;
 }
 
 .manage-file-input {
-   overflow: hidden;
+  overflow: hidden;
 }
 
 .manage-file-label {
@@ -856,18 +855,18 @@ body {
 }
 
 .manage-edit-div, .manage-select-div , .manage-checkbox-div {
-   /* height: 26px; */
-   /* line-height: 1.25em; */
-   margin: 2px 0;
-   padding: 2px 3px;
-   overflow: hidden;
-   vertical-align: middle;
+  /* height: 26px; */
+  /* line-height: 1.25em; */
+  margin: 2px 0;
+  padding: 2px 3px;
+  overflow: hidden;
+  vertical-align: middle;
 }
 
 .manage-edit-div label, .manage-edit-div input,
 .manage-select-div label, .manage-select-div input,
 .manage-checkbox-div label, .manage-checkbox-div input {
-   display: inline;
+  display: inline;
 }
 
 .manage-edit-div label,
@@ -890,11 +889,11 @@ body {
 #rg2-option-controls input[type="checkbox"] {
   margin-left: 10px;
   margin-top: 10px;
-   float: right;
+  float: right;
 }
 
 #rg2-draw button.ui-button {
-   margin: 2px 1px;
+  margin: 2px 1px;
 }
 #rg2-draw button.ui-button,
 #rg2-manage-login button.ui-button,
@@ -907,7 +906,7 @@ body {
 
 /*
 #rg2-edit-event-comments {
-   width: 100%;
+  width: 100%;
   height: 50px;
 }
 */
@@ -1193,3 +1192,4 @@ input.rg2-result-search {
   color: green;
   font-weight: bold;
 }
+

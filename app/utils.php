@@ -33,6 +33,7 @@ class utils
             // not sure exactly how time changes work, but we can live with a possible twice
             // a year problem since locking is probably almost never needed
             if ((time() - filemtime(LOCK_DIRECTORY)) > 15) {
+                //self::rg2log("Clear lock directory");
                 self::unlockDatabase();
             }
         }
@@ -87,14 +88,21 @@ class utils
         $t = str_replace('.:', ':', $in);
         $t = str_replace('::', ":", $t);
         // remove leading 0:
+/*
         if (substr($t, 0, 2) === '0:') {
             $t = substr($t, 2);
         }
+*/
         // correct seconds for missing leading 0 which RG1 can generate from Emit. e.g 25:9 becomes 25:09
+/*
         $secs = substr($t, -2);
         if (substr($secs, 0, 1) ===  ':') {
             $t = substr_replace($t, '0', -1, 0);
         }
+*/
+        //MaB - fix format and remove leading 0 and :
+        $t = implode(':', array_map(function($num) { return sprintf("%02d", $num); }, explode(':', $t)));
+        $t = ltrim($t, '0:');
         return $t;
     }
 
