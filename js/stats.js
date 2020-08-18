@@ -40,23 +40,25 @@
 
     showStats: function (rawid) {
       // all sorts of possible data consistency errors that might turn up
-      //try {
-      this.initialise(rawid);
-      this.generateSummary();
-      this.generateTableByLegPos();
-      this.generateTableByRacePos();
-      this.generateSplitsTable();
-      this.displayStats();
-      //} catch (err) {
-      //  if (err instanceof this.rg2Exception) {
-      //    // one we trapped ourselves
-      //    rg2.utils.showWarningDialog("Cannot generate statistics.", err.message);
-      //  } else {
-      //    // general problem: probably an index out of bounds on an array somewhere: dodgy results files
-      //    rg2.utils.showWarningDialog("Cannot generate statistics.", "Data inconsistency.");
-      //  }
-      //  return;
-      //}
+      try {
+        this.initialise(rawid);
+        this.generateSummary();
+        this.generateTableByLegPos();
+        this.generateTableByRacePos();
+        this.generateSplitsTable();
+        this.displayStats();
+      } catch (err) {
+        if (err instanceof this.rg2Exception) {
+          // one we trapped ourselves
+          //rg2.utils.showWarningDialog("Cannot generate statistics.", err.message);
+          console.log("Cannot generate statistics: " + err.message);
+        } else {
+          // general problem: probably an index out of bounds on an array somewhere: dodgy results files
+          //rg2.utils.showWarningDialog("Cannot generate statistics.", "Data inconsistency.");
+          console.log("Cannot generate statistics: " + "Data inconsistency.");
+        }
+        return;
+      }
     },
 
     displayStats: function () {
