@@ -234,3 +234,8 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+js/rg2-1.5.5.min.js
+js/rg2-1.5.5.min.js.map
+js/rg2manager-1.5.5.min.js
+js/rg2manager-1.5.5.min.js.map

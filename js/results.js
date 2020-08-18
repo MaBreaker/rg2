@@ -28,20 +28,24 @@
       }
       // save each result
       for (i = 0; i < l; i += 1) {
-        if (data[i].resultid > rg2.config.GPS_RESULT_OFFSET && data[i].coursename === '') {
-          data[i].coursename = rg2.courses.getCourseDetails(data[i].courseid).name;
+        // trap cases where only some courses for an event are set up, but for some reason all the results get saved
+        // so you end up getting results for courses you don't know about: kust ignore these results
+        if (rg2.courses.isValidCourseId(data[i].courseid)) {
+          if (data[i].resultid > rg2.config.GPS_RESULT_OFFSET && data[i].coursename === '') {
+            data[i].coursename = rg2.courses.getCourseDetails(data[i].courseid).name;
+          }
+          if (isScoreEvent) {
+            variant = data[i].variant;
+            result = new rg2.Result(data[i], isScoreEvent, isLiveEvent, codes[variant], scorex[variant], scorey[variant]);
+          } else {
+            result = new rg2.Result(data[i], isScoreEvent, isLiveEvent);
+          }
+          this.results.push(result);
         }
-        if (isScoreEvent) {
-          variant = data[i].variant;
-          result = new rg2.Result(data[i], isScoreEvent, isLiveEvent, codes[variant], scorex[variant], scorey[variant]);
-        } else {
-          result = new rg2.Result(data[i], isScoreEvent, isLiveEvent);
-        }
-        this.results.push(result);
       }
       this.setDeletionInfo();
       this.setScoreCourseInfo();
-      this.sanitiseSplits();
+      this.sanitiseSplits(isScoreEvent);
       this.generateLegPositions();
     },
 
@@ -154,8 +158,8 @@
       }
     },
 
-    sanitiseSplits: function () {
-      var i, j, previousValidSplit, nextSplitInvalid;
+    sanitiseSplits: function (isScoreEvent) {
+      var i, j, expectedSplits, previousValidSplit, nextSplitInvalid;
       // sort out missing punches and add some helpful new fields
       for (i = 0; i < this.results.length; i += 1) {
         this.results[i].timeInSecs = rg2.utils.getSecsFromHHMMSS(this.results[i].time);
@@ -186,6 +190,18 @@
         }
         if (this.results[i].lastValidSplit === undefined) {
           this.results[i].lastValidSplit = this.results[i].splits.length - 1;
+        }
+
+        // handle corrupted events with missing splits
+        // force all results to have the correct number of splits to make stats processing work correctly
+        if (!isScoreEvent) {
+          // splits array contains "S" and "F" as well as each control
+          expectedSplits = rg2.courses.getNumberOfControlsOnCourse(this.results[i].courseid) + 2;
+          while (this.results[i].splits.length < expectedSplits) {
+            // copy last valid split data as often as necessary to fill missing gaps
+            this.results[i].splits.push(this.results[i].splits[this.results[i].splits.length - 1]);
+            this.results[i].legSplits.push(0);
+          }
         }
       }
     },
@@ -485,6 +501,26 @@
       return tracks;
     },
 
+    setSpeedRange: function (max, min) {
+      // make sure fastest is faster than slowest
+      // remembering speeds are min/km so low is fast
+      $("#spn-min-speed").spinner("option", "min", rg2.options.maxSpeed + 1);
+      $("#spn-max-speed").spinner("option", "max", rg2.options.minSpeed - 1);
+      rg2.setConfigOption("maxSpeed", max);
+      rg2.setConfigOption("minSpeed", min);
+      this.resetSpeedColours();
+      rg2.redraw(false);
+    },
+
+    resetSpeedColours: function () {
+      // called when user changes GPS speed colour configuration
+      var i;
+      for (i = 0; i < this.results.length; i += 1) {
+        // forces colours to recalculate
+        this.results[i].speedColour.length = 0;
+      }
+    },
+
     resultIDExists: function (resultid) {
       var i;
       for (i = 0; i < this.results.length; i += 1) {
@@ -626,6 +662,11 @@
 
     prepareResults: function () {
       var oldID, i, canCombine;
+      // no concept of combining for events with no initial results
+      // this also avoids the sort which we don't want
+      if (!rg2.events.hasResults()) {
+        return;
+      }
       // want to avoid extra results line for GPS routes if there is no drawn route
       // first sort so that GPS routes come after initial result
       this.results.sort(this.sortByCourseIDThenResultID);
@@ -703,7 +744,9 @@
       comments = "";
       for (i = 0; i < this.results.length; i += 1) {
         if (this.results[i].comments !== "") {
-          comments += "<tr><td><strong>" + this.results[i].name + "</strong></td><td>" + this.results[i].coursename + "</td><td>" + this.results[i].comments + "</td></tr>";
+          comments += "<tr><td><strong>" + this.results[i].name + "</strong></td><td>";
+          comments += this.results[i].coursename + "</td><td class='selectable'>" + this.results[i].comments + "</td></tr>";
+
         }
       }
       return comments;

@@ -376,8 +376,16 @@ table {
   font-size: 1em;
 }
 
-#spn-map-intensity, #spn-course-width, #spn-route-width, #spn-name-font-size, #spn-route-intensity, #spn-control-circle, #spn-offset {
+.rg2-spinner {
   width: 40px;
+}
+
+.rg2-run-green {
+  color: green;
+}
+
+.rg2-run-red {
+  color: red;
 }
 
 .options {
@@ -625,7 +633,7 @@ table {
   background-color: #eee;
 }
 
-.coursemenutable tr, td, th {
+.coursemenutable tr, .coursemenutable td, .coursemenutable th {
 	padding-left: 5px;
 	padding-right: 5px;
 	text-align: center;
@@ -654,6 +662,11 @@ table.coursemenutable td:first-child,
 table.coursemenutable th:first-child {
 	width: 80%;
 	text-align: left;
+}
+
+table.resulttable td + td + td,
+table.resulttable th + th + th {
+	text-align: center;
 }
 
 table.resulttable tbody tr:nth-child(odd),
@@ -801,6 +814,16 @@ body {
   -webkit-touch-callout: none;
   -webkit-user-drag: none;
   user-select: none;
+}
+
+.selectable {
+  -ms-user-select: all;
+  -webkit-user-select: all;
+  -khtml-user-select: all;
+  -moz-user-select: all;
+  -webkit-touch-callout: all;
+  -webkit-user-drag: all;
+  user-select: all;
 }
 
 .manage-input {
@@ -1197,3 +1220,10 @@ input.rg2-result-search {
   font-weight: bold;
 }
 
+.rg2-results-table-container {
+  height: 100%;
+}
+
+#rg2-results-grid-wrapper {
+  height: 200px;
+}

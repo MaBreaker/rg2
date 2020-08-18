@@ -19,9 +19,13 @@ class route
                     $detail["id"] = $resultid;
                     //MaB variant
                     $detail["variant"] = $data[3]; // variable name aika
-                    list($detail["x"], $detail["y"]) = self::expandCoords($data[4]);
-                    $output[] = $detail;
-                }
+                    list($ok, $detail["x"], $detail["y"]) = self::expandCoords($data[4]);
+                    if ($ok) {                     
+                        $output[] = $detail;
+                    } else {
+                      utils::rg2log("Invalid route for eventid ".$eventid." for result ".$resultid);
+                    }
+               }
             }
             fclose($handle);
         }
@@ -39,8 +43,11 @@ class route
                         $detail = array();
                         $detail["id"] = $resultid;
                         // list allocates return values in an array to the specified variables
-                        list($detail["x"], $detail["y"]) = self::expandCoords($data[9]);
-                        $output[] = $detail;
+                        list($ok, $detail["x"], $detail["y"]) = self::expandCoords($data[9]);
+                        if ($ok) {                     
+                            $output[] = $detail;
+                        } else {
+                            utils::rg2log("Invalid route for eventid ".$eventid." for result ".$resultid);                        }
                     }
                 }
             }
@@ -361,9 +368,11 @@ class route
         // handle empty coord string: found some examples in Jukola files
         // 5 is enough for one coordinate set, but the problem files just had "0"
         if (strlen($coords) < 5) {
-            return array("", "");
+            return array(false, [], []);
         }
-        $xy = explode("N", $coords);
+
+        // cope with strange zero-filled routes that start with ;
+        $xy = explode("N", ltrim($coords, ';'));
         $x = array();
         $y = array();
         foreach ($xy as $point) {
@@ -372,10 +381,19 @@ class route
             $temp = explode(";", $tstr, 3);
             //MaB "==" -> ">="
             if (count($temp) >= 2) {
-                // strip off trailing ,0 if it exists
                 //Mab added rounding as GPS route view was corrupted because of decimal points on coordinate values and in PHP float 0 == 0.00000000000001
                 $x[] = round(self::get_numeric($temp[0]), 1);
                 $y[] = round(abs(self::get_numeric($temp[1])), 1);
+/*
+                // strip off trailing ,0 if it exists
+                $temp[1] = str_replace(",0", "", $temp[1]);
+                // y value should be negative (apparently...) but sometimes isn't for old files
+                if ((substr($temp[1], 0, 1) === "-") && (strlen($temp[1]) > 1)) {
+                    $y[] = substr($temp[1], 1);
+                } else {
+                    return array(false, [], []);
+                }
+*/
             }
         }
         // send as differences rather than absolute values: provides almost 50% reduction in size of json file
@@ -387,7 +405,7 @@ class route
 
         // return the two arrays as comma-separated strings
         // used to return as integer arrays, but this caused memory problems in json_encode
-        return array(implode(",", $x), implode(",", $y));
+        return array(true, implode(",", $x), implode(",", $y));
     }
 }
 ?>

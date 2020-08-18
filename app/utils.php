@@ -81,6 +81,17 @@ class utils
         return $comments;
     }
 
+    public static function getSecsFromHHMM($t) {
+      // gets in (H)HH:MM and needs to return seconds
+      $bits = explode(":", $t);
+      if (count($bits) === 2) {
+        return ((intval($bits[0]) * 60) + intval($bits[1]));
+      } else {
+        return 0;
+      }
+
+    }
+
     public static function tidyTime($in)
     {
         // takes what should be a time as mm:ss or hh:mm:ss and tidies it up
@@ -100,10 +111,20 @@ class utils
             $t = substr_replace($t, '0', -1, 0);
         }
 */
+        // prevent negative times which can slip through for various reasons
+        if (substr($t, 0, 1) === "-") {
+          $t = "0:00";
+        }
+        // convert hh:mm:ss to mm:ss for consistency
+        $bits = explode(":", $t);
+        if (count($bits) === 3) {
+          $mins = (intval($bits[0]) * 60) + intval($bits[1]);
+          $t = $mins.":".$bits[2]; 
+        }
         //MaB - fix format and remove leading 0 and :
-        $t = implode(':', array_map(function($num) { return sprintf("%02d", $num); }, explode(':', $t)));
-        $t = ltrim($t, '0:');
-        return $t;
+        //$t = implode(':', array_map(function($num) { return sprintf("%02d", $num); }, explode(':', $t)));
+        $tr = ltrim($t, '0:');
+        return array($tr, self::getSecsFromHHMM($t));
     }
 
     public static function getAngle($x1, $y1, $x2, $y2)

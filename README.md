@@ -1,11 +1,7 @@
 # Routegadget 2
 
 ## Latest news
-Version 1.5.4 was released on 22nd November 2018 and is installed on all routegadget.co.uk sites.
-
-The main change is the inclusion of a new statistics page. Double click on any runner name on the result tab to see details.
-
-This is still work in progress, but is good enough for people to provide feedback about what to add next.
+Version 1.5.9 was released on 27th April 2020 and is installed on all routegadget.co.uk sites. This includes various minor enhancements to support events that are set up with no results.
 
 ## User Guide and Introductory Videos
 

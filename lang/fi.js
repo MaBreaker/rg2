@@ -112,4 +112,11 @@ rg2.setDictionary({
   'Search': 'Hae',
   'Share route': 'Jaa reittisi',
   'Copy and paste this link to share your route': 'Kopio linkki ja jaa reittisi'
+  'Summary': 'Yhteenveto',
+  'Leg times': 'Väliajat',
+  'Cumulative times': 'Kokonaisajat',
+  'Average leg position': 'Keskim. välimatka',
+  'Best': 'Paras',
+  'Worst': 'Heikoin',
+  'Estimated loss': 'Arvioitu tappio'
 });

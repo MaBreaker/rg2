@@ -17,6 +17,10 @@
       return this.courses[courseid].name;
     },
 
+    isValidCourseId: function (courseid) {
+      return courseid < this.courses.length;
+    },
+
     getCoursesForEvent: function () {
       var i, course, courses;
       courses = [];
@@ -38,6 +42,11 @@
 
     getCourseDetails: function (courseid) {
       return this.courses[courseid];
+    },
+
+    getNumberOfControlsOnCourse: function (courseid) {
+      // codes list includes "S" and "F", so allow for them
+      return this.courses[courseid].codes.length - 2;
     },
 
     incrementTracksCount: function (courseid) {
