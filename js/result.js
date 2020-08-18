@@ -394,12 +394,12 @@
     },
 
     mapSpeedColours: function () {
+      var i, range, value, maxspeed, minspeed, sorted, metresPerPixel, maxMetresPerSecond, minMetresPerSecond, secondsPerSample;
       // speed options are in min/km
-      var maxMetresPerSecond = 16.667 / rg2.options.maxSpeed;
-      var minMetresPerSecond = 16.667 / rg2.options.minSpeed;
-      var secondsPerSample = 3;
+      maxMetresPerSecond = 16.667 / rg2.options.maxSpeed;
+      minMetresPerSecond = 16.667 / rg2.options.minSpeed;
+      secondsPerSample = 3;
       // converts speed to RGB value
-      var i, range, value, maxspeed, minspeed, sorted, metresPerPixel;
       sorted = this.speedColour.slice().sort(function (a, b) { return a - b; });
       metresPerPixel = rg2.events.getMetresPerPixel();
       if (metresPerPixel !== undefined) {

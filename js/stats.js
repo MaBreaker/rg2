@@ -306,7 +306,7 @@
             row.control = i + ' (' + this.course.codes[i] + ')';
           }
         }
-        if (i == 0) {
+        if (i === 0) {
           row.time = '0:00';
         } else {
           if (this.results[this.resultIndex].splits[i] === this.results[this.resultIndex].splits[i - 1]) {
@@ -378,7 +378,7 @@
       columnDefs = [
         { headerName: rg2.t("Pos"), field: "position", width: 60, pinned: "left", sortable: true },
         { headerName: rg2.t("Name"), field: "name", headerClass: "align-left", cellClass: "align-left", width: 150, pinned: "left" },
-        { headerName: rg2.t("Time"), field: "time", width: 85 },
+        { headerName: rg2.t("Time"), field: "time", width: 85 }
       ];
       for (j = 1; j < this.controls - 1; j += 1) {
         columnDefs.push({ headerName: j, field: 'C' + j, cellRenderer: this.renderSplits, width: 110 });
