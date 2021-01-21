@@ -214,4 +214,3 @@ class result
       return (intval($a["secs"]) - intval($b["secs"]));
     }
 }
-?>

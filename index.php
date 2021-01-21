@@ -9,7 +9,7 @@ require(dirname(__FILE__) . '/app/user.php');
 require(dirname(__FILE__) . '/app/utils.php');
 
 // version replaced by Gruntfile as part of release
-define('RG2VERSION', '1.5.9');
+define('RG2VERSION', '1.6.0');
 define("RG_LOG_FILE", dirname(__FILE__)."/log/rg2log.txt");
 
 if (file_exists(dirname(__FILE__) . '/rg2-config.php')) {
@@ -73,13 +73,6 @@ if (isset($_GET['manage'])) {
     $keksi = user::generateNewKeksi();
 } else {
     $manager=  false;
-}
-
-// include debug function as parameter for now until we decide the best way forward
-if (isset($_GET['debug']) || $override) {
-  $debug = TRUE;
-} else {
-  $debug = FALSE;
 }
 
 // include language file if requested

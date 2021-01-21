@@ -17,6 +17,8 @@
     this.club = null;
     this.comments = null;
     this.format = rg2.config.FORMAT_NORMAL;
+    this.isScoreEvent = false;
+    this.hasResults = true;
     this.newcontrols = new rg2.Controls();
     this.courses = [];
     this.mapping = [];
@@ -155,9 +157,13 @@
       $("#btn-no-results").click(function (evt) {
         self.toggleResultsRequired(evt.target.checked);
       });
+      $("#btn-score-event").click(function (evt) {
+        self.toggleScoreEvent(evt.target.checked);
+      });
       $("#btn-sort-results").click(function (evt) {
         self.toggleSortResults(evt.target.checked);
       });
+      //MaB val("")
       $("#rg2-load-course-file").val("").button().click(function (evt) {
         if (!self.mapLoaded) {
           rg2.utils.showWarningDialog("No map loaded", "Please load a map file before adding courses.");
@@ -325,7 +331,7 @@
     displayCourseAllocations: function () {
       var i, html;
       if ((this.courses.length) && (this.resultCourses.length)) {
-        html = "<div id='rg2-course-allocations'><table><thead><tr><th>Results</th><th>Course</th></tr></thead><tbody>";
+        html = "<div id='rg2-course-alloc'><table><thead><tr><th>Results</th><th>Course</th></tr></thead><tbody>";
         // create html for course allocation list
         // using a table to make it easier for now
         for (i = 0; i < this.resultCourses.length; i += 1) {
@@ -340,7 +346,7 @@
       var i;
       // create a dummy result-course mapping
       // to allow display of courses with no results
-      if (this.format === rg2.config.FORMAT_NO_RESULTS) {
+      if (!this.hasResults) {
         this.resultCourses.length = 0;
         for (i = 0; i < this.courses.length; i += 1) {
           this.resultCourses.push({ courseid: this.courses[i].courseid, course: this.courses[i].name });
@@ -373,7 +379,7 @@
         }
       }
       if (this.results.length === 0) {
-        if (this.format !== rg2.config.FORMAT_NO_RESULTS) {
+        if (this.hasResults) {
           return 'No results information. Check your results file.';
         }
       }
@@ -450,10 +456,18 @@
       }
       data.locked = $("#chk-read-only").prop("checked");
       data.club = this.club;
-      data.format = this.format;
-      // assume we can just overwrite 1 or 2 at this point
-      if ($('#btn-score-event').prop('checked')) {
+      if (this.hasResults) {
+        if (this.isScoreEvent) {
         data.format = rg2.config.FORMAT_SCORE_EVENT;
+        } else {
+          data.format = rg2.config.FORMAT_NORMAL;
+        }
+      } else {
+        if (this.isScoreEvent) {
+          data.format = rg2.config.FORMAT_SCORE_EVENT_NO_RESULTS;
+        } else {
+          data.format = rg2.config.FORMAT_NORMAL_NO_RESULTS;
+        }
       }
       data.level = this.eventLevel;
       if (this.drawingCourses) {
@@ -463,7 +477,7 @@
       this.setControlLocations();
       this.mapResultsToCourses();
       this.renumberResults();
-      if (data.format === rg2.config.FORMAT_SCORE_EVENT) {
+      if (this.isScoreEvent) {
         this.extractVariants();
         data.variants = this.variants.slice(0);
       }
@@ -1280,15 +1294,15 @@
       this.sortResults = checkedState;
     },
 
-    // determines if a results file is needed
-    // TODO: score events
-    toggleResultsRequired: function (noResults) {
-      if (noResults) {
-        this.format = rg2.config.FORMAT_NO_RESULTS;
-        this.createResultCourseMapping();
-      } else {
-        this.format = rg2.config.FORMAT_NORMAL;
-      }
+    toggleResultsRequired: function (checked) {
+      // check box checked means event does not have results
+      this.hasResults = !checked;
+      this.createResultCourseMapping();
+      this.displayCourseAllocations();
+    },
+
+    toggleScoreEvent: function (checked) {
+      this.isScoreEvent = checked;
     },
 
     confirmAddMap: function () {

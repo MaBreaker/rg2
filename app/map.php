@@ -101,9 +101,13 @@ class map
             // read to end of file to find last entry
             $oldid = 0;
             while (($olddata = fgetcsv($handle, 0, "|")) !== false) {
-                if (count($olddata) > 0) {
+              // blank rows come back as a single null array entry so ignore them
+              if (count($olddata) > 1) {
+                // ids should be increasing anyway, but just in case...
+                if (intval($olddata[0]) > $oldid) {
                     $oldid = intval($olddata[0]);
                 }
+              }
             }
             $newid = $oldid + 1;
         } else {
@@ -186,6 +190,7 @@ class map
             $ix = 3;
         }
         for ($i = 0; $i < 3; $i++) {
+            //MaB $ix
             $x[$i] = intval($data[$ix + ($i * 4)]);
             $lon[$i] = floatval($data[$ix + 1 + ($i * 4)]);
             $y[$i] = intval($data[$ix + 2 + ($i * 4)]);
@@ -551,4 +556,3 @@ private static function exp_to_dec($float_str)
   else return $float_str;
 }
 }
-?>

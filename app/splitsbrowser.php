@@ -84,6 +84,7 @@ class splitsbrowser
                 // 9: start time
                 $result_data .= self::convertSecondsToHHMMSS(intval($data[4])).";;";
                 // 11: time
+                //MaB more 0 variants to check
                 if ($t === "00:00:00" or $t === "0:00:00" or $t === "0" or $t === "") {
                     $result_data .= "---;;;;;;;";
                 } else {
@@ -92,6 +93,7 @@ class splitsbrowser
                 // 18: course name
                 // escape apostrophe in course name
                 $name = str_replace("'", "\'", $data[2]);
+                //MaB name
                 if(ctype_digit(strval($data[6]))) {
                     $name .= $data[6];
                 }
@@ -104,6 +106,7 @@ class splitsbrowser
                 }
                 $courseindex = -1;
                 for ($i = 0; $i < $coursecount; $i++) {
+                    //MaB isset for safety
                     if (isset($courses[$i]) && $courses[$i] == $variant) {
                         $courseindex = $i;
                         break;
@@ -186,4 +189,3 @@ class splitsbrowser
         ;
     }
 }
-?>

@@ -45,19 +45,17 @@
     // parameters for call to draw courses
     DIM: 0.75,
     FULL_INTENSITY: 1.0,
-    // values of event format
-    NORMAL_EVENT: 1,
-    EVENT_WITHOUT_RESULTS: 2,
-    SCORE_EVENT: 3,
     // version gets set automatically by grunt file during build process
-    RG2VERSION: '1.5.9',
+    RG2VERSION: '1.6.0',
     TIME_NOT_FOUND: 9999,
     // values for evt.which
     RIGHT_CLICK: 3,
     DO_NOT_SAVE_COURSE: 9999,
+    // values of event format
     FORMAT_NORMAL: 1,
-    FORMAT_NO_RESULTS: 2,
+    FORMAT_NORMAL_NO_RESULTS: 2,
     FORMAT_SCORE_EVENT: 3,
+    FORMAT_SCORE_EVENT_NO_RESULTS: 4,
     DISPLAY_ALL_COURSES: 99999,
     //number of drawn routes that can be saved for possible later deletion
     MAX_DRAWN_ROUTES: 10,
@@ -116,11 +114,13 @@
   }
   function translateTextFields() {
     var i, selector, text;
+    //MaB " -> '
     selector = ['#rg2-events-tab a', '#rg2-courses-tab a', '#rg2-results-tab a', '#rg2-draw-tab a', '#rg2-draw-title', '#draw-text-1', '#draw-text-2', '#draw-text-3',
       '#draw-text-4', '#draw-text-5', '#rg2-load-gps-title', '.rg2-options-dialog .ui-dialog-title', '#rg2-draw-help', '#rg2-draw-options'];
     text = ['Events', 'Courses', 'Results', 'Draw', 'Draw route', 'Left click to add/lock/unlock a handle', 'Green - draggable', 'Red - locked', 'Right click to delete a handle',
       'Drag a handle to adjust track around locked point(s)', 'Load GPS file (GPX or TCX)', 'Configuration options', 'Help', 'Options'];
     for (i = 0; i < selector.length; i += 1) {
+      //MaB setTextContents
       setTextContents($(selector[i]), t(text[i]));
     }
   }
@@ -139,9 +139,11 @@
     var i, selector, text;
     selector = ['label[for=rg2-control-select]', 'label[for=btn-full-tails]', 'label[for=spn-tail-length]', 'label[for=rg2-select-language]', 'label[for=spn-map-intensity]',
       'label[for=spn-route-intensity]', 'label[for=spn-route-width]', 'label[for=spn-name-font-size]', 'label[for=spn-course-width]', 'label[for=spn-control-circle]',
+      //MaB rg2_name etc.
       'label[for=chk-snap-toggle]', 'label[for=chk-show-three-seconds]', 'label[for=chk-show-GPS-speed]', 'label[for=rg2-course-select]', 'label[for=rg2-name-select]', 'label[for=rg2-name]', 'label[for=rg2-time]',
       'label[for=btn-move-all]', 'label[for=btn-align-map]'];
     text = ['Start at', 'Full tails', 'Length', 'Language', 'Map intensity %', 'Route intensity %', 'Route width', 'Replay label font size', 'Course overprint width', 'Control circle size',
+      //MaB enter name etc.
       'Snap to control when drawing', 'Show +3 time loss for GPS routes', 'Show GPS speed colours', 'Select course', 'Select name', 'Enter name', 'Enter time (mm&colon;ss)', 'Move track and map together (or right click-drag)',
       'Align map to next control'];
     for (i = 0; i < selector.length; i += 1) {
@@ -202,7 +204,8 @@
       //MaB set for DropDown menu selection because language js file executed by getNewLanguage has not completed yet and therefore dictionary code is not correct here
       dictionary.code = rg2Config.start_language;
     }
-    //MaB set available languages and set start language if requested
+    //MaB execute createLanguageDropdown after start language is set
+    // set available languages and set start language if requested
     rg2.createLanguageDropdown(rg2.config.languages);
   }
 

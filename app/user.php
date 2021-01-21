@@ -56,4 +56,3 @@ class user
         return $keksi;
     }
 }
-?>

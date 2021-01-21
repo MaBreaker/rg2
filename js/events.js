@@ -86,7 +86,11 @@
     },
 
     isScoreEvent : function () {
-      return (this.events[this.activeEventID].format === rg2.config.SCORE_EVENT);
+      if (this.activeEventID !== null) {
+        return ((this.events[this.activeEventID].format === rg2.config.FORMAT_SCORE_EVENT) || 
+          (this.events[this.activeEventID].format === rg2.config.FORMAT_SCORE_EVENT_NO_RESULTS));
+      }
+      return false;
     },
 
     //MaB live event
@@ -99,7 +103,8 @@
 
     hasResults : function () {
       if (this.activeEventID !== null) {
-        return (this.events[this.activeEventID].format !== rg2.config.EVENT_WITHOUT_RESULTS);
+        return ((this.events[this.activeEventID].format === rg2.config.FORMAT_NORMAL) ||
+          (this.events[this.activeEventID].format === rg2.config.FORMAT_SCORE_EVENT));
       }
       return true;
     },

@@ -21,6 +21,17 @@ class utils
         }
     }
 
+    public static function getEventFormat($id, $rawFormat)
+    {
+      // kisat .txt only allows 1, 2 and 3 in line with original Routegadget. We now need to support 4 as well.
+      // if file exists we must be type 4... might need to read file at a later date
+      if (file_exists(KARTAT_DIRECTORY."format_".$id.".txt")) {
+        return FORMAT_SCORE_EVENT_NO_RESULTS;
+      } else {
+        return intval($rawFormat);
+      }
+    }
+
     public static function lockDatabase()
     {
         // lock directory version based on http://docstore.mik.ua/oreilly/webprog/pcook/ch18_25.htm
@@ -39,10 +50,10 @@ class utils
         }
         if (is_dir(LOCK_DIRECTORY)) {
             // locked already by someone else
-      //rg2log("Directory exists ".date("D M j G:i:s T Y", filemtime(LOCK_DIRECTORY)));
+            //self::rg2log("Directory exists ".date("D M j G:i:s T Y", filemtime(LOCK_DIRECTORY)));
         } else {
             // try to lock it ourselves
-            //self::rg2log("Trying to lock");
+            //self::rg2log("Trying to lock ".LOCK_DIRECTORY);
             $locked = mkdir(LOCK_DIRECTORY, 0777);
         }
         $tries = 0;
@@ -81,6 +92,7 @@ class utils
         return $comments;
     }
 
+    //MaB HHMMSS
     public static function getSecsFromHHMMSS($t) {
       // gets in (H)HH:MM:SS and needs to return seconds
       $bits = explode(":", $t);
@@ -102,12 +114,14 @@ class utils
         $t = str_replace('.:', ':', $in);
         $t = str_replace('::', ":", $t);
         // remove leading 0:
+//MaB
 /*
         if (substr($t, 0, 2) === '0:') {
             $t = substr($t, 2);
         }
 */
         // correct seconds for missing leading 0 which RG1 can generate from Emit. e.g 25:9 becomes 25:09
+//MaB
 /*
         $secs = substr($t, -2);
         if (substr($secs, 0, 1) ===  ':') {
@@ -223,4 +237,3 @@ class utils
         return $encoded;
     }
 }
-?>

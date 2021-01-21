@@ -165,7 +165,7 @@ class course
         return 'X'.$dummycode;
     }
 
-    public static function deleteCourse($eventid) {
+public static function deleteCourse($eventid) {
   $write["status_msg"] = "";
   if (isset($_GET['courseid'])) {
     $courseid = $_GET['courseid'];
@@ -318,4 +318,3 @@ class course
   return($write);
 }
 }
-?>

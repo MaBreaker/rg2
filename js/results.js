@@ -7,7 +7,8 @@
   Results.prototype = {
     Constructor: Results,
 
-    addResults : function (data, isScoreEvent, isLiveEvent) {
+    //MaB live event
+    addResults: function (data, isScoreEvent, isLiveEvent) {
       var i, l, result, variant, codes, scorex, scorey;
       l = data.length;
       // extract score course details if necessary
@@ -29,15 +30,17 @@
       // save each result
       for (i = 0; i < l; i += 1) {
         // trap cases where only some courses for an event are set up, but for some reason all the results get saved
-        // so you end up getting results for courses you don't know about: kust ignore these results
+        // so you end up getting results for courses you don't know about: just ignore these results
         if (rg2.courses.isValidCourseId(data[i].courseid)) {
           if (data[i].resultid > rg2.config.GPS_RESULT_OFFSET && data[i].coursename === '') {
             data[i].coursename = rg2.courses.getCourseDetails(data[i].courseid).name;
           }
           if (isScoreEvent) {
             variant = data[i].variant;
+            //MaB live event
             result = new rg2.Result(data[i], isScoreEvent, isLiveEvent, codes[variant], scorex[variant], scorey[variant]);
           } else {
+            //MaB live event
             result = new rg2.Result(data[i], isScoreEvent, isLiveEvent);
           }
           this.results.push(result);
@@ -337,7 +340,9 @@
       for (i = 0; i < this.results.length; i += 1) {
         if (this.results[i].courseid === courseid) {
           // don't double-count GPS tracks, unless no initial results (#284)
-          if ((this.results[i].resultid < rg2.config.GPS_RESULT_OFFSET) || (info.format === rg2.config.EVENT_WITHOUT_RESULTS)) {
+          if ((this.results[i].resultid < rg2.config.GPS_RESULT_OFFSET) ||
+            (info.format === rg2.config.FORMAT_NO_RESULTS) ||
+            (info.format === rg2.config.FORMAT_SCORE_EVENT_NO_RESULTS)) {
             count += 1;
           }
         }
@@ -611,6 +616,7 @@
           if (firstCourse) {
             firstCourse = false;
           } else {
+            //MaB live event
             if (!res.isLiveEvent) {
               html += this.getBottomRows(tracksForThisCourse, oldCourseID);
             }
@@ -620,7 +626,7 @@
           html += this.getCourseHeader(res);
           oldCourseID = res.courseid;
         }
-        html += '<tr><td id=' + res.rawid + '>' + res.position + '</td>';
+        html += '<tr class="resultrow"><td id=' + res.rawid + '>' + res.position + '</td>';
         // #310 filter default comments in local language just in case
         if ((res.comments !== "") && (res.comments !== rg2.t('Type your comment'))) {
           // #304 make sure double quotes show up
@@ -636,12 +642,14 @@
           html += " <i class='deleteroute fa fa-trash' id=" + i + "></i>";
         }
         html += "</td><td>" + res.time + "</td>";
+        //MaB live event
         if (res.hasValidTrack && !res.isLiveEvent) {
           tracksForThisCourse += 1;
           html += "<td><input class='showtrack showtrack-" + oldCourseID + "' id=" + res.resultid + " type=checkbox name=result></input></td>";
         } else {
           html += "<td></td>";
         }
+        //MaB live event
         if (!res.isLiveEvent) {
           html += "<td><input class='showreplay";
           if (res.hasValidTrack) {
@@ -653,6 +661,7 @@
         }
         html += "</tr>";
       }
+      //MaB live event
       if (!res.isLiveEvent) {
         html += this.getBottomRows(tracksForThisCourse, oldCourseID);
       }
@@ -662,11 +671,6 @@
 
     prepareResults: function () {
       var oldID, i, canCombine;
-      // no concept of combining for events with no initial results
-      // this also avoids the sort which we don't want
-      if (!rg2.events.hasResults()) {
-        return;
-      }
       // want to avoid extra results line for GPS routes if there is no drawn route
       // first sort so that GPS routes come after initial result
       this.results.sort(this.sortByCourseIDThenResultID);
@@ -700,6 +704,7 @@
       } else {
         namehtml = "<i>" + res.name + "</i>";
       }
+      //MaB live event
       if (res.isScoreEvent && !res.isLiveEvent) {
         namehtml = "<input class='showscorecourse showscorecourse-" + i + "' id=" + i + " type=checkbox name=scorecourse></input> " + namehtml;
       }
@@ -716,6 +721,7 @@
       }
       html = "<h3>" + text + "<input class='showcourse' id=" + result.courseid + " type=checkbox name=course title='Show course'></input></h3><div>";
       // Add the search bar with the id of the course name
+      //MaB disable this search
       //html += "<div class='input-group margin-bottom-sm'><span class='input-group-addon'><i class='fa fa-search fa-fw'></i></span><input type='text' class='form-control rg2-result-search' id='search-" + result.courseid + "' placeholder='" + rg2.t("Search") + "'></div>";
       // Start the table with an id that relates to the course name to help with the filtering function
       html += "<table class='resulttable' data-role='table' id='table-" + result.courseid + "'><tr><th></th><th>" + rg2.t("Name") + "</th><th>" + rg2.t("Time") + "</th><th><i class='fa fa-pen'></i></th><th><i class='fa fa-play'></i></th></tr>";
