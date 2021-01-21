@@ -652,8 +652,13 @@ table.coursemenutable td,
 table.coursemenutable th {
 	padding-left: 5px;
 	padding-right: 5px;
-	text-align: center;
+	/* text-align: center; */
 	/* vertical-align: top; */
+}
+
+table.coursemenutable td,
+table.coursemenutable th {
+	text-align: center;
 }
 
 table.resulttable td:first-child + td,
@@ -663,12 +668,12 @@ table.coursemenutable th:first-child {
 	width: 80%;
 	text-align: left;
 }
-
+/*
 table.resulttable td + td + td,
 table.resulttable th + th + th {
 	text-align: center;
 }
-
+*/
 table.resulttable tbody tr:nth-child(odd),
 table.coursemenutable tbody tr:nth-child(odd) {
   /* background: #eee; */

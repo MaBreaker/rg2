@@ -81,15 +81,18 @@ class utils
         return $comments;
     }
 
-    public static function getSecsFromHHMM($t) {
-      // gets in (H)HH:MM and needs to return seconds
+    public static function getSecsFromHHMMSS($t) {
+      // gets in (H)HH:MM:SS and needs to return seconds
       $bits = explode(":", $t);
-      if (count($bits) === 2) {
+      //MaB
+      if (count($bits) === 3) {
+        return ((intval($bits[0]) * 60 * 60) + (intval($bits[1]) * 60) + intval($bits[2]));
+      } elseif (count($bits) === 2) {
         return ((intval($bits[0]) * 60) + intval($bits[1]));
-      } else {
-        return 0;
+      } elseif (count($bits) === 1) {
+        return (intval($bits[1]));
       }
-
+      return 0;
     }
 
     public static function tidyTime($in)
@@ -115,16 +118,18 @@ class utils
         if (substr($t, 0, 1) === "-") {
           $t = "0:00";
         }
+        //MaB - fix format and remove leading 0 and :
+        $t = implode(':', array_map(function($num) { return sprintf("%02d", $num); }, explode(':', $t)));
+        $t = ltrim($t, '0:');
         // convert hh:mm:ss to mm:ss for consistency
+/*
         $bits = explode(":", $t);
         if (count($bits) === 3) {
           $mins = (intval($bits[0]) * 60) + intval($bits[1]);
           $t = $mins.":".$bits[2]; 
         }
-        //MaB - fix format and remove leading 0 and :
-        //$t = implode(':', array_map(function($num) { return sprintf("%02d", $num); }, explode(':', $t)));
-        $tr = ltrim($t, '0:');
-        return array($tr, self::getSecsFromHHMM($t));
+*/
+        return array($t, self::getSecsFromHHMMSS($t));
     }
 
     public static function getAngle($x1, $y1, $x2, $y2)

@@ -113,10 +113,18 @@ rg2.setDictionary({
   'Share route': 'Jaa reittisi',
   'Copy and paste this link to share your route': 'Kopio linkki ja jaa reittisi',
   'Summary': 'Yhteenveto',
-  'Leg times': 'Väliajat',
-  'Cumulative times': 'Kokonaisajat',
-  'Average leg position': 'Keskim. välimatka',
+  'Leg times': 'Rastivälit',
+  'Cumulative times': 'Kertymä',
+  'Position': 'Sijoitus',
+  'Average leg position': 'Keskim. sijoitus',
   'Best': 'Paras',
   'Worst': 'Heikoin',
-  'Estimated loss': 'Arvioitu tappio'
+  'Estimated loss': 'Arvioitu tappio',
+  'Performance': 'Suoritus',
+  'Consistency': 'Poikkeama',
+  'Control': 'Rasti',
+  'Who': 'Vertailu',
+  'Behind': 'Jäljessä',
+  'Predicted': 'Arvioitu',
+  'Loss': 'Tappio'
 });

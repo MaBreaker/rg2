@@ -126,6 +126,14 @@ class result
                 $temp = rtrim($data[8], ";");
                 // split array at ;and force to integers
                 $detail["splits"] = array_map('intval', explode(";", $temp));
+                //MaB remove last split time if it is the same as finnish time
+                $splits = $detail["splits"];
+                $split_count = count($splits);
+                while (($split_count > 1) && (($splits[$split_count - 1] === 0) || ($splits[$split_count - 1] === $splits[$split_count - 2]))) {
+                    $split_count = $split_count - 1;
+                }
+                array_splice($splits,$split_count);
+                $detail["splits"] = $splits;
                 //$detail["comments"] = "";
                 for ($i = 0; $i < $comments; $i++) {
                     if ($detail["resultid"] == $text[$i]["resultid"]) {

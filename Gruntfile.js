@@ -1,4 +1,5 @@
 module.exports = function (grunt) {
+module.exports = function (grunt) {
   var jsFileList = ['js/rg2.js', 'js/animation.js', 'js/canvas.js', 'js/config.js', 'js/control.js', 'js/controls.js', 'js/course.js', 'js/courses.js',
     'js/draw.js', 'js/event.js', 'js/events.js', 'js/gpstrack.js', 'js/handles.js', 'js/map.js', 'js/plugins.js', 'js/result.js',
     'js/results.js', 'js/rg2getjson.js', 'js/rg2input.js', 'js/rg2ui.js', 'js/runner.js', 'js/stats.js', 'js/utils.js', 'js/lib/he.js'

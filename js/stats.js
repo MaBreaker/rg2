@@ -77,14 +77,15 @@
         resizable: false,
         maxHeight: $("#rg2-map-canvas").height() * 0.98,
         width: Math.min($("#rg2-map-canvas").width() * 0.8, 1000),
-        position: { my: "top", at: "top", of: "#rg2-map-canvas" },
+        position: { my: "top", at: "top+5", of: "#rg2-map-canvas" },
       });
     },
 
     generateSummary: function () {
       var html, info, ratios;
       info = this.getLegPosInfo();
-      html = rg2.t('Name') + ': <strong>' + this.result.name + '</strong><br>' + rg2.t('Course') + ':<strong>' + this.result.coursename + '</strong><br>';
+      html = rg2.t('Name') + ': <strong>' + this.result.name + '</strong><br>';
+      html += rg2.t('Course') + ': <strong>' + this.result.coursename + '</strong><br>';
       html += rg2.t('Time') + ': <strong>' + this.result.time + '</strong><br>';
       html += rg2.t('Position') + ': <strong>' + this.results[this.resultIndex].racepos[this.controls - 1] + ' / ' + this.results.length + '</strong><br>';
       html += rg2.t('Average leg position') + ': <strong>' + info.average + '</strong> (';
@@ -359,7 +360,7 @@
           { headerName: rg2.t("Who"), field: "who", headerClass: "align-left", cellClass: "align-left", width: 200, tooltipField: "who" },
           { headerName: rg2.t("Behind"), field: "behind", width: 85 },
           { headerName: "%", field: "percent", width: 85 },
-          { headerName: "Loss", field: "loss", width: 100 }
+          { headerName: rg2.t("Loss"), field: "loss", width: 100 }
         ],
         rowData: rowData,
         domLayout: 'autoHeight',
@@ -381,9 +382,9 @@
         { headerName: rg2.t("Time"), field: "time", width: 85 }
       ];
       for (j = 1; j < this.controls - 1; j += 1) {
-        columnDefs.push({ headerName: j, field: 'C' + j, cellRenderer: this.renderSplits, width: 110 });
+        columnDefs.push({ headerName: j, field: 'C' + j, cellRenderer: this.renderSplits, width: 85 });
       }
-      columnDefs.push({ headerName: rg2.t('F'), field: 'finish', cellRenderer: this.renderSplits, width: 110 });
+      columnDefs.push({ headerName: rg2.t('F'), field: 'finish', cellRenderer: this.renderSplits, width: 85 });
       columnDefs.push({ headerName: rg2.t('Loss'), field: 'loss', width: 100 });
       columnDefs.push({ headerName: rg2.t('Performance'), field: 'performance', width: 100 });
       columnDefs.push({ headerName: rg2.t('Consistency'), field: 'consistency', width: 100 });
