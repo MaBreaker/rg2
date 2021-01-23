@@ -1,5 +1,6 @@
 Version 1.60
 -------------------------------------------------------------------------------
+Fixed result.php and splitsbrowser.php to trim trailing zero and/or duplicate last split times from kilpailijat_xx.txt results.
 
 Version 1.59
 -------------------------------------------------------------------------------

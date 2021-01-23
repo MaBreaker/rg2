@@ -102,7 +102,7 @@ class utils
       } elseif (count($bits) === 2) {
         return ((intval($bits[0]) * 60) + intval($bits[1]));
       } elseif (count($bits) === 1) {
-        return (intval($bits[1]));
+        return (intval($bits[0]));
       }
       return 0;
     }
@@ -170,29 +170,29 @@ class utils
     {
         // mappings for ResultStatus in IOF XML V3 and V2.0.3
         switch ($text) {
-    case 'OK':
-      return 'OK';
-    case 'MissingPunch':
-      return 'mp';
-    case 'MisPunch':
-      return 'mp';
-    case 'Disqualified':
-      return 'dsq';
-    case 'DidNotFinish':
-      return 'dnf';
-    case 'OverTime':
-      return 'ot';
-    case 'SportingWithdrawal':
-      return 'swd';
-    case 'SportingWithdr':
-      return 'swd';
-    case 'NotCompeting':
-      return 'nc';
-    case 'DidNotStart':
-      return 'dns';
-    default:
-      return $text;
-  }
+          case 'OK':
+            return 'OK';
+          case 'MissingPunch':
+            return 'mp';
+          case 'MisPunch':
+            return 'mp';
+          case 'Disqualified':
+            return 'dsq';
+          case 'DidNotFinish':
+            return 'dnf';
+          case 'OverTime':
+            return 'ot';
+          case 'SportingWithdrawal':
+            return 'swd';
+          case 'SportingWithdr':
+            return 'swd';
+          case 'NotCompeting':
+            return 'nc';
+          case 'DidNotStart':
+            return 'dns';
+          default:
+            return $text;
+        }
     }
 
     // Note: convert encoding read from kartat files (RG_INPUT_ENCODING) to encoding use in rg2 browser (RG2_ENCODING)

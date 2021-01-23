@@ -122,11 +122,18 @@ class splitsbrowser
                 $splits = array_map('intval', explode(";", $temp));
                 // 42: control count, 44 start time
                 // RG2 has finish split, but Splitsbrowser doesn't need it
-                $split_count = count($splits) -  1;
+                //MaB remove last split time if it is zero or the same as finish time
+                //$split_count = count($splits) -  1;
+                $split_count = count($splits);
+                while (($split_count > 1) && ((($splits[$split_count - 1]) === 0) || ($splits[$split_count - 1] === $splits[$split_count - 2]))) {
+                    $split_count = $split_count - 1;
+                }
+                $split_count = $split_count - 1;
                 $result_data .= $split_count.";;".self::convertSecondsToHHMMSS(intval($data[4])).";";
                 // 45: finish time
                 if ($split_count > 0) {
-                    $finish_secs = intval($splits[$split_count - 1]) + intval($data[4]);
+                    //MaB $splits[$split_count]
+                    $finish_secs = intval($splits[$split_count]) + intval($data[4]);
                 } else {
                     $finish_secs = intval($data[4]);
                 }
