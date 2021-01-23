@@ -33,7 +33,7 @@
         if (xml.documentElement.nodeName === "kml") {
           this.processKMLCourses(xml);
         } else {
-        rg2.utils.showWarningDialog("XML file error", "File is not a valid XML course file. CourseData element missing.");
+          rg2.utils.showWarningDialog("XML file error", "File is not a valid XML course file. CourseData element missing.");
         }
         return;
       }

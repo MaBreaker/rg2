@@ -275,4 +275,3 @@ function validateCache($id)
 
     //utils::rg2log("Cache OK");
 }
-?>

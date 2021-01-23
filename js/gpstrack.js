@@ -56,7 +56,7 @@
             rg2.utils.showWarningDialog('GPS file problem', 'File type not recognised. Please check you have selected the correct file.');
             return;
           }
-          //$("#rg2-load-gps-file").button('disable');
+          //MaB $("#rg2-load-gps-file").button('disable');
           self.xml = $.parseXML(evt.target.result);
           self.processGPSFile();
         } catch (err) {
@@ -170,6 +170,7 @@
       if (this.routeData.splits.length > 2) {
         $("#btn-autofit-gps").button("enable");
       }
+      //MaB
       rg2.ui.setAutofitSpinner(0);
       $("#spn-offset").spinner("enable");
       $("#btn-save-gps-route").button("enable");
@@ -179,10 +180,11 @@
     adjustOffset : function (offset) {
       this.autofitOffset = offset;
       this.processGPSFile();
+      //MaB
       if (this.autoFit === true) {
       this.autofitTrack();
       } else {
-        this.timefitTrack();
+      this.timefitTrack();
       }
     },
 
@@ -231,6 +233,7 @@
     autofitTrack : function () {
       // fits a GPS track to the course based on split times at control locations
       var i, split;
+      //MaB re-order autofitOffset and Handles
       if (this.autofitOffset === null) {
         this.autofitOffset = this.getOffset();
         rg2.ui.setAutofitSpinner(this.autofitOffset);
@@ -336,6 +339,7 @@
           }
         }
       }
+      //MaB defaults to middle of the range for speed up the process
       bestGuess = range; // in the middle of the range
       speedAtControl[bestGuess] = speedAtControl[bestGuess] * 0.7; // higher rate for initial middle range value
       for (i = 0; i < speedAtControl.length; i += 1) {

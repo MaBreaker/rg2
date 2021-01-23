@@ -32,6 +32,7 @@
       this.realTime = false;
       this.earliestStartSecs = 0;
       this.latestFinishSecs = 0;
+      //MaB default tailLength and tailStartTimeSecs
       this.tailLength = 60 * rg2.config.DEFAULT_TAIL_LENGTH;
       this.tailStartTimeSecs = 1;
       this.useFullTails = false;
@@ -82,9 +83,11 @@
         $("#rg2-track-names").empty().append(html).show();
         $("#rg2-animation-controls").show();
       } else {
+        //MaB empty
         $("#rg2-track-names").empty().hide();
         $("#rg2-animation-controls").hide();
       }
+      //MaB true
       this.calculateAnimationRange(true);
       $("#rg2-clock").text(rg2.utils.formatSecsAsHHMMSS(this.animationSecs));
     },
@@ -94,6 +97,7 @@
       if (html !== "") {
         $("#rg2-track-names").empty().append(html).show();
       } else {
+        //MaB empty
         $("#rg2-track-names").empty().hide();
       }
     },
@@ -109,6 +113,7 @@
       // major refactoring for #400
       // get all tracks displayed so we can add them if they are not animated as well
       tracks = rg2.results.getDisplayedTrackDetails();
+      //MaB
       html = "";
       for (i = 0; i < this.runners.length; i += 1) {
         // people can be in both lists: just accept it
@@ -275,6 +280,7 @@
       this.earliestStartSecs = 86400;
       this.latestFinishSecs = 0;
       this.slowestTimeSecs = 0;
+      //MaB
       if (this.useFullTails) {
         tail = 0;
       } else {
@@ -491,6 +497,7 @@
 
     drawAnimation : function () {
       // This function draws the current state of the animation.
+      //MaB activeRunners
       var runner, timeOffset, i, t, activeRunners;
       $("#rg2-clock-slider").slider("value", this.animationSecs);
       $("#rg2-clock").text(rg2.utils.formatSecsAsHHMMSS(this.animationSecs));
@@ -514,25 +521,27 @@
             timeOffset = -1 * runner.splits[this.massStartControl];
           }
         }
-          if (runner.x.length > (this.tailStartTimeSecs - timeOffset) && (this.animationSecs - timeOffset) >= 0 && this.tailStartTimeSecs < this.animationSecs) {
-            rg2.ctx.beginPath();
+        //MaB
+        if (runner.x.length > (this.tailStartTimeSecs - timeOffset) && (this.animationSecs - timeOffset) >= 0 && this.tailStartTimeSecs < this.animationSecs) {
+        rg2.ctx.beginPath();
         rg2.ctx.strokeStyle = runner.colour;
         rg2.ctx.globalAlpha = rg2.options.routeIntensity;
         rg2.ctx.moveTo(runner.x[this.tailStartTimeSecs - timeOffset], runner.y[this.tailStartTimeSecs - timeOffset]);
-            //rg2.ctx.moveTo(runner.x[this.animationSecs - timeOffset], runner.y[this.animationSecs - timeOffset]);
+        //rg2.ctx.moveTo(runner.x[this.animationSecs - timeOffset], runner.y[this.animationSecs - timeOffset]);
         // t runs as real time seconds or 0-based seconds depending on this.realTime
         //runner.x[] is always indexed in 0-based time so needs to be adjusted for starttime offset
         for (t = this.tailStartTimeSecs; t < this.animationSecs; t += 1) {
-            //for (t = this.animationSecs; t > this.tailStartTimeSecs; t -= 1) {
+        //for (t = this.animationSecs; t > this.tailStartTimeSecs; t -= 1) {
           if ((t > timeOffset) && ((t - timeOffset) < runner.nextStopTime)) {
-                if (t - timeOffset < runner.x.length) {
-                  if (!this.useFullTails) { activeRunners = 1; }
+            //MaB
+            if (t - timeOffset < runner.x.length) {
+            if (!this.useFullTails) { activeRunners = 1; }
             rg2.ctx.lineTo(runner.x[t - timeOffset], runner.y[t - timeOffset]);
+            }
           }
         }
-            }
         rg2.ctx.stroke();
-          }
+        }
         }
       }
       for (i = 0; i < this.runners.length; i += 1) {
@@ -554,17 +563,19 @@
         } else {
           t = runner.nextStopTime;
         }
+        //MaB
         if (t < runner.x.length) {
-          rg2.ctx.beginPath();
+        rg2.ctx.beginPath();
         rg2.ctx.globalAlpha = rg2.config.FULL_INTENSITY;
         rg2.ctx.strokeStyle = rg2.config.BLACK;
-          rg2.ctx.arc(runner.x[t], runner.y[t], rg2.config.RUNNER_DOT_RADIUS * rg2.options.routeWidth / 4,
+        //MaB
+        rg2.ctx.arc(runner.x[t], runner.y[t], rg2.config.RUNNER_DOT_RADIUS * rg2.options.routeWidth / 4,
             0, 2 * Math.PI, false);
         rg2.ctx.stroke();
         rg2.ctx.fillStyle = runner.colour;
         rg2.ctx.fill();
         this.displayName(runner, t);
-          activeRunners = 1;
+        activeRunners = 1;
         }
       }
       this.updateNameDetails(t);

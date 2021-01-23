@@ -105,7 +105,7 @@ class map
               if (count($olddata) > 1) {
                 // ids should be increasing anyway, but just in case...
                 if (intval($olddata[0]) > $oldid) {
-                    $oldid = intval($olddata[0]);
+                  $oldid = intval($olddata[0]);
                 }
               }
             }

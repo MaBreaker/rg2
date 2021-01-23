@@ -23,13 +23,14 @@
     GPS_RESULT_OFFSET: 50000,
     MASS_START_REPLAY: 1,
     REAL_TIME_REPLAY: 2,
-    // animation defaults
+    //MaB animation defaults
     DEFAULT_TAIL_LENGTH: 2,
     // dropdown selection value
     MASS_START_BY_CONTROL: 99999,
     VERY_HIGH_TIME_IN_SECS: 99999,
     // screen sizes for different layouts
     BIG_SCREEN_BREAK_POINT: 800,
+    //MaB 640
     SMALL_SCREEN_BREAK_POINT: 640,
     PURPLE: '#b300ff',
     RED: '#ff0000',
@@ -45,7 +46,7 @@
     // parameters for call to draw courses
     DIM: 0.75,
     FULL_INTENSITY: 1.0,
-    // version gets set automatically by grunt file during build process
+     // version gets set automatically by grunt file during build process
     RG2VERSION: '1.6.0',
     TIME_NOT_FOUND: 9999,
     // values for evt.which
@@ -104,6 +105,7 @@
     return $('<div/>').html(str).text();
   }
 
+  //MaB
   function setTextContents($elem, text) {
     $elem.contents().filter(function () {
       if (this.nodeType === 3) {
@@ -201,7 +203,9 @@
     dictionary.code = 'en';
     if (rg2Config.start_language !== "en") {
       rg2.getNewLanguage(rg2Config.start_language);
-      //MaB set for DropDown menu selection because language js file executed by getNewLanguage has not completed yet and therefore dictionary code is not correct here
+      //MaB this is set for DropDown menu selection here, because language.js 
+      // file executed by getNewLanguage has not been completed yet and 
+      // therefore dictionary code here is not yet correct
       dictionary.code = rg2Config.start_language;
     }
     //MaB execute createLanguageDropdown after start language is set

@@ -70,6 +70,7 @@
       rg2.ctx.font = opt.font;
       rg2.ctx.strokeStyle = "white";
       rg2.ctx.miterLimit = 2;
+      //MaB rg2.ctx.lineJoin = "circle";
       rg2.ctx.lineWidth = 1.5;
       rg2.ctx.textBaseline = "middle";
       metrics = rg2.ctx.measureText(code);
@@ -119,6 +120,7 @@
       rg2.ctx.textAlign = "left";
       rg2.ctx.strokeStyle = "white";
       rg2.ctx.miterLimit = 2;
+      //MaB rg2.ctx.lineJoin = "circle";
       rg2.ctx.lineWidth = 1.5;
       rg2.ctx.strokeText(code, x + (opt.controlRadius * 1.5), y + opt.controlRadius);
       rg2.ctx.stroke();
@@ -170,6 +172,7 @@
       rg2.ctx.textAlign = "left";
       rg2.ctx.strokeStyle = "white";
       rg2.ctx.miterLimit = 2;
+      //MaB round
       rg2.ctx.lineJoin = "round";
       rg2.ctx.lineWidth = 1.5;
       rg2.ctx.strokeText(code, x[0] + (opt.controlRadius * 1.25), y[0] + (opt.controlRadius * 1.25));

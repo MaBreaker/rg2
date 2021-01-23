@@ -499,8 +499,8 @@
       date = new Date();
       // returns offset in minutes, so convert to seconds
       offset = date.getTimezoneOffset() * 60;
+      //MaB
       this.gpstrack.routeData.startsecs = fitOffset - offset;
-
       courseData = rg2.courses.getCourseDetails(this.gpstrack.routeData.courseid);
       if (autofitOffset > 0) {
         // delete auto fit amount from the begining of the route data
@@ -535,7 +535,7 @@
       while (i < routeLength && l < splitTime) {
         this.gpstrack.routeData.x[i] = Math.round(this.gpstrack.routeData.x[i]);
         this.gpstrack.routeData.y[i] = Math.round(this.gpstrack.routeData.y[i]);
-        // convert real time seconds to offset seconds from start
+        // convert real time seconds to offset seconds from start time
         this.gpstrack.routeData.time[i] = this.gpstrack.routeData.time[i] - fitOffset;
         l = this.gpstrack.routeData.time[i];
         i = i + 1;

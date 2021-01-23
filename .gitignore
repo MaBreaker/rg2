@@ -18,6 +18,7 @@ js/coords.js
 coords.html
 coverage
 cache/*.json
+#MaB bat files
 *.bat
 #################
 ## Eclipse

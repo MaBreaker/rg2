@@ -138,6 +138,7 @@
     // looks odd but this works for initialisation
     rg2.input.dragged = true;
     // don't stretch map: just shrink to fit
+    //MaB heightscale < widthscale
     if (heightscale < 1 && heightscale < widthscale) {
       mapscale = heightscale;
     } else if (widthscale < 1 && widthscale < heightscale) {
@@ -147,6 +148,7 @@
     }
     // move map into view on small screens
     // avoid annoying jumps on larger screens
+    //MaB
     /* if (rg2.input.infoPanelMaximised || window.innerWidth >= rg2.config.BIG_SCREEN_BREAK_POINT) {
       ctx.setTransform(mapscale, 0, 0, mapscale, $("#rg2-info-panel").outerWidth(), 0);
     } else {
@@ -181,9 +183,11 @@
     if (rg2.input.infoPanelMaximised) {
       showInfoDisplay(false, "Show info panel", "0px");
     } else {
+      //MaB 360
       showInfoDisplay(true, "Hide info panel", "360px");
     }
     // move map around if necesssary
+    //MaB
     //resetMapState();
   }
 

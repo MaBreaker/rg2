@@ -62,11 +62,13 @@
       var self;
       self = this;
       $("#btn-login").button();
+      //MaB #
       $("#rg2-manage-courses").hide();
       $("#rg2-manage-results").hide();
       $("#chk-read-only").prop("checked", false);
       $("#rg2-manager-login-form").submit(function () {
         var validUser;
+        //MaB lower
         validUser = self.user.setDetails($("#rg2-user-name").val().toLowerCase(), $("#rg2-password").val());
         // check we have user name and password
         if (validUser) {
@@ -134,13 +136,16 @@
       $("#btn-draw-courses").button().click(function () {
         self.startDrawingCourses();
       });
+      //MaB val("")
       $("#rg2-load-georef-file").val("").button().change(function (evt) {
         self.readGeorefFile(evt);
       });
+      //MaB val("")
       $("#rg2-load-map-file").val("").button().change(function (evt) {
         self.validateMapUpload(this.files[0]);
         self.readMapFile(evt);
       });
+      //MaB val("")
       $("#rg2-load-results-file").val("").button().click(function (evt) {
         if (!self.mapLoaded) {
           rg2.utils.showWarningDialog("No map loaded", "Please load a map file before adding results.");
@@ -213,6 +218,7 @@
       rg2.managerUI.createEventEditDropdown();
       $("#rg2-event-level").change(function () {
         self.eventLevel = $("#rg2-event-level").val();
+//MaB
 /*
         if (self.eventLevel !== 'X') {
           $("#rg2-select-event-level").removeClass('required');
@@ -225,9 +231,11 @@
       $("#rg2-map-selected").change(function () {
         self.mapIndex = parseInt($("#rg2-map-selected").val(), 10);
         if (self.mapIndex !== rg2.config.INVALID_MAP_ID) {
+          //MaB required
           $("#rg2-manager-map-select").removeClass('required');
           rg2.loadNewMap(rg2Config.maps_url + "/" + self.maps[self.mapIndex].mapfilename);
         } else {
+          //MaB required
           $("#rg2-manager-map-select").addClass('required');
           self.mapLoaded = false;
           self.mapWidth = 0;
@@ -237,6 +245,7 @@
 
       $("#rg2-event-date").datepicker({
         dateFormat: 'yy-mm-dd',
+        //MaB show week and first day
         showWeek: true,
         firstDay: 1,
         onSelect: function (date) {
@@ -252,6 +261,7 @@
         self.setMapName();
       });
 
+      //MaB
       $("#rg2-map-copyright").on("change", function () {
         self.setMapCopyright();
       });
@@ -288,6 +298,7 @@
           self.maps.push(new rg2.Map(json.data.maps[i]));
         }
         rg2.managerUI.createMapDropdown(self.maps);
+        //MaB parent
         $("#btn-toggle-controls").parent().show();
       }).fail(function () {
         rg2.utils.showWarningDialog("Map request failed", "Error getting map list.");
@@ -425,6 +436,7 @@
           if (data.ok) {
             rg2.utils.showWarningDialog("Event created", self.eventName + " has been added with id " + data.newid + ".");
             // open newly created event in a separate window
+            //MaB index.php
             window.open(rg2Config.json_url.replace("rg2api.php", "index.php") + "#" + data.newid);
             rg2.getEvents();
             rg2.managerUI.setEvent();
@@ -449,6 +461,7 @@
       data.mapid = this.maps[this.mapIndex].mapid;
       data.eventdate = this.eventDate;
       text = $("#rg2-event-comments").val();
+      //MaB rg2.t
       if (text === rg2.t(rg2.config.DEFAULT_EVENT_COMMENT)) {
         data.comments = "";
       } else {
@@ -458,7 +471,7 @@
       data.club = this.club;
       if (this.hasResults) {
         if (this.isScoreEvent) {
-        data.format = rg2.config.FORMAT_SCORE_EVENT;
+          data.format = rg2.config.FORMAT_SCORE_EVENT;
         } else {
           data.format = rg2.config.FORMAT_NORMAL;
         }
@@ -820,7 +833,7 @@
           self.user.y = data.keksi;
           if (data.ok) {
             rg2.utils.showWarningDialog("Route deleted", "Route " + routeid + " has been deleted.");
-            // delete route from the list
+            //MaB delete route from the list
             rg2.results.deleteResult(parseInt(routeid, 10));
             rg2.managerUI.createRouteDeleteDropdown(id);
           } else {
@@ -932,8 +945,10 @@
       this.results = parsedResults.results;
       this.resultCourses = parsedResults.resultCourses;
       if (parsedResults.valid) {
+        //MaB required
         $("#rg2-select-results-file").removeClass('required');
       } else {
+        //MaB required
         $("#rg2-select-results-file").addClass('required');
       }
       rg2.managerUI.displayResultInfo(this.getResultInfoAsHTML());
@@ -1065,6 +1080,7 @@
       // called to load a new map locally
       var size;
       rg2.loadNewMap(event.target.result);
+      //MaB required
       $("#rg2-select-map-file").removeClass('required');
       this.mapLoaded = true;
       size = rg2.getMapSize();
@@ -1138,6 +1154,7 @@
 
     setClub: function () {
       this.club = $("#rg2-club-name").val();
+//MaB
 /*
       if (this.club) {
         $("#rg2-select-club-name").removeClass('required');
@@ -1150,8 +1167,10 @@
     setEventName: function () {
       this.eventName = $("#rg2-event-name").val();
       if (this.eventName) {
+        //MaB required
         $("#rg2-select-event-name").removeClass('required');
       } else {
+        //MaB required
         $("#rg2-select-event-name").addClass('required');
       }
     },
@@ -1166,12 +1185,15 @@
     setMapName: function () {
       this.newMap.name = $("#rg2-map-name").val();
       if (this.newMap.name) {
+        //MaB required
         $("#rg2-select-map-name").removeClass('required');
       } else {
+        //MaB required
         $("#rg2-select-map-name").addClass('required');
       }
     },
 
+    //MaB
     setMapCopyright: function () {
       this.newMap.copyright = $("#rg2-map-copyright").val();
     },
@@ -1179,8 +1201,10 @@
     setDate: function (date) {
       this.eventDate = date;
       if (this.eventDate) {
+        //MaB required
         $("#rg2-select-event-date").removeClass('required');
       } else {
+        //MaB required
         $("#rg2-select-event-date").addClass('required');
       }
     },
@@ -1351,6 +1375,7 @@
         error: function (jqXHR, textStatus) {
           /*jslint unparam:true*/
           console.log(textStatus);
+          //MaB
           rg2.utils.showWarningDialog("Upload failed", "Failed to upload data to server.");
         },
         complete: function () {

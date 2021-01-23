@@ -15,6 +15,7 @@ module.exports = function (grunt) {
 
   var jsMinFile = 'js/rg2-<%= pkg.version %>.min.js';
   var jsManagerMinFile = 'js/rg2manager-<%= pkg.version %>.min.js';
+  //MaB css min
   var jsCssMinFile = 'css/rg2-<%= pkg.version %>.min.css';
 
   // installed routegadget.co.uk clubs that need to be updated for a new release
@@ -72,6 +73,7 @@ module.exports = function (grunt) {
         'box-model': false,
         'duplicate-background-images': false,
         'outline-none': false,
+        //MaB box-sizing and star-property-hack
         'box-sizing': false,
         'star-property-hack': false,
         'order-alphabetical': false
@@ -109,6 +111,7 @@ module.exports = function (grunt) {
     sync: {
       rel: {
         files: [{
+          //MaB individual file names
           src : [ 'rg2api.php', 'index.php', 'app/*.php', 'html/*.html', 'img/favicon.ico',
                   'img/android-*.png', 'img/apple-*.png', 'img/favicon-*.png', 'img/mstile-*.png', 'img/rg2-logo-*.png', 'img/ui-icons-*.png', 'img/mstile-*.png',
                   'img/manifest.json', 'img/safari-pinned-tab.svg',

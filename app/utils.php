@@ -44,7 +44,6 @@ class utils
             // not sure exactly how time changes work, but we can live with a possible twice
             // a year problem since locking is probably almost never needed
             if ((time() - filemtime(LOCK_DIRECTORY)) > 15) {
-                //self::rg2log("Clear lock directory");
                 self::unlockDatabase();
             }
         }
@@ -170,29 +169,29 @@ class utils
     {
         // mappings for ResultStatus in IOF XML V3 and V2.0.3
         switch ($text) {
-          case 'OK':
-            return 'OK';
-          case 'MissingPunch':
-            return 'mp';
-          case 'MisPunch':
-            return 'mp';
-          case 'Disqualified':
-            return 'dsq';
-          case 'DidNotFinish':
-            return 'dnf';
-          case 'OverTime':
-            return 'ot';
-          case 'SportingWithdrawal':
-            return 'swd';
-          case 'SportingWithdr':
-            return 'swd';
-          case 'NotCompeting':
-            return 'nc';
-          case 'DidNotStart':
-            return 'dns';
-          default:
-            return $text;
-        }
+    case 'OK':
+      return 'OK';
+    case 'MissingPunch':
+      return 'mp';
+    case 'MisPunch':
+      return 'mp';
+    case 'Disqualified':
+      return 'dsq';
+    case 'DidNotFinish':
+      return 'dnf';
+    case 'OverTime':
+      return 'ot';
+    case 'SportingWithdrawal':
+      return 'swd';
+    case 'SportingWithdr':
+      return 'swd';
+    case 'NotCompeting':
+      return 'nc';
+    case 'DidNotStart':
+      return 'dns';
+    default:
+      return $text;
+  }
     }
 
     // Note: convert encoding read from kartat files (RG_INPUT_ENCODING) to encoding use in rg2 browser (RG2_ENCODING)

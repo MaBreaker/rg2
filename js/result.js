@@ -5,6 +5,7 @@
     this.resultid = data.resultid;
     this.rawid = this.resultid % rg2.config.GPS_RESULT_OFFSET;
     this.isScoreEvent = isScoreEvent;
+    //MaB isLiveEvent
     this.isLiveEvent = isLiveEvent;
     this.name = rg2.he.decode(data.name);
     this.initials = this.getInitials(this.name);
@@ -109,9 +110,11 @@
     addTrack: function (data) {
       var i, trackOK;
       this.trackx = data.x.split(",").map(function (n) {
+        //MaB Int -> Float
         return parseFloat(n);
       });
       this.tracky = data.y.split(",").map(function (n) {
+        //MaB Int -> Float
         return parseFloat(n);
       });
       // co-ords sent as differences, so recreate absolute values
@@ -141,6 +144,7 @@
           // set speed colours if we haven't done it yet
           this.setSpeedColours();
         }
+        //MaB smooth lines
         rg2.ctx.lineCap = "round";
         rg2.ctx.lineJoin = "round";
         rg2.ctx.lineWidth = rg2.options.routeWidth;
@@ -394,6 +398,7 @@
     },
 
     mapSpeedColours: function () {
+      //MaB re-located var definitions
       var i, range, value, maxspeed, minspeed, sorted, metresPerPixel, maxMetresPerSecond, minMetresPerSecond, secondsPerSample;
       // speed options are in min/km
       maxMetresPerSecond = 16.667 / rg2.options.maxSpeed;
